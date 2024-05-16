@@ -6,4 +6,8 @@ public class Comune {
 
     private Coordinate coordinate;
 
+    public Comune(String nomeComune, int asseX, int asseY) {
+        this.nomeComune = nomeComune;
+        this.coordinate = coordinate;
+    }
 }
