@@ -1,4 +1,4 @@
-package it.unicam.IDS.progetto;
+package it.unicam.IDS.progetto.Entita;
 
 import it.unicam.IDS.progetto.Entita.Coordinate;
 

@@ -1,4 +1,4 @@
-package it.unicam.IDS.progetto;
+package it.unicam.IDS.progetto.Entita;
 
 public abstract class Utente {
 

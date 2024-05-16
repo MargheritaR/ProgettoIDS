@@ -1,5 +1,6 @@
 package it.unicam.IDS.progetto;
 
+import it.unicam.IDS.progetto.Entita.PuntoInteresse;
 import it.unicam.IDS.progetto.Operazioni.ApprovazioneStatoPending;
 import it.unicam.IDS.progetto.Operazioni.EliminazionePDI;
 import it.unicam.IDS.progetto.Operazioni.InserimentoPDI;
