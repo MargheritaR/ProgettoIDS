@@ -16,10 +16,9 @@ public class PuntoInteresse {
 
     @Override
     public String toString() {
-        return "PuntoInteresse{" +
-                ", nomePDI='" + nomePDI + '\'' +
-                ", coordinate=" + coordinate +
-                '}';
+        return "Punti di Interesse" + '\n' +
+                "nomePDI: " + nomePDI + '\n' +
+                "coordinate: " + coordinate + '\n';
     }
 
     public String getNomePDI() {

@@ -28,10 +28,9 @@ public class Main {
         statoPending.add(pI1);
         statoPending.add(pI2);
 
-//        System.out.println("Tutti i punti di interesse");
-//        for (PuntoInteresse appoggio : listaPDI) {
-//            System.out.println(appoggio);
-//        }
+        for (PuntoInteresse appoggio : listaPDI) {
+            System.out.println(appoggio);
+        }
 
         // Rimozione di un punto di interesse
         /*e.RimuoviPDI(listaPDI,pI1);
