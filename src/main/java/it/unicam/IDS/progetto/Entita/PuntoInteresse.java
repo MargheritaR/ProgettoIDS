@@ -22,4 +22,7 @@ public class PuntoInteresse {
                 '}';
     }
 
+    public String getNomePDI() {
+        return nomePDI;
+    }
 }
