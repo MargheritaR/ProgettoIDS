@@ -4,10 +4,7 @@ import it.unicam.IDS.progetto.Entita.Comune;
 import it.unicam.IDS.progetto.Entita.ContTesto;
 import it.unicam.IDS.progetto.Entita.Contenuti;
 import it.unicam.IDS.progetto.Entita.PuntoInteresse;
-import it.unicam.IDS.progetto.Operazioni.AggiuntaContenuti;
-import it.unicam.IDS.progetto.Operazioni.ApprovazioneStatoPending;
-import it.unicam.IDS.progetto.Operazioni.EliminazionePDI;
-import it.unicam.IDS.progetto.Operazioni.InserimentoPDI;
+import it.unicam.IDS.progetto.Operazioni.*;
 
 import java.util.ArrayList;
 
@@ -29,13 +26,12 @@ public class Main {
 
         //Creazione lista di contenuti
         AggiuntaContenuti c = new AggiuntaContenuti();
+        EliminaContenuti b = new EliminaContenuti();
 
         //Aggiunta Comune
         Comune x = new Comune("Camerino", 10,15);
         System.out.println("la lista dei comuni è");
         System.out.println(listaComuni);
-
-
 
         //Creazione lista di stato di approvazione di punti di punti interesse e contenuti
         ApprovazioneStatoPending approvazione = new ApprovazioneStatoPending();
@@ -48,7 +44,9 @@ public class Main {
 
         //Creazione contenuto
         ContTesto cont = new ContTesto("1","storia",  10, "txt");
+        ContTesto cont2 = new ContTesto("13","geografia",  32, "txt");
         c.AddContenuti(listaContenuti,cont);
+        c.AddContenuti(listaContenuti,cont2);
         System.out.println("La lista dei contenuti è");
         System.out.println(listaContenuti);
 
@@ -56,9 +54,13 @@ public class Main {
         statoPending.add(pI1);
         statoPending.add(pI2);
 
-        for (PuntoInteresse appoggio : listaPDI) {
+//        for (PuntoInteresse appoggio : listaPDI) {
+//            System.out.println(appoggio);
+//        }
+
+        /*for (Contenuti appoggio : listaContenuti) {
             System.out.println(appoggio);
-        }
+        }*/
 
         // Rimozione di un punto di interesse
         /*e.RimuoviPDI(listaPDI,pI1);
@@ -68,6 +70,16 @@ public class Main {
             System.out.println(appoggio);
         }
          */
+
+        // Rimozione di un contenuto
+        /*b.RimuoviContenuto(listaContenuti,cont);
+
+        System.out.println("I contenuti aggiornati");
+        for (Contenuti appoggio : listaContenuti) {
+            System.out.println(appoggio);
+        }*/
+
+
         approvazione.Approvazione(statoPending,listaPDI);
     }
 }
