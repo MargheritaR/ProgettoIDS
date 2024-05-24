@@ -10,4 +10,11 @@ public class Comune {
         this.nomeComune = nomeComune;
         this.coordinate = coordinate;
     }
+
+    @Override
+    public String toString() {
+        return "Comune: " + '\n' +
+                "nomeComune: " + nomeComune + '\n' +
+                ", coordinate: " + coordinate + '\n';
+    }
 }

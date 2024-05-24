@@ -42,7 +42,6 @@ public class ApprovazioneStatoPending {
         return contenutoScelto;
     }
 
-
     // metodo per trovare l'indice del punto di interesse se non trova l'indice ritorna -1
     private int FindIndex(ArrayList<PuntoInteresse> statoPending, String contenutoScelto) {
         for (int i = 0; i < statoPending.size(); i++)
