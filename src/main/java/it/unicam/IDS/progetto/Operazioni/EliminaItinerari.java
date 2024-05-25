@@ -9,11 +9,11 @@ public class EliminaItinerari {
 
     public void RimuoviItinerari(ArrayList<Itinerario> listaItinerari, Itinerario itinerario) {
         //TODO creare la eccezione e lanciarla
-        if (itinerario.getNomeItinerario().equals(null))
-            System.out.println("Il punto di interesse non può essere nullo");
+        if (itinerario.getNomeItinerario().isEmpty())
+            System.out.println("Il nome dell'itinerario non può essere nullo");
         //TODO creare la eccezione e lanciarla
-        if (listaItinerari.contains(itinerario) != true)
-            System.out.println("Il punto di interesse non esiste");
+        if (!listaItinerari.contains(itinerario))
+            System.out.println("Il nome dell'itinerario non esiste");
 
         listaItinerari.remove(itinerario);
     }

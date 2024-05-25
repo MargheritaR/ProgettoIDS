@@ -9,21 +9,25 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        // Creazione lista per le entitò
+        // Creazione lista per le entità
         ArrayList<PuntoInteresse> listaPDI = new ArrayList<>();
         ArrayList<Contenuti> listaContenuti = new ArrayList<>();
         ArrayList<PuntoInteresse> statoPending = new ArrayList<>();
         ArrayList<Comune> listaComuni = new ArrayList<>();
         ArrayList<Itinerario> listaItinerario = new ArrayList<>();
+        ArrayList<ContestDiContribuzione> listaContestDiContribuzione = new ArrayList<>();
 
         // Creazione azioni
         InserimentoPDI inserimentoPDI = new InserimentoPDI();
         EliminazionePDI ePDI = new EliminazionePDI();
         AggiuntaContenuti aggiuntaContenuti = new AggiuntaContenuti();
         EliminaContenuti eliminaContenuti = new EliminaContenuti();
+        ModificaContenuti modificaContenuti = new ModificaContenuti();
         CreaItinerario creaItinerario = new CreaItinerario();
         EliminaItinerari eliminaItinerari = new EliminaItinerari();
         ModificaItinerario modificaItinerario = new ModificaItinerario();
+        CreaContestDiContribuzione creaContestDiContribuzione = new CreaContestDiContribuzione();
+        EliminaContestDiContribuzione eliminaContestDiContribuzione = new EliminaContestDiContribuzione();
 
         //Aggiunta Comune
         Comune x = new Comune("Camerino", 10,15);
@@ -48,6 +52,13 @@ public class Main {
 //        System.out.println("La lista dei contenuti è: ");
 //        System.out.println(listaContenuti);
 
+        // Modifica Contenuto
+        ContTesto contM = new ContTesto("3","matematica",  13, "txt");
+        ContTesto contM2 = new ContTesto("23","geografia",  42, "txt");
+        modificaContenuti.EditContenuti(listaContenuti,cont);
+        System.out.println("La lista dei contenuti è:");
+        System.out.println(listaContenuti);
+
         // Creazione di intinerario
         List<PuntoInteresse> listaItinerariPDI1 = new ArrayList<>();
         listaItinerariPDI1.add(pI1);
@@ -62,8 +73,18 @@ public class Main {
 //        System.out.println("La lista degli itinerari è");
 //        System.out.println(listaItinerario);
 
+        // Creazione di Contest di Contribuzione
+        ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival","bere",
+                "informatica", "12/06/2023", 5,"1/03/2023",
+                "10/03/2023", "10/06/2023", "20/06/2023");
+        creaContestDiContribuzione.AggiungiContest(listaContestDiContribuzione,contestDiContribuzione1);
+//        System.out.println("La lista dei contest di contribuzione è");
+//        System.out.println(listaContestDiContribuzione);
+
+
+
         // Modifica intinerario
-        modificaItinerario.EditItinerario(listaItinerario,it1,listaPDI);
+        // modificaItinerario.EditItinerario(listaItinerario,it1,listaPDI);
 
 //        for (PuntoInteresse appoggio : listaPDI) {
 //            System.out.println(appoggio);
@@ -91,11 +112,20 @@ public class Main {
         }*/
 
         /*
-        // Rimozione di un punto di interesse
+        // Rimozione di un itinerario
         eliminaItinerari.RimuoviItinerari(listaItinerario,it1);
 
         System.out.println("Gli Itinerari aggiornati ");
         for (Itinerario appoggio : listaItinerario) {
+            System.out.println(appoggio);
+        }
+         */
+        // Rimozione di un contest di contribuzione
+
+       /* eliminaContestDiContribuzione.RimuoviContest(listaContestDiContribuzione,contestDiContribuzione1);
+
+        System.out.println("I contest di contribuzione aggiornati: ");
+        for (ContestDiContribuzione appoggio : listaContestDiContribuzione) {
             System.out.println(appoggio);
         }
          */

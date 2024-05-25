@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class InserimentoPDI {
 
     public void AggiungiPDI(ArrayList<PuntoInteresse> listaPDI, PuntoInteresse puntoDI){
-        if (puntoDI.equals(null))
+        if (puntoDI == null)
             System.out.println("Il punto di interesse non può essere nullo");
             //TODO creare la eccezione e lanciarla
         if (listaPDI.contains(puntoDI))

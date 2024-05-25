@@ -14,6 +14,30 @@ public abstract class Contenuti {
         this.peso = peso;
     }
 
+    public String getIdContenuto() {
+        return idContenuto;
+    }
+
+    public String getNomeContenuto() {
+        return nomeContenuto;
+    }
+
+    public int getPeso() {
+        return peso;
+    }
+
+    public void setIdContenuto(String idContenuto) {
+        this.idContenuto = idContenuto;
+    }
+
+    public void setNomeContenuto(String nomeContenuto) {
+        this.nomeContenuto = nomeContenuto;
+    }
+
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
+
     @Override
     public String toString() {
         return "Contenuti{" +

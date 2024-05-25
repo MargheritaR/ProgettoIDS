@@ -16,11 +16,4 @@ public class ContMultimediale extends Contenuti{
         super(idContenuto, nomeContenuto, peso);
         this.formato = formato;
     }
-
-    @Override
-    public String toString() {
-        return "ContMultimediale{" +
-                "formato='" + formato + '\'' +
-                '}';
-    }
 }

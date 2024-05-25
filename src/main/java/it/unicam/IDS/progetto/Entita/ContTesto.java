@@ -17,11 +17,4 @@ public class ContTesto extends Contenuti{
         super(idContenuto, nomeContenuto, peso);
         this.formato = formato;
     }
-
-    @Override
-    public String toString() {
-        return "ContTesto{" +
-                "formato='" + formato + '\'' +
-                '}';
-    }
 }
