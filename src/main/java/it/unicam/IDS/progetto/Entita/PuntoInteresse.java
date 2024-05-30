@@ -2,7 +2,7 @@ package it.unicam.IDS.progetto.Entita;
 
 import it.unicam.IDS.progetto.Entita.Coordinate;
 
-public class PuntoInteresse {
+public class PuntoInteresse extends StatoPending{
 
     private String nomePDI;
 

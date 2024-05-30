@@ -12,8 +12,9 @@ public class ModificaContenuti {
 
     EliminaContenuti eliminaContenuti = new EliminaContenuti();
 
+    Scanner scanner = new Scanner(System.in);
+
     public void EditContenuti(ArrayList<Contenuti> listaContenuti, Contenuti contenuti) {
-        Scanner scanner = new Scanner(System.in);
         //String contenutoScelto = Mostra(listaContenuti);
         System.out.println("Inserire che azione si vuole fare sulla lista dei Contenuti:" + '\n' +
                 "Aggiungere" + '\n' +
@@ -29,7 +30,6 @@ public class ModificaContenuti {
     }
 
     private String Mostra(ArrayList<Contenuti> listaContenuti) {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Lista dei contenuti");
         System.out.println(listaContenuti);
 
@@ -40,7 +40,6 @@ public class ModificaContenuti {
     }
 
     private Contenuti NuovoContenuto() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Inserire l'id del contenuto");
         String contId = scanner.next();
         System.out.println("Inserire il nome del contenuto");

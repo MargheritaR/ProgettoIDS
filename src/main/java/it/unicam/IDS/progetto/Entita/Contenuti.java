@@ -1,6 +1,6 @@
 package it.unicam.IDS.progetto.Entita;
 
-public abstract class Contenuti {
+public abstract class Contenuti extends StatoPending {
 
     private String idContenuto;
 
