@@ -18,6 +18,7 @@ public class Main {
         ArrayList<StatoPending> listaStatoPending = new ArrayList<>();
         ArrayList<Preferiti> listaPreferiti = new ArrayList<>();
         ArrayList<Foto> listaFoto = new ArrayList<>();
+        ArrayList<Contenuti> listaContestContenuti = new ArrayList<>();
 
         // Creazione azioni
         InserimentoPDI inserimentoPDI = new InserimentoPDI();
@@ -33,10 +34,21 @@ public class Main {
         ApprovazioneStatoPending approvazione = new ApprovazioneStatoPending();
         InserimentoPreferiti inserimentoPreferiti = new InserimentoPreferiti();
         CaricaFoto caricaFoto = new CaricaFoto();
+        CreaComune creaComune = new CreaComune();
+        ModificaComune modificaComune = new ModificaComune();
+        ValidazioneContenutiContest validazioneContenutiContest = new ValidazioneContenutiContest();
 
         //Aggiunta Comune
         Comune x = new Comune("Camerino", 10, 15);
+        creaComune.AggiungiComune(listaComuni,x);
+        Comune comune = new Comune("Castelraimondo", 12, 17);
+        creaComune.AggiungiComune(listaComuni,comune);
 //        System.out.println("la lista dei comuni è: ");
+//        System.out.println(listaComuni);
+
+        //Modifica Comune
+       // modificaComune.EditComune(listaComuni,comune);
+//        System.out.println("La lista dei comuni è:");
 //        System.out.println(listaComuni);
 
         // Aggiunta di un punto di interesse
@@ -84,12 +96,20 @@ public class Main {
 //        System.out.println(listaItinerario);
 
         // Creazione di Contest di Contribuzione
+        listaContestContenuti.add(cont);
+        listaContestContenuti.add(cont2);
         ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival", "bere",
                 "informatica", "12/06/2023", 5, "1/03/2023",
-                "10/03/2023", "10/06/2023", "20/06/2023");
+                "10/03/2023", "10/06/2023", "20/06/2023", listaContestContenuti);
         creaContestDiContribuzione.AggiungiContest(listaContestDiContribuzione, contestDiContribuzione1);
 //        System.out.println("La lista dei contest di contribuzione è");
 //        System.out.println(listaContestDiContribuzione);
+
+
+        // Validazione Contenuti del contest di contribuzione
+        validazioneContenutiContest.ValidaContenutiContest(listaContestDiContribuzione,contestDiContribuzione1);
+        System.out.println("La lista dei contenuti approvati del contest è:");
+        System.out.println(contestDiContribuzione1.getContenutiApprovati());
 
         // Inserimento dei Preferiti
         // inserimentoPreferiti.AggiungiPreferiti(listaPreferiti,pI4);
@@ -99,9 +119,9 @@ public class Main {
         listaFoto.add(foto1);
         Foto foto2 = new Foto("09876-cnxvbvcnbv","jpeg");
         listaFoto.add(foto2);
-        caricaFoto.InserimentoFoto(listaItinerario,foto1);
-        System.out.println("La lista delle foto di un itinerario è : ");
-        System.out.println(listaItinerario);
+//        caricaFoto.InserimentoFoto(listaItinerario,foto1);
+//        System.out.println("La lista delle foto di un itinerario è : ");
+//        System.out.println(listaItinerario);
 
 //        for (PuntoInteresse appoggio : listaPDI) {
 //            System.out.println(appoggio);

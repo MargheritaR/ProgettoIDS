@@ -11,6 +11,22 @@ public class Comune {
         this.coordinate = new Coordinate(asseX, asseY);
     }
 
+    public String getNomeComune() {
+        return nomeComune;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setNomeComune(String nomeComune) {
+        this.nomeComune = nomeComune;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+
     @Override
     public String toString() {
         return "Comune: " + '\n' +

@@ -2,6 +2,7 @@ package it.unicam.IDS.progetto.Entita;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class ContestDiContribuzione extends StatoPending{
 
@@ -28,9 +29,13 @@ public class ContestDiContribuzione extends StatoPending{
     //tempo finale del lasso di tempo del contest
     private LocalDate tempoFine;
 
+    private ArrayList<Contenuti> contenuti;
+
+    private ArrayList<Contenuti> contenutiApprovati;
+
     public ContestDiContribuzione(String nomeContest, String obiettivo, String tematica,
                                   String limiteMassimoC, int sogliaInviti, String termineMassimoS,
-                                  String termineMassimoR, String tempoInizio, String tempoFine) {
+                                  String termineMassimoR, String tempoInizio, String tempoFine,ArrayList<Contenuti> contenuti) {
         this.nomeContest = nomeContest;
         this.obiettivo = obiettivo;
         this.tematica = tematica;
@@ -40,6 +45,8 @@ public class ContestDiContribuzione extends StatoPending{
         this.termineMassimoS = termineMassimoS;
         this.tempoInizio = LocalDate.parse(tempoInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.tempoFine = LocalDate.parse(tempoFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.contenuti = contenuti;
+        this.contenutiApprovati = new ArrayList<>();
     }
 
     public String getNomeContest() {
@@ -78,6 +85,14 @@ public class ContestDiContribuzione extends StatoPending{
         return tempoFine;
     }
 
+    public ArrayList<Contenuti> getListaContenuti() {
+        return contenuti;
+    }
+
+    public ArrayList<Contenuti> getContenutiApprovati() {
+        return contenutiApprovati;
+    }
+
     public void setNomeContest(String nomeContest) {
         this.nomeContest = nomeContest;
     }
@@ -112,6 +127,14 @@ public class ContestDiContribuzione extends StatoPending{
 
     public void setTempoFine(LocalDate tempoFine) {
         this.tempoFine = tempoFine;
+    }
+
+    public void setListaContenuti(ArrayList<Contenuti> contenuti) {
+        this.contenuti = contenuti;
+    }
+
+    public void setContenutiApprovati(ArrayList<Contenuti> contenutiApprovati) {
+        this.contenutiApprovati = contenutiApprovati;
     }
 
     @Override

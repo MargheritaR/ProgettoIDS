@@ -1,5 +1,7 @@
 package it.unicam.IDS.progetto.Entita;
 
+import java.util.ArrayList;
+
 public abstract class Utente {
 
     private int id;
@@ -11,6 +13,10 @@ public abstract class Utente {
     private String nome;
 
     private String cognome;
+
+    private ArrayList<Messaggio> listaMessaggiNonLetti = new ArrayList<>();
+
+    private ArrayList<Messaggio> listaMessaggiLetti = new ArrayList<>();
 
     public int getId() {
         return id;
