@@ -5,6 +5,7 @@ import it.unicam.IDS.progetto.Entita.Contenuti;
 import java.util.ArrayList;
 
 public class EliminaContenuti {
+
     public void RimuoviContenuto(ArrayList<Contenuti> listaContenuti, Contenuti contenuto) {
         //TODO creare la eccezione e lanciarla
         if (contenuto == null)

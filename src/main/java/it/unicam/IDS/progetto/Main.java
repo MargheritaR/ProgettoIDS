@@ -36,6 +36,7 @@ public class Main {
         CaricaFoto caricaFoto = new CaricaFoto();
         CreaComune creaComune = new CreaComune();
         ModificaComune modificaComune = new ModificaComune();
+        EliminaComune eliminaComune = new EliminaComune();
         ValidazioneContenutiContest validazioneContenutiContest = new ValidazioneContenutiContest();
 
         //Aggiunta Comune
@@ -43,8 +44,8 @@ public class Main {
         creaComune.AggiungiComune(listaComuni,x);
         Comune comune = new Comune("Castelraimondo", 12, 17);
         creaComune.AggiungiComune(listaComuni,comune);
-//        System.out.println("la lista dei comuni è: ");
-//        System.out.println(listaComuni);
+        System.out.println("la lista dei comuni è: ");
+        System.out.println(listaComuni);
 
         //Modifica Comune
        // modificaComune.EditComune(listaComuni,comune);
@@ -107,9 +108,9 @@ public class Main {
 
 
         // Validazione Contenuti del contest di contribuzione
-        validazioneContenutiContest.ValidaContenutiContest(listaContestDiContribuzione,contestDiContribuzione1);
-        System.out.println("La lista dei contenuti approvati del contest è:");
-        System.out.println(contestDiContribuzione1.getContenutiApprovati());
+//        validazioneContenutiContest.ValidaContenutiContest(listaContestDiContribuzione,contestDiContribuzione1);
+//        System.out.println("La lista dei contenuti approvati del contest è:");
+//        System.out.println(contestDiContribuzione1.getContenutiApprovati());
 
         // Inserimento dei Preferiti
         // inserimentoPreferiti.AggiungiPreferiti(listaPreferiti,pI4);
@@ -162,6 +163,14 @@ public class Main {
         for (ContestDiContribuzione appoggio : listaContestDiContribuzione) {
             System.out.println(appoggio);
         }*/
+
+        // Rimozione di un comune
+        eliminaComune.RimuoviComune(listaComuni,x);
+
+        System.out.println("I comuni aggiornati ");
+        for (Comune appoggio : listaComuni) {
+            System.out.println(appoggio);
+        }
 
         // Inserimento di Stato di Pending
         InserimentoStatoPending inserimentoStatoPending = new InserimentoStatoPending();
