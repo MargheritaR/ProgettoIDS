@@ -16,4 +16,5 @@ public class EliminazionePDI {
 
         listaPDI.remove(puntoDI);
     }
+
 }
