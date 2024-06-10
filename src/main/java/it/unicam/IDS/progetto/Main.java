@@ -31,6 +31,9 @@ public class Main {
         ModificaItinerario modificaItinerario = new ModificaItinerario();
         CreaContestDiContribuzione creaContestDiContribuzione = new CreaContestDiContribuzione();
         EliminaContestDiContribuzione eliminaContestDiContribuzione = new EliminaContestDiContribuzione();
+        ModificaContestDiContribuzione modificaContestDiContribuzione = new ModificaContestDiContribuzione();
+        ProponiContestDiContribuzione proponiContestDiContribuzione = new ProponiContestDiContribuzione();
+        VincitoreContestDiContribuzione vincitoreContestDiContribuzione = new VincitoreContestDiContribuzione();
         ApprovazioneStatoPending approvazione = new ApprovazioneStatoPending();
         InserimentoPreferiti inserimentoPreferiti = new InserimentoPreferiti();
         CaricaFoto caricaFoto = new CaricaFoto();
@@ -41,14 +44,14 @@ public class Main {
 
         //Aggiunta Comune
         Comune x = new Comune("Camerino", 10, 15);
-        creaComune.AggiungiComune(listaComuni,x);
+        creaComune.AggiungiComune(listaComuni, x);
         Comune comune = new Comune("Castelraimondo", 12, 17);
-        creaComune.AggiungiComune(listaComuni,comune);
+        creaComune.AggiungiComune(listaComuni, comune);
         System.out.println("la lista dei comuni è: ");
         System.out.println(listaComuni);
 
         //Modifica Comune
-       // modificaComune.EditComune(listaComuni,comune);
+        // modificaComune.EditComune(listaComuni,comune);
 //        System.out.println("La lista dei comuni è:");
 //        System.out.println(listaComuni);
 
@@ -84,9 +87,9 @@ public class Main {
         List<PuntoInteresse> listaItinerariPDI2 = new ArrayList<>();
         listaItinerariPDI2.add(pI3);
         listaItinerariPDI2.add(pI4);
-        Itinerario it1 = new Itinerario("Gruppo 1", listaItinerariPDI1,listaFoto);
+        Itinerario it1 = new Itinerario("Gruppo 1", listaItinerariPDI1, listaFoto);
         creaItinerario.AggiungiItinerario(listaItinerario, it1);
-        Itinerario it2 = new Itinerario("Gruppo 2", listaItinerariPDI2,listaFoto);
+        Itinerario it2 = new Itinerario("Gruppo 2", listaItinerariPDI2, listaFoto);
         creaItinerario.AggiungiItinerario(listaItinerario, it2);
 //        System.out.println("La lista degli itinerari è");
 //        System.out.println(listaItinerario);
@@ -112,13 +115,24 @@ public class Main {
 //        System.out.println("La lista dei contenuti approvati del contest è:");
 //        System.out.println(contestDiContribuzione1.getContenutiApprovati());
 
+        // Modifica contest di contribuzione
+//        modificaContestDiContribuzione.EditContestDiContribuzione(cont, listaContestDiContribuzione);
+//        System.out.println("La lista dei contest di contribuzione è");
+//        System.out.println(listaContestDiContribuzione);
+
+        // proponi contest di contribuzione
+//        proponiContestDiContribuzione.PropostaContest(cont, listaContestDiContribuzione, contenuto);
+
+        // vincitore contest di contribuzione
+//        vincitoreContestDiContribuzione.Vincitore(listaUtenti, utente);
+
         // Inserimento dei Preferiti
         // inserimentoPreferiti.AggiungiPreferiti(listaPreferiti,pI4);
 
         // Caricamento della/e foto
-        Foto foto1 = new Foto("12345-fotoprova1","jpeg");
+        Foto foto1 = new Foto("12345-fotoprova1", "jpeg");
         listaFoto.add(foto1);
-        Foto foto2 = new Foto("09876-cnxvbvcnbv","jpeg");
+        Foto foto2 = new Foto("09876-cnxvbvcnbv", "jpeg");
         listaFoto.add(foto2);
 //        caricaFoto.InserimentoFoto(listaItinerario,foto1);
 //        System.out.println("La lista delle foto di un itinerario è : ");
@@ -165,7 +179,7 @@ public class Main {
         }*/
 
         // Rimozione di un comune
-        eliminaComune.RimuoviComune(listaComuni,x);
+        eliminaComune.RimuoviComune(listaComuni, x);
 
         System.out.println("I comuni aggiornati ");
         for (Comune appoggio : listaComuni) {
@@ -174,12 +188,12 @@ public class Main {
 
         // Inserimento di Stato di Pending
         InserimentoStatoPending inserimentoStatoPending = new InserimentoStatoPending();
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,pI1);
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,pI2);
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,cont);
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,cont);
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,cont2);
-        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending,contestDiContribuzione1);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, pI1);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, pI2);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, cont);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, cont);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, cont2);
+        inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, contestDiContribuzione1);
 
         // Approvazione di entita nello stato di Pending
 //        approvazione.Approvazione(listaStatoPending,listaPDI,pI2);
