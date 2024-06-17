@@ -1,21 +1,30 @@
 package it.unicam.IDS.progetto.Entita;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.util.List;
 
-public class Itinerario extends StatoPending{
+@Entity
+public class Itinerario{
 
+    @Id
     private String nomeItinerario;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PuntoInteresse> listaItinerarioPDI;
 
-    private ArrayList<Foto> listaFoto;
+    @NotEmpty
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Foto> listaFoto;
 
-    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, ArrayList<Foto> listaFoto) {
+    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
     }
+
+    public Itinerario() {}
 
     public String getNomeItinerario() {
         return nomeItinerario;
@@ -33,11 +42,11 @@ public class Itinerario extends StatoPending{
         this.listaItinerarioPDI = listaItinerarioPDI;
     }
 
-    public ArrayList<Foto> getListaFoto() {
+    public List<Foto> getListaFoto() {
         return listaFoto;
     }
 
-    public void setListaFoto(ArrayList<Foto> listaFoto) {
+    public void setListaFoto(List<Foto> listaFoto) {
         this.listaFoto = listaFoto;
     }
 

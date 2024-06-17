@@ -1,16 +1,17 @@
 package it.unicam.IDS.progetto.Entita;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class StatoPending<T> {
+public class StatoPending implements Component{
 
-    private ArrayList<T> statoPending;
+    //TODO implementare component in Punto Interesse, Itinerario, Contenuti, Contest di Contribuzione
+    private List<Component> statoPending;
 
-    public ArrayList<T> getStatoPending() {
+    public List<Component> getStatoPending() {
         return statoPending;
     }
 
-    public void setStatoPending(ArrayList<T> statoPending) {
+    public void setStatoPending(List statoPending) {
         this.statoPending = statoPending;
     }
 }

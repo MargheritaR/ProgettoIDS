@@ -1,35 +1,49 @@
 package it.unicam.IDS.progetto.Entita;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
+import java.util.List;
+
+@Entity
 public class Utente {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @NotEmpty
     private String email;
 
+    @NotEmpty
     private String password;
 
+    @NotEmpty
     private String nome;
 
+    @NotEmpty
     private String cognome;
 
+    @NotEmpty
     private int ruolo;
 
-    public Utente(int id, String email, String password, String nome, String cognome) {
-        this.id = id;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Messaggio> listaMessaggiNonLetti;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Messaggio> listaMessaggiLetti;
+
+    public Utente(String email, String password, String nome, String cognome) {
         this.email = email;
         this.password = password;
         this.nome = nome;
         this.cognome = cognome;
-        this.ruolo = 4;
+        this.ruolo = 6;
         this.listaMessaggiNonLetti = null;
         this.listaMessaggiLetti = null;
     }
 
-    private ArrayList<Messaggio> listaMessaggiNonLetti = new ArrayList<>();
-
-    private ArrayList<Messaggio> listaMessaggiLetti = new ArrayList<>();
+    public Utente() {}
 
     public int getId() {
         return id;
@@ -79,19 +93,19 @@ public class Utente {
         this.ruolo = ruolo;
     }
 
-    public ArrayList<Messaggio> getListaMessaggiNonLetti() {
+    public List<Messaggio> getListaMessaggiNonLetti() {
         return listaMessaggiNonLetti;
     }
 
-    public void setListaMessaggiNonLetti(ArrayList<Messaggio> listaMessaggiNonLetti) {
+    public void setListaMessaggiNonLetti(List<Messaggio> listaMessaggiNonLetti) {
         this.listaMessaggiNonLetti = listaMessaggiNonLetti;
     }
 
-    public ArrayList<Messaggio> getListaMessaggiLetti() {
+    public List<Messaggio> getListaMessaggiLetti() {
         return listaMessaggiLetti;
     }
 
-    public void setListaMessaggiLetti(ArrayList<Messaggio> listaMessaggiLetti) {
+    public void setListaMessaggiLetti(List<Messaggio> listaMessaggiLetti) {
         this.listaMessaggiLetti = listaMessaggiLetti;
     }
 

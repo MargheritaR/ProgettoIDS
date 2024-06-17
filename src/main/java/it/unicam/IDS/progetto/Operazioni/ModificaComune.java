@@ -27,9 +27,9 @@ public class ModificaComune {
             int asseX = scanner.nextInt();
             System.out.println("Inserire l'asse Y del comune");
             int asseY = scanner.nextInt();
-            Coordinate coordinate = new Coordinate(asseX,asseY);
+            //Coordinate coordinate = new Coordinate(asseX,asseY);
             System.out.println("Inserire le nuove coordinate del comune");
-            comune.setCoordinate(coordinate);
+            //comune.setCoordinate(coordinate);
         }
 
     }

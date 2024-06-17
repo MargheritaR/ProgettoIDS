@@ -1,6 +1,14 @@
 package it.unicam.IDS.progetto.Entita;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Messaggio {
+
+    @Id
+    private String id;
+
     private String mittente;
 
     private String destinatario;
@@ -9,12 +17,19 @@ public class Messaggio {
 
     private String intestazione;
 
-    public Messaggio(String mittente, String destinatario, String titolo, String intestazione) {
+    public Messaggio() {}
+
+    public Messaggio(String id,String mittente, String destinatario, String titolo, String intestazione) {
+        this.id = id;
         this.mittente = mittente;
         this.destinatario = destinatario;
         this.titolo = titolo;
         this.intestazione = intestazione;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 
     public String getMittente() {
         return mittente;

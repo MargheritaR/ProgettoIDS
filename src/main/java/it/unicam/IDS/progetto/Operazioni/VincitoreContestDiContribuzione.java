@@ -12,11 +12,11 @@ public class VincitoreContestDiContribuzione {
             System.out.println("Il nome dell'utente non può essere nullo");
         //TODO creare la eccezione e lanciarla
         if (listaPartecipanti.contains(utente))
-            System.out.println("IL'utente esiste già");
+            System.out.println("L'utente esiste già");
         //TODO creare la eccezione e lanciarla
         String vincitore = ScegliVincitore(listaPartecipanti,utente);
-        String intestazione ="Complimenti!!!" + '\n' + "Hai vinto il contest!!";
-        Messaggio messaggio = new Messaggio("Daniele", "Salvatore","Convalida",intestazione);
+        String intestazione ="Complimenti!!! Hai vinto il contest!!";
+        Messaggio messaggio = new Messaggio("02","Daniele", "Salvatore","Convalida",intestazione);
         //TODO implementare messaggio
 
     }

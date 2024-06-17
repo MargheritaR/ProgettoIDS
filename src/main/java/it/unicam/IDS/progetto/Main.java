@@ -2,15 +2,25 @@ package it.unicam.IDS.progetto;
 
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Operazioni.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+@SpringBootApplication
+@RestController
 public class Main {
-    public static void main(String[] args) {
-        //TODO ricontrollare tutti i priveligi dei ruoli
 
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class,args);
+
+    }
+
+    public void appoggio(){
+        //TODO ricontrollare tutti i priveligi dei ruoli
+/*
         // Creazione lista per le entità
         ArrayList<PuntoInteresse> listaPDI = new ArrayList<>();
         ArrayList<Contenuti> listaContenuti = new ArrayList<>();
@@ -156,7 +166,7 @@ public class Main {
 //        for (PuntoInteresse appoggio : listaPDI) {
 //            System.out.println(appoggio);
 //        }
-
+*/
         /*for (Contenuti appoggio : listaContenuti) {
             System.out.println(appoggio);
         }*/
@@ -200,7 +210,7 @@ public class Main {
         for (Comune appoggio : listaComuni) {
             System.out.println(appoggio);
         }*/
-
+/*
         // Inserimento di Stato di Pending
         InserimentoStatoPending inserimentoStatoPending = new InserimentoStatoPending();
         inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, pI1);
@@ -209,7 +219,7 @@ public class Main {
         inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, cont);
         inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, cont2);
         inserimentoStatoPending.AggiungiStatoPending(listaStatoPending, contestDiContribuzione1);
-
+*/
         // Approvazione di entita nello stato di Pending
 //        approvazione.Approvazione(listaStatoPending,listaPDI,pI2);
 //        approvazione.Approvazione(listaStatoPending,listaContenuti,cont2);

@@ -15,9 +15,9 @@ public class ValidazioneContenutiContest {
 
     public void ValidaContenutiContest(ArrayList<ContestDiContribuzione> listaContestDiContribuzione,
                                        ContestDiContribuzione contestDiContribuzione) {
-       Controlli(listaContestDiContribuzione,contestDiContribuzione);
+        Controlli(listaContestDiContribuzione,contestDiContribuzione);
 
-       System.out.println("Lista dei contest di contribuzione: " + listaContestDiContribuzione);
+        System.out.println("Lista dei contest di contribuzione: " + listaContestDiContribuzione);
         while (continua.equalsIgnoreCase("Y")) {
             System.out.println("Lista dei contenuti proposti per il contest di contribuzione:" +
                     contestDiContribuzione.getListaContenuti());
@@ -42,7 +42,7 @@ public class ValidazioneContenutiContest {
         newListaContenutiApprovazione.add(contenutoScelto);
         contestDiContribuzione.setContenutiApprovati(newListaContenutiApprovazione);
         String intestazione = "Il Contenuto scelto è stato approvato e aggiunto al contest di contribuzione";
-        Messaggio messaggio = new Messaggio("Daniele", "Salvatore","Convalida",intestazione);
+        Messaggio messaggio = new Messaggio("01","Daniele", "Salvatore","Convalida",intestazione);
 
     }
 

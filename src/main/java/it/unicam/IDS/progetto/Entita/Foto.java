@@ -1,37 +1,49 @@
 package it.unicam.IDS.progetto.Entita;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+
+import java.io.File;
+
+@Entity
 public class Foto {
 
-    private String codiceFoto;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
-    private String formato;
+    @NotEmpty
+    private File file;
 
-    public Foto(String codiceFoto, String formato) {
-        this.codiceFoto = codiceFoto;
-        this.formato = formato;
+    public Foto(File file) {
+        this.file = file;
     }
 
-    public String getCodiceFoto() {
-        return codiceFoto;
+    public Foto() {}
+
+    public int getId() {
+        return id;
     }
 
-    public void setCodiceFoto(String codiceFoto) {
-        this.codiceFoto = codiceFoto;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getFormato() {
-        return formato;
+    public File getFile() {
+        return file;
     }
 
-    public void setFormato(String formato) {
-        this.formato = formato;
+    public void setFile(File file) {
+        this.file = file;
     }
 
     @Override
     public String toString() {
-        return "Foto{" +
-                "codiceFoto: " + codiceFoto + '\'' +
-                ", formato:" + formato + '\'' +
-                '}';
+        return "Foto: " +
+                "id: " + id + '\n' +
+                "file: " + file + '\n';
     }
 }

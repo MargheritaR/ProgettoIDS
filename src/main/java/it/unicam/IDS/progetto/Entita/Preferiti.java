@@ -1,14 +1,34 @@
 package it.unicam.IDS.progetto.Entita;
 
-public class Preferiti<T> {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
-    private T preferiti;
+import java.util.List;
 
-    public T getPreferiti() {
+@Entity
+public class Preferiti{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int idPreferiti;
+
+    @NotEmpty
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Itinerario> preferiti;
+
+    public List<Itinerario> getPreferiti() {
         return preferiti;
     }
 
-    public void setPreferiti(T preferiti) {
+    public void setPreferiti(List<Itinerario> preferiti) {
         this.preferiti = preferiti;
+    }
+
+    public int getIdPreferiti() {
+        return idPreferiti;
+    }
+
+    public void setIdPreferiti(int idPreferiti) {
+        this.idPreferiti = idPreferiti;
     }
 }

@@ -10,7 +10,7 @@ public class Comune {
 
     public Comune(String nomeComune, int asseX, int asseY) {
         this.nomeComune = nomeComune;
-        this.coordinate = new Coordinate(asseX, asseY);
+        //this.coordinate = new Coordinate(asseX, asseY);
         this.listaUtente = null;
     }
 
