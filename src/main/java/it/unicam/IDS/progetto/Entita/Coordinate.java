@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 public class Coordinate {
 
     @Id
-    private String idNomePDI;
+    private String IdNomeCoordinate;
 
     @NotEmpty
     private double X;
@@ -17,7 +17,7 @@ public class Coordinate {
 
     // costruttore
     public Coordinate(String idNomePDI,double x, double y) {
-        this.idNomePDI = idNomePDI;
+        this.IdNomeCoordinate = idNomePDI;
         this.X = x;
         this.Y = y;
     }
@@ -32,8 +32,8 @@ public class Coordinate {
                 '}';
     }
 
-    public String getIdNomePDI() {
-        return idNomePDI;
+    public String getIdNomeCoordinate() {
+        return IdNomeCoordinate;
     }
 
     @NotEmpty

@@ -3,6 +3,8 @@ package it.unicam.IDS.progetto.Entita;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
+import java.util.List;
+
 @Entity
 public class PuntoInteresse {
 
@@ -11,10 +13,11 @@ public class PuntoInteresse {
     private String nomePDI;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "coordinate_id", referencedColumnName = "idNomePDI")
+    @JoinColumn(name = "coordinate_id", referencedColumnName = "IdNomeCoordinate")
     private Coordinate coordinate;
 
-    //TODO Aggiungere ICollection dei Contenuti, unire i contenuti multimediali e testuali
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Contenuti> listaContenuti;
 
     // costruttore
     public PuntoInteresse(String nomePDI,double asseX, double asseY) {
@@ -35,6 +38,10 @@ public class PuntoInteresse {
         return nomePDI;
     }
 
+    public List<Contenuti> getListaContenuti() {
+        return listaContenuti;
+    }
+
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -45,5 +52,9 @@ public class PuntoInteresse {
 
     public void setNomePDI(String nomePDI) {
         this.nomePDI = nomePDI;
+    }
+
+    public void setListaContenuti(List<Contenuti> listaContenuti) {
+        this.listaContenuti = listaContenuti;
     }
 }

@@ -1,49 +1,57 @@
 package it.unicam.IDS.progetto.Entita;
 
-public abstract class Contenuti extends StatoPending {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 
-    private String idContenuto;
+import java.io.File;
 
-    private String nomeContenuto;
+@Entity
+public class Contenuti {
 
-    private int peso;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int idContenuto;
 
-    public Contenuti(String idContenuto, String nomeContenuto, int peso) {
-        this.idContenuto = idContenuto;
-        this.nomeContenuto = nomeContenuto;
-        this.peso = peso;
+    @NotEmpty
+    private File contenuto;
+
+    /*
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idContenuto", referencedColumnName = "id")
+    private Utente autore;
+     */
+
+    public Contenuti(File contenuto) {
+        this.contenuto = contenuto;
     }
 
-    public String getIdContenuto() {
+    public Contenuti() {
+
+    }
+
+    public int getIdContenuto() {
         return idContenuto;
     }
 
-    public String getNomeContenuto() {
-        return nomeContenuto;
+    public File getContenuto() {
+        return contenuto;
     }
 
-    public int getPeso() {
-        return peso;
-    }
 
-    public void setIdContenuto(String idContenuto) {
+    public void setIdContenuto(int  idContenuto) {
         this.idContenuto = idContenuto;
     }
 
-    public void setNomeContenuto(String nomeContenuto) {
-        this.nomeContenuto = nomeContenuto;
+    public void setContenuto(File contenuto) {
+        this.contenuto = contenuto;
     }
 
-    public void setPeso(int peso) {
-        this.peso = peso;
-    }
 
     @Override
     public String toString() {
         return "Contenuti{" +
                 "idContenuto='" + idContenuto + '\'' +
-                ", nomeContenuto='" + nomeContenuto + '\'' +
-                ", peso=" + peso +
+                ", nomeContenuto='" + contenuto + '\'' +
                 '}';
     }
 }

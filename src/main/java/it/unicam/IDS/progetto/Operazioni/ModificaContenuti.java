@@ -1,6 +1,5 @@
 package it.unicam.IDS.progetto.Operazioni;
 
-import it.unicam.IDS.progetto.Entita.ContTesto;
 import it.unicam.IDS.progetto.Entita.Contenuti;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 
 public class ModificaContenuti {
 
-    AggiuntaContenuti aggiuntaContenuti = new AggiuntaContenuti();
+   /* AggiuntaContenuti aggiuntaContenuti = new AggiuntaContenuti();
 
     EliminaContenuti eliminaContenuti = new EliminaContenuti();
 
@@ -39,7 +38,7 @@ public class ModificaContenuti {
         return contenutoSelezionato;
     }
 
-    private Contenuti NuovoContenuto() {
+   /private Contenuti NuovoContenuto() {
         System.out.println("Inserire l'id del contenuto");
         String contId = scanner.next();
         System.out.println("Inserire il nome del contenuto");
@@ -51,5 +50,5 @@ public class ModificaContenuti {
 
         Contenuti contM = new ContTesto(contId,contNome,Integer.parseInt(contPeso),contFormato);
         return contM;
-    }
+    }*/
 }

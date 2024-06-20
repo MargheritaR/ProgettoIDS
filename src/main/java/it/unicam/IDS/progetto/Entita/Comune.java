@@ -1,17 +1,31 @@
 package it.unicam.IDS.progetto.Entita;
 
+import jakarta.persistence.*;
+
+
+import java.util.List;
+
+@Entity
 public class Comune {
 
+    @Id
     private String nomeComune;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
     private Coordinate coordinate;
 
-    private Utente listaUtente;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Utente> listaUtente;
 
-    public Comune(String nomeComune, int asseX, int asseY) {
+    public Comune(String nomeComune, double asseX, double asseY) {
         this.nomeComune = nomeComune;
         //this.coordinate = new Coordinate(asseX, asseY);
         this.listaUtente = null;
+    }
+
+    public Comune() {
+
     }
 
     public String getNomeComune() {
@@ -22,7 +36,7 @@ public class Comune {
         return coordinate;
     }
 
-    public Utente getListaUtente() {
+    public List<Utente> getListaUtente() {
         return listaUtente;
     }
 
@@ -34,7 +48,7 @@ public class Comune {
         this.coordinate = coordinate;
     }
 
-    public void setListaUtente(Utente listaUtente) {
+    public void setListaUtente(List<Utente> listaUtente) {
         this.listaUtente = listaUtente;
     }
 

@@ -1,41 +1,57 @@
 package it.unicam.IDS.progetto.Entita;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ContestDiContribuzione extends StatoPending{
+@Entity
+public class ContestDiContribuzione {
 
+    @Id
     private String nomeContest;
 
+    @NotEmpty
     private String obiettivo;
 
+    @NotEmpty
     private String tematica;
 
+    @NotEmpty
     //limite massimo dei contenuti aggiungibili nel lasso di tempo del contest
     private LocalDate limiteMassimoC;
 
+    @NotEmpty
     //termine massimo di spedizione degli inviti
     private String termineMassimoS;
 
+    @NotEmpty
     //termine massimo di ricezione degli inviti
     private String termineMassimoR;
 
+    @NotEmpty
     private int sogliaInviti = 0;
 
+    @NotEmpty
     //tempo iniziale del lasso di tempo del contest
     private LocalDate tempoInizio;
 
+    @NotEmpty
     //tempo finale del lasso di tempo del contest
     private LocalDate tempoFine;
 
-    private ArrayList<Contenuti> contenuti;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Contenuti> contenuti;
 
-    private ArrayList<Contenuti> contenutiApprovati;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Contenuti> contenutiApprovati;
 
     public ContestDiContribuzione(String nomeContest, String obiettivo, String tematica,
                                   String limiteMassimoC, int sogliaInviti, String termineMassimoS,
-                                  String termineMassimoR, String tempoInizio, String tempoFine,ArrayList<Contenuti> contenuti) {
+                                  String termineMassimoR, String tempoInizio, String tempoFine) {
         this.nomeContest = nomeContest;
         this.obiettivo = obiettivo;
         this.tematica = tematica;
@@ -45,8 +61,11 @@ public class ContestDiContribuzione extends StatoPending{
         this.termineMassimoS = termineMassimoS;
         this.tempoInizio = LocalDate.parse(tempoInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.tempoFine = LocalDate.parse(tempoFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.contenuti = contenuti;
         this.contenutiApprovati = new ArrayList<>();
+    }
+
+    public ContestDiContribuzione() {
+
     }
 
     public String getNomeContest() {
@@ -85,11 +104,11 @@ public class ContestDiContribuzione extends StatoPending{
         return tempoFine;
     }
 
-    public ArrayList<Contenuti> getListaContenuti() {
+    public List<Contenuti> getListaContenuti() {
         return contenuti;
     }
 
-    public ArrayList<Contenuti> getContenutiApprovati() {
+    public List<Contenuti> getContenutiApprovati() {
         return contenutiApprovati;
     }
 
@@ -129,11 +148,11 @@ public class ContestDiContribuzione extends StatoPending{
         this.tempoFine = tempoFine;
     }
 
-    public void setListaContenuti(ArrayList<Contenuti> contenuti) {
+    public void setListaContenuti(List<Contenuti> contenuti) {
         this.contenuti = contenuti;
     }
 
-    public void setContenutiApprovati(ArrayList<Contenuti> contenutiApprovati) {
+    public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {
         this.contenutiApprovati = contenutiApprovati;
     }
 
