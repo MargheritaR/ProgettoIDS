@@ -39,6 +39,7 @@ public class ContestDiContribuzioneServiceController {
         contestDiContribuzioneRepository.save(contestDiContribuzione1);
     }
 
+    //TODO modificare nome metodo
     @RequestMapping(value = "/getContest")
     public ResponseEntity<Object> getComune() {
         return new ResponseEntity<>(contestDiContribuzioneRepository.findAll(), HttpStatus.OK);

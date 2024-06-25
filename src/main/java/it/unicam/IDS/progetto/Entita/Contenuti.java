@@ -5,8 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.io.File;
 
+// Foglia per il design pattern Composite
 @Entity
-public class Contenuti {
+public class Contenuti implements Component{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

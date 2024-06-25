@@ -2,30 +2,30 @@ package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-public class Utente {
+@NoArgsConstructor
+public class Utente implements UserDetails{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @NotEmpty
-    private String email;
 
     @NotEmpty
     private String password;
 
     @NotEmpty
-    private String nome;
+    private String username;
 
-    @NotEmpty
-    private String cognome;
-
-    @NotEmpty
-    private int ruolo;
+    @Enumerated(value = EnumType.STRING)
+    private Ruoli ruolo;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Messaggio> listaMessaggiNonLetti;
@@ -33,17 +33,13 @@ public class Utente {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Messaggio> listaMessaggiLetti;
 
-    public Utente(String email, String password, String nome, String cognome) {
-        this.email = email;
+    public Utente(String username,String password) {
         this.password = password;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.ruolo = 6;
+        this.username = username;
+        this.ruolo = Ruoli.ROLE_UTENTENONAUTENTICATO;
         this.listaMessaggiNonLetti = null;
         this.listaMessaggiLetti = null;
     }
-
-    public Utente() {}
 
     public int getId() {
         return id;
@@ -53,44 +49,53 @@ public class Utente {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(ruolo.name()));
     }
 
     public String getPassword() {
         return password;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Ruoli getRuolo() {
+        return ruolo;
+    }
+
+    public void setRuolo(Ruoli ruolo) {
+        this.ruolo = ruolo;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getCognome() {
-        return cognome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-
-    public int getRuolo() {
-        return ruolo;
-    }
-
-    public void setRuolo(int ruolo) {
-        this.ruolo = ruolo;
+    public void setUsername(String nome) {
+        this.username = nome;
     }
 
     public List<Messaggio> getListaMessaggiNonLetti() {
@@ -113,10 +118,8 @@ public class Utente {
     public String toString() {
         return "Utente: " + '\n' +
                 "id: " + id + '\n' +
-                "email: " + email + '\n' +
                 "password: " + password + '\n' +
-                "nome: " + nome + '\n' +
-                "cognome: " + cognome + '\n' +
+                "nome: " + username + '\n' +
                 "ruolo: " + ruolo + '\n' +
                 "listaMessaggiNonLetti: " + listaMessaggiNonLetti + '\n' +
                 "listaMessaggiLetti: " + listaMessaggiLetti + '\n';

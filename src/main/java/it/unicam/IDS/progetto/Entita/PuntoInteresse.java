@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
-public class PuntoInteresse {
+public class PuntoInteresse implements Component{
 
     @Id
     @NotEmpty

@@ -5,7 +5,7 @@ import it.unicam.IDS.progetto.Entita.Utente;
 import java.util.ArrayList;
 
 public class Autenticazione {
-
+/*
     public void Login(ArrayList<Utente> listaUtente, Utente utente) {
         // TODO aggiungere il controllo del comune
         if (!listaUtente.contains(utente))
@@ -23,4 +23,6 @@ public class Autenticazione {
         }
         return false;
     }
+
+ */
 }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Entity
-public class Itinerario{
+public class Itinerario implements Component{
 
     @Id
     private String nomeItinerario;
@@ -18,10 +18,10 @@ public class Itinerario{
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Foto> listaFoto;
 
-    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
+    public Itinerario(String nomeItinerario) {
         this.nomeItinerario = nomeItinerario;
-        this.listaItinerarioPDI = listaItinerarioPDI;
-        this.listaFoto = listaFoto;
+        this.listaItinerarioPDI = null;
+        this.listaFoto = null;
     }
 
     public Itinerario() {}

@@ -1,5 +1,6 @@
 package it.unicam.IDS.progetto.Service;
 
+import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.PuntoInteresse;
 import it.unicam.IDS.progetto.Repository.PDIListRepository;
@@ -27,7 +28,7 @@ public class PDIServiceController {
         PuntoInteresse pI1 = new PuntoInteresse("Sotto Corte", 43.1468, 13.063);
         PuntoInteresse pI2 = new PuntoInteresse("Chiesa di Santa Mar", 43.1402, 13.0740);
         PuntoInteresse pI3 = new PuntoInteresse("Polo di Informatica", 43.139, 13.068);
-        PuntoInteresse pI4 = new PuntoInteresse("Chiesa delle Mosse", 43.1420, 13.0768);
+        PuntoInteresse pI4 = new PuntoInteresse("Chiesa di San Venanzio", 43.1420, 13.0768);
         puntiInteresseRepository.save(pI1);
         puntiInteresseRepository.save(pI2);
         puntiInteresseRepository.save(pI3);
@@ -47,8 +48,10 @@ public class PDIServiceController {
     }
 
     @PostMapping(value = "/newPuntoInteresse")
-    public ResponseEntity<Object> newPDI(@RequestBody PuntoInteresse puntoInteresse) {
-        if (!puntiInteresseRepository.existsById(puntoInteresse.getNomePDI())) {
+    public ResponseEntity<Object> newPDI(@RequestBody PuntoInteresseDtos pdi) {
+        if (!puntiInteresseRepository.existsById(pdi.getNomePDI())) {
+            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(),pdi.getCoordinate().getX(),
+                    pdi.getCoordinate().getY());
             puntiInteresseRepository.save(puntoInteresse);
             return new ResponseEntity<>("Punto di Interesse creato ", HttpStatus.OK);
         } else throw new PuntoInteresseNotFoundEccezione();
@@ -62,10 +65,12 @@ public class PDIServiceController {
         } else throw new PuntoInteresseNotFoundEccezione();
     }
 
-    @PutMapping(value = "/updatePuntoInteresse")
-    public ResponseEntity<Object> updatePDI(@PathParam("nomeID") String nomePDI, @RequestBody PuntoInteresse pdi) {
+    @PutMapping(value = "/updatePuntoInteresse/{nomePDI}")
+    public ResponseEntity<Object> updatePDI(@PathVariable("nomeID") String nomePDI, @RequestBody PuntoInteresseDtos pdi) {
         if (puntiInteresseRepository.existsById(nomePDI)) {
-            puntiInteresseRepository.save(pdi);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(),pdi.getCoordinate().getX(),
+                    pdi.getCoordinate().getY());
+            puntiInteresseRepository.save(puntoInteresse);
             return new ResponseEntity<>("Punto di Interesse è stato aggiornato con successo", HttpStatus.OK);
         } else throw new PuntoInteresseNotFoundEccezione();
     }

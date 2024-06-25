@@ -14,22 +14,25 @@ public class VincitoreContestDiContribuzione {
         if (listaPartecipanti.contains(utente))
             System.out.println("L'utente esiste già");
         //TODO creare la eccezione e lanciarla
-        String vincitore = ScegliVincitore(listaPartecipanti,utente);
+        //String vincitore = ScegliVincitore(listaPartecipanti,utente);
         String intestazione ="Complimenti!!! Hai vinto il contest!!";
         Messaggio messaggio = new Messaggio("02","Daniele", "Salvatore","Convalida",intestazione);
         //TODO implementare messaggio
 
     }
+    /*
     private String CercaV(ArrayList<Utente> listaPartecipanti, Utente utente) {
         for (int i = 0; i < listaPartecipanti.size(); i++)
             if (listaPartecipanti.get(i).getId() == utente.getId())
                 return utente.getNome();
         return null;
     }
+
     private String ScegliVincitore(ArrayList<Utente> listaPartecipanti, Utente utente){
         String vincitore = CercaV(listaPartecipanti,utente);
         if (vincitore.isEmpty())
             System.out.println("eccezione");
         return vincitore;
     }
+     */
 }

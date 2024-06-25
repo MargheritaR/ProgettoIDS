@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AssegnamentoRuoli {
-
+/*
     Scanner scanner = new Scanner(System.in);
 
     public void CambiaRuoli(ArrayList<Utente> listaUtente, Utente utente) {
@@ -19,7 +19,9 @@ public class AssegnamentoRuoli {
         for (Utente u : listaUtente)
             if (u.getId() == utente.getId()) {
                 System.out.println("Inserire il nuovo ruolo");
-                u.setRuolo(scanner.nextInt());
+                //u.setRuolo(scanner.nextInt());
             }
     }
+
+ */
 }

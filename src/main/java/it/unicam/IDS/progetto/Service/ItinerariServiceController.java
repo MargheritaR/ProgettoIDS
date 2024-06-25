@@ -1,5 +1,6 @@
 package it.unicam.IDS.progetto.Service;
 
+import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.Foto;
@@ -46,9 +47,10 @@ public class ItinerariServiceController {
     }
 
     @PostMapping(value = "/newItinerario")
-    public ResponseEntity<Object> newItinerario(@RequestBody Itinerario itinerario) {
-        if (!itinerariRepository.existsById(itinerario.getNomeItinerario())) {
-            itinerariRepository.save(itinerario);
+    public ResponseEntity<Object> newItinerario(@RequestBody ItinerarioDtos it) {
+        if (!itinerariRepository.existsById(it.getNomeItinerario())) {
+            Itinerario newItinerario = new Itinerario(it.getNomeItinerario());
+            itinerariRepository.save(newItinerario);
             return new ResponseEntity<>("Itinerario creato ", HttpStatus.OK);
         } else throw new ItinerariNotFoundEccezione();
     }
