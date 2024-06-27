@@ -1,17 +1,8 @@
 package it.unicam.IDS.progetto.Entita;
 
-import java.util.List;
 
-// Composite
-public class StatoPending implements Component{
+public interface StatoPending {
 
-    private List<Component> statoPending;
+    ContenutoBase factoryMethod();
 
-    public List<Component> getStatoPending() {
-        return statoPending;
-    }
-
-    public void setStatoPending(List statoPending) {
-        this.statoPending = statoPending;
-    }
 }

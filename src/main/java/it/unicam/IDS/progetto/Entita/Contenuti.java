@@ -7,20 +7,14 @@ import java.io.File;
 
 // Foglia per il design pattern Composite
 @Entity
-public class Contenuti implements Component{
+public class Contenuti {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idContenuto;
+    private String idContenuto;
 
     @NotEmpty
     private File contenuto;
-
-    /*
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "idContenuto", referencedColumnName = "id")
-    private Utente autore;
-     */
 
     public Contenuti(File contenuto) {
         this.contenuto = contenuto;
@@ -30,7 +24,7 @@ public class Contenuti implements Component{
 
     }
 
-    public int getIdContenuto() {
+    public String getIdContenuto() {
         return idContenuto;
     }
 
@@ -39,7 +33,7 @@ public class Contenuti implements Component{
     }
 
 
-    public void setIdContenuto(int  idContenuto) {
+    public void setIdContenuto(String idContenuto) {
         this.idContenuto = idContenuto;
     }
 

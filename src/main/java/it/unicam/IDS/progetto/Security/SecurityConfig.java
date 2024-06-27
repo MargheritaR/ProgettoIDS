@@ -37,20 +37,25 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**","/utente/newUtente", "/utente/login",
                                 "/contenuti/getContenuti","/contestDiContribuzione/getContest",
                                 "/contestDiContribuzione/getVincitore/","/itinerari/getItinerari/",
-                                "/itinerari/getItinerari","/puntoInteresse/getPuntoInteresse/",
-                                "puntoInteresse/").permitAll()
+                                "/itinerari/getItinerari","/puntoInteresse/getPuntoInteresseById/{nomePDI}",
+                                "/puntoInteresse/getPuntoInteresse","/puntoInteresse/getStatoPending","contestDiContribuzione/inviaMessaggio",
+                                "/utente/getMessaggi").permitAll()
+                        /*
                         .requestMatchers("/utente/**","/contenuti/**","comune/**",
                                 "contestDiContribuzione/**","itinerari/**","/puntoInteresse/**",
                                 "preferiti/**").hasRole("GESTOREPIATTAFORMA")
                         .requestMatchers("/contenuti/**","/itinerari/**","puntoInteresse/**").hasRole("CURATORI")
                         .requestMatchers("/contenuti/**","/itinerari/**",
                                 "/puntoInteresse/**").hasRole("CONTRIBUTORIAUTORIZZATI")
+                         */
                         .requestMatchers("/contenuti/addContenuti/", "/contestDiContribuzione/proponiContest/",
                                 "/itinerari/newItinerario","/itinerari/AggiungiPdi/","/itinerari/AggiungiFoto/",
-                                "/puntoInteresse/newPuntoInteresse","/puntoInteresse/updatePuntoInteresse/",
-                                "/puntoInteresse/fileUpload").hasRole("CONTRIBUTORI")
+                                "/puntoInteresse/newPuntoInteresse","/puntoInteresse/updatePuntoInteresse/{nomePDI}",
+                                "/puntoInteresse/fileUpload","/puntoInteresse/approvazioneStatoPending/{nomePDI}").hasRole("CONTRIBUTORI")
+                        /*
                         .requestMatchers("/contestDiContribuzione/**").hasRole("ANIMATORI")
                         .requestMatchers("/preferiti/**").hasRole("TURISTAUTORIZZATI")
+                         */
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

@@ -36,21 +36,19 @@ public class Coordinate {
         return IdNomeCoordinate;
     }
 
-    @NotEmpty
     public double getX() {
         return X;
     }
 
-    public void setX(@NotEmpty double x) {
+    public void setX(double x) {
         X = x;
     }
 
-    @NotEmpty
     public double getY() {
         return Y;
     }
 
-    public void setY(@NotEmpty double y) {
+    public void setY(double y) {
         Y = y;
     }
 }

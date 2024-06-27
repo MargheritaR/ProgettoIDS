@@ -2,13 +2,16 @@ package it.unicam.IDS.progetto.Service;
 
 import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
-import it.unicam.IDS.progetto.Entita.PuntoInteresse;
+import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.PDIListRepository;
-import jakarta.websocket.server.PathParam;
+import it.unicam.IDS.progetto.Repository.StatoPendingListPuntoInteresseRepository;
+import it.unicam.IDS.progetto.Repository.UtenteListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,21 +21,32 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/puntoInteresse")
-public class PDIServiceController {
+public class PDIServiceController implements ContenutoBase {
 
     private PDIListRepository puntiInteresseRepository;
 
+    private StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository;
+
+    UtenteListRepository utenteRepository;
+
+    public PDIServiceController() {
+    }
+
     @Autowired
-    public PDIServiceController(PDIListRepository puntiInteresseRepository) {
+    public PDIServiceController(PDIListRepository puntiInteresseRepository,
+                                StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository,
+                                UtenteListRepository utenteRepository) {
         this.puntiInteresseRepository = puntiInteresseRepository;
+        this.statoPendingListPuntoInteresseRepository = statoPendingListPuntoInteresseRepository;
+        this.utenteRepository = utenteRepository;
         PuntoInteresse pI1 = new PuntoInteresse("Sotto Corte", 43.1468, 13.063);
         PuntoInteresse pI2 = new PuntoInteresse("Chiesa di Santa Mar", 43.1402, 13.0740);
-        PuntoInteresse pI3 = new PuntoInteresse("Polo di Informatica", 43.139, 13.068);
-        PuntoInteresse pI4 = new PuntoInteresse("Chiesa di San Venanzio", 43.1420, 13.0768);
+        StatoPendingPuntoInteresse pI3 = new StatoPendingPuntoInteresse("Polo di Informatica", 43.139, 13.068);
+        StatoPendingPuntoInteresse pI4 = new StatoPendingPuntoInteresse("Chiesa di San Venanzio", 43.1420, 13.0768);
         puntiInteresseRepository.save(pI1);
         puntiInteresseRepository.save(pI2);
-        puntiInteresseRepository.save(pI3);
-        puntiInteresseRepository.save(pI4);
+        statoPendingListPuntoInteresseRepository.save(pI3);
+        statoPendingListPuntoInteresseRepository.save(pI4);
     }
 
     @RequestMapping(value = "/getPuntoInteresse")
@@ -40,21 +54,29 @@ public class PDIServiceController {
         return new ResponseEntity<>(puntiInteresseRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getPuntoInteresse/{nomePDI}")
+    @RequestMapping(value = "/getPuntoInteresseById/{nomePDI}")
     public ResponseEntity<Object> getPuntoInteresse(@PathVariable("nomePDI") String nomePDI) {
         if (puntiInteresseRepository.existsById(nomePDI))
-            return new ResponseEntity<>(puntiInteresseRepository.findById(nomePDI),HttpStatus.OK);
+            return new ResponseEntity<>(puntiInteresseRepository.findById(nomePDI), HttpStatus.OK);
         else throw new PuntoInteresseNotFoundEccezione();
     }
 
     @PostMapping(value = "/newPuntoInteresse")
     public ResponseEntity<Object> newPDI(@RequestBody PuntoInteresseDtos pdi) {
-        if (!puntiInteresseRepository.existsById(pdi.getNomePDI())) {
-            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(),pdi.getCoordinate().getX(),
-                    pdi.getCoordinate().getY());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        String ruoloUtente = String.valueOf(utente.getRuolo());
+        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+            StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(pdi.getNomePDI(), pdi.getAsseX(), pdi.getAsseY());
+            if (!statoPendingListPuntoInteresseRepository.existsById(String.valueOf(statoPending.getIdNome()))) {
+                statoPendingListPuntoInteresseRepository.save(statoPending);
+                return new ResponseEntity<>("Punto di Interesse aggiunto allo Stato di Pending", HttpStatus.OK);
+            } else throw new PuntoInteresseNotFoundEccezione();
+        } else {
+            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getAsseX(), pdi.getAsseY());
             puntiInteresseRepository.save(puntoInteresse);
-            return new ResponseEntity<>("Punto di Interesse creato ", HttpStatus.OK);
-        } else throw new PuntoInteresseNotFoundEccezione();
+            return new ResponseEntity<>("Punto di Interesse creato", HttpStatus.OK);
+        }
     }
 
     @DeleteMapping(value = "/deletePuntoInteresse/{nomePDI}")
@@ -66,23 +88,52 @@ public class PDIServiceController {
     }
 
     @PutMapping(value = "/updatePuntoInteresse/{nomePDI}")
-    public ResponseEntity<Object> updatePDI(@PathVariable("nomeID") String nomePDI, @RequestBody PuntoInteresseDtos pdi) {
-        if (puntiInteresseRepository.existsById(nomePDI)) {
-            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(),pdi.getCoordinate().getX(),
-                    pdi.getCoordinate().getY());
-            puntiInteresseRepository.save(puntoInteresse);
-            return new ResponseEntity<>("Punto di Interesse è stato aggiornato con successo", HttpStatus.OK);
-        } else throw new PuntoInteresseNotFoundEccezione();
+    public ResponseEntity<Object> updatePDI(@PathVariable("nomePDI") String nomePDI, @RequestBody PuntoInteresseDtos pdi) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        String ruoloUtente = String.valueOf(utente.getRuolo());
+        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+            if (statoPendingListPuntoInteresseRepository.existsStatoPendingPuntoInteresseByNomePDI(nomePDI)) {
+                StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
+                statoPending.setNomePDI(pdi.getNomePDI());
+                statoPending.setAsseX(pdi.getAsseX());
+                statoPending.setAsseY(pdi.getAsseY());
+                statoPendingListPuntoInteresseRepository.save(statoPending);
+            } else throw new PuntoInteresseNotFoundEccezione();
+        } else {
+            if (puntiInteresseRepository.existsById(nomePDI)) {
+                PuntoInteresse puntoInteresse = puntiInteresseRepository.findById(nomePDI).get();
+                puntoInteresse.setNomePDI(pdi.getNomePDI());
+                puntoInteresse.setCoordinate(pdi.getAsseX(), pdi.getAsseY());
+                puntiInteresseRepository.save(puntoInteresse);
+            } else throw new PuntoInteresseNotFoundEccezione();
+        }
+        return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
     }
 
     // TODO Sistmare la collection di Contenuti
     @PostMapping(value = "/fileUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        File file1 = new File("/home/margherita/Desktop/"+file.getOriginalFilename());
+        File file1 = new File("/home/margherita/Desktop/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
         fileOut.close();
         return new ResponseEntity<>("File uploaded", HttpStatus.OK);
+    }
+
+    @Override
+    @RequestMapping(value = "/getStatoPending")
+    public ResponseEntity<Object> getStatoPending() {
+        return new ResponseEntity<>(statoPendingListPuntoInteresseRepository.findAll(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/approvazioneStatoPending/{nomePDI}")
+    public ResponseEntity<Object> approvazioneStatoPending(@PathVariable String nomePDI) {
+        StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
+        statoPendingListPuntoInteresseRepository.delete(statoPending);
+        PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(), statoPending.getAsseY());
+        puntiInteresseRepository.save(puntoInteresse);
+        return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
     }
 }

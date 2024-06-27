@@ -5,4 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface PDIListRepository extends CrudRepository<PuntoInteresse, String> {
 
+    PuntoInteresse findByNomePDI(String nomePDI);
+
 }

@@ -6,7 +6,7 @@ import it.unicam.IDS.progetto.Entita.Utente;
 import java.util.ArrayList;
 
 public class VincitoreContestDiContribuzione {
-
+/*
     public void Vincitore(ArrayList<Utente> listaPartecipanti, Utente utente) {
         if (utente.getId() == 0)
             System.out.println("Il nome dell'utente non può essere nullo");

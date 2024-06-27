@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class ContestDiContribuzione implements Component {
+public class ContestDiContribuzione{
 
     @Id
     private String nomeContest;

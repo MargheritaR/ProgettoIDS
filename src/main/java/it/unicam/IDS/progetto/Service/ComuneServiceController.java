@@ -2,7 +2,6 @@ package it.unicam.IDS.progetto.Service;
 
 import it.unicam.IDS.progetto.Dtos.ComuneDtos;
 import it.unicam.IDS.progetto.Eccezioni.Comune.ComuneNotFountEccezione;
-import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.Comune;
 import it.unicam.IDS.progetto.Repository.ComuneListRepository;
 import org.springframework.beans.factory.annotation.Autowired;

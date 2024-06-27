@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ItinerarioListRepository extends CrudRepository<Itinerario, String> {
 
-
+    Itinerario findByNomeItinerario(String nomeItinerario);
 }

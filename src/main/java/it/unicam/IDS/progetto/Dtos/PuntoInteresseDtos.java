@@ -1,26 +1,42 @@
 package it.unicam.IDS.progetto.Dtos;
 
-import it.unicam.IDS.progetto.Entita.Coordinate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 
 public class PuntoInteresseDtos {
 
     @Id
-    @NotEmpty
     private String nomePDI;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private CoordinateDtos coordinate;
+    private double asseX;
+    private double asseY;
 
-    public PuntoInteresseDtos() {}
+    public PuntoInteresseDtos(String nomePDI, double asseX, double asseY) {
+        this.nomePDI = nomePDI;
+        this.asseX = asseX;
+        this.asseY = asseY;
+    }
 
     public String getNomePDI() {
         return nomePDI;
     }
 
-    public CoordinateDtos getCoordinate() {
-        return coordinate;
+    public void setNomePDI(String nomePDI) {
+        this.nomePDI = nomePDI;
     }
 
+    public double getAsseX() {
+        return asseX;
+    }
+
+    public void setAsseX(double asseX) {
+        this.asseX = asseX;
+    }
+
+    public double getAsseY() {
+        return asseY;
+    }
+
+    public void setAsseY(double asseY) {
+        this.asseY = asseY;
+    }
 }

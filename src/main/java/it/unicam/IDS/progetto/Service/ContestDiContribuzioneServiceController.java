@@ -2,11 +2,15 @@ package it.unicam.IDS.progetto.Service;
 
 
 import it.unicam.IDS.progetto.Dtos.ContestDiContribuzioneDtos;
+import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribuzioneNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.Contenuti;
 import it.unicam.IDS.progetto.Entita.ContestDiContribuzione;
+import it.unicam.IDS.progetto.Entita.Messaggio;
+import it.unicam.IDS.progetto.Entita.Utente;
 import it.unicam.IDS.progetto.Repository.ContestDiContribuzioneListRepository;
-import it.unicam.IDS.progetto.Repository.MessaggioListRepository;
+import it.unicam.IDS.progetto.Repository.UtenteListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,13 +30,13 @@ public class ContestDiContribuzioneServiceController {
 
     private ContestDiContribuzioneListRepository contestDiContribuzioneRepository;
 
-    private MessaggioListRepository messaggioRepository;
+    private UtenteListRepository utenteRepository;
 
     @Autowired
     public ContestDiContribuzioneServiceController(ContestDiContribuzioneListRepository contestDiContribuzioneRepository,
-                                                   MessaggioListRepository messaggioRepository) {
+                                                   UtenteListRepository utenteRepository) {
         this.contestDiContribuzioneRepository = contestDiContribuzioneRepository;
-        this.messaggioRepository = messaggioRepository;
+        this.utenteRepository = utenteRepository;
         ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival", "bere",
                 "informatica", "12/06/2023", 5, "1/03/2023",
                 "10/03/2023", "10/06/2023", "20/06/2023");
@@ -66,21 +70,21 @@ public class ContestDiContribuzioneServiceController {
 
     @PutMapping(value = "/editContest/{nomeContest}")
     public ResponseEntity<Object> editContest(@RequestBody ContestDiContribuzioneDtos c, @PathVariable String nomeContest) {
-        if(contestDiContribuzioneRepository.existsById(nomeContest)){
+        if (contestDiContribuzioneRepository.existsById(nomeContest)) {
             ContestDiContribuzione contest = new ContestDiContribuzione(c.getNomeContest(), c.getObiettivo(), c.getTematica(),
                     c.getLimiteMassimoC(), c.getSogliaInviti(), c.getTermineMassimoS(),
                     c.getTermineMassimoR(), c.getTempoInizio(), c.getTempoFine());
             contestDiContribuzioneRepository.deleteById(nomeContest);
             contestDiContribuzioneRepository.save(contest);
             return new ResponseEntity<>("Il contest di contribuzione è stato aggiornato con successo", HttpStatus.OK);
-        }else throw new ContestDiContribuzioneNotFoundEccezione();
+        } else throw new ContestDiContribuzioneNotFoundEccezione();
 
     }
 
     @RequestMapping(value = "/getVincitore/{nomeContest}")
-    public ResponseEntity<Object> getVincitore(@PathVariable ("nomeContest") String nomeContest) {
+    public ResponseEntity<Object> getVincitore(@PathVariable("nomeContest") String nomeContest) {
         if (contestDiContribuzioneRepository.existsById(nomeContest))
-            return new ResponseEntity<>(contestDiContribuzioneRepository.findById(nomeContest),HttpStatus.OK);
+            return new ResponseEntity<>(contestDiContribuzioneRepository.findById(nomeContest), HttpStatus.OK);
         else throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
@@ -97,12 +101,13 @@ public class ContestDiContribuzioneServiceController {
                 contest.setListaContenuti(listaCNonApprovati);
                 contest.setContenutiApprovati(listaCApprovati);
                 contestDiContribuzioneRepository.save(contest);
-            } else new ResponseEntity<>("Il contenuto è già stato validato nel contest di contribuzione", HttpStatus.OK);
+            } else
+                new ResponseEntity<>("Il contenuto è già stato validato nel contest di contribuzione", HttpStatus.OK);
             return new ResponseEntity<>("Il contenuto del contest di contribuzione è stato validato", HttpStatus.OK);
         } else throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
-    @PostMapping(value = "/proponiContest/{nomeContest}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/proponiContest/{nomeContest}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> ProponiContest(@RequestParam("file") MultipartFile file,
                                                  @PathVariable String nomeContest) throws IOException {
         if (contestDiContribuzioneRepository.existsById(nomeContest)) {
@@ -116,13 +121,23 @@ public class ContestDiContribuzioneServiceController {
                 fileOut.close();
                 Contenuti contenuti = new Contenuti(file1);
                 listaContenuti.add(contenuti);
-            } else new ResponseEntity<>("Il contenuto è già stato inserito nel contest di contribuzione", HttpStatus.OK);
+            } else
+                new ResponseEntity<>("Il contenuto è già stato inserito nel contest di contribuzione", HttpStatus.OK);
             appoggio.setListaContenuti(listaContenuti);
             contestDiContribuzioneRepository.save(appoggio);
             return new ResponseEntity<>("Il contenuto è stato aggiornato nel contest di contribuzione", HttpStatus.OK);
         } else throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
+    @PostMapping(value = "/inviaMessaggio")
+    public ResponseEntity<Object> inviaMessaggio(@RequestBody MessaggioDtos messaggioDtos) {
+        Messaggio appoggio = new Messaggio(messaggioDtos.getMittente(), messaggioDtos.getDestinatario(),
+                messaggioDtos.getTitolo(), messaggioDtos.getIntestazione());
+        Utente utente = utenteRepository.findByUsername(messaggioDtos.getDestinatario());
+        utente.getListaMessaggiNonLetti().add(appoggio);
+        utenteRepository.save(utente);
+        return new ResponseEntity<>("Messaggio mandato", HttpStatus.OK);
+    }
 
 
 }

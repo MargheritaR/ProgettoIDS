@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +96,13 @@ public class UtentiServiceController {
         String token = jwtService.generateToken(utente);
 
         return new ResponseEntity<>("Utente loggato correttamente, token: " + token, HttpStatus.OK );
+    }
+
+    @RequestMapping(value = "/getMessaggi")
+    public ResponseEntity<Object> getMessaggi() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        return new ResponseEntity(utente.getListaMessaggiNonLetti(), HttpStatus.OK);
     }
 
 }
