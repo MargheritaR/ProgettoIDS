@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public class ComuneEccezioniController {
-    @ExceptionHandler(value = ContenutiNotFoundEccezione.class)
-    public ResponseEntity<Object> handleException(ContenutiNotFoundEccezione e) {
+    @ExceptionHandler(value = ComuneNotFountEccezione.class)
+    public ResponseEntity<Object> handleException(ComuneNotFountEccezione e) {
         e.getMessage();
-        return new ResponseEntity<>("Contenuto non trovato", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
     }
 }

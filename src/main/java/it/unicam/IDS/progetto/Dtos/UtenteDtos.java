@@ -1,13 +1,13 @@
 package it.unicam.IDS.progetto.Dtos;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class UtenteDtos {
 
-    @NotEmpty
+    @NotNull
     private String password;
 
-    @NotEmpty
+    @NotNull
     private String username;
 
     public UtenteDtos() {}

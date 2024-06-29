@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +31,13 @@ public class StatoPendingPuntoInteresse {
         this.asseX = asseX;
         this.asseY = asseY;
         this.listaContenuti = null;
+    }
+
+    public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY, List<Contenuti> listaContenuti) {
+        this.nomePDI = nomePDI;
+        this.asseX = asseX;
+        this.asseY = asseY;
+        this.listaContenuti = listaContenuti;
     }
 
     public int getIdNome() {

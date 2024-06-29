@@ -24,14 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/itinerari")
 public class ItinerariServiceController implements ContenutoBase {
-    //TODO controllare se sono stati fatti tutti i controlli
 
     private ItinerarioListRepository itinerariRepository;
-
     private PDIListRepository pdiRepository;
-
     private StatoPendingListItinerarioRepository statoPendingRepository;
-
     private UtenteListRepository utenteRepository;
 
     @Autowired
@@ -85,28 +81,10 @@ public class ItinerariServiceController implements ContenutoBase {
         } else throw new ItinerariNotFoundEccezione();
     }
 
-    // TODO capire cosa farci, non funziona perchè non voglio mettere id
-    /*
-    @PutMapping(value = "/updateItinerario/{nomeItinerario}/{nomeItinerarioNuovo}")
-    public ResponseEntity<Object> updateItinerario(@PathVariable("nomeItinerario") String nomeItinerario,
-                                                   @PathVariable("nomeItinerarioNuovo") String nomeItinerarioNuovo) {
-        if (itinerariRepository.existsById(nomeItinerario)) {
-            Itinerario itinerarioEsistente = itinerariRepository.findById(nomeItinerario).get();
-            Itinerario nuovoItinerario = new Itinerario(nomeItinerarioNuovo, itinerarioEsistente.getListaItinerarioPDI(),
-            itinerarioEsistente.getListaFoto());
-            itinerariRepository.save(nuovoItinerario);
-            itinerariRepository.delete(itinerarioEsistente);
-            return new ResponseEntity<>("Itinerario è stato aggiornato con successo", HttpStatus.OK);
-        } else throw new ItinerariNotFoundEccezione();
-    }
-    */
-
-    //TODO funziona ma da controllare se funziona con la sintassi giusta di PathVariable
     @PutMapping(value = "AggiungiPdi/{nomeItinerario}/{nomePdi}")
-    public ResponseEntity<Object> AggiungiPdi(@PathVariable String nomeItinerario, @PathVariable String nomePdi) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
+    public ResponseEntity<Object> AggiungiPdi(@PathVariable("nomeItinerario") String nomeItinerario,
+                                              @PathVariable("nomePdi") String nomePdi) {
+        String ruoloUtente = findRuolo();
         if (itinerariRepository.existsById(nomeItinerario)) {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaPdi = itinerario.getListaItinerarioPDI();
@@ -130,9 +108,7 @@ public class ItinerariServiceController implements ContenutoBase {
     @PutMapping(value = "/AggiungiFoto/{nomeItinerario}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> AggiungiFoto(@RequestParam("file") MultipartFile file,
                                                @PathVariable("nomeItinerario") String nomeItinerario) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
+        String ruoloUtente = findRuolo();
         if (itinerariRepository.existsById(nomeItinerario)) {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaFoto = itinerario.getListaFoto();
@@ -174,4 +150,11 @@ public class ItinerariServiceController implements ContenutoBase {
         itinerariRepository.save(itinerario);
         return new ResponseEntity<>("Itinerario approvato", HttpStatus.OK);
     }
+
+    private String findRuolo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        return String.valueOf(utente.getRuolo());
+    }
+
 }

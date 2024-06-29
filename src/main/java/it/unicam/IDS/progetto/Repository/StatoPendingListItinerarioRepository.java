@@ -5,7 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface StatoPendingListItinerarioRepository extends CrudRepository<StatoPendingItinerario, String> {
 
-    StatoPendingItinerario  findStatoPendingItinerarioByNomeItinerario(String nomeItinerario);
+    StatoPendingItinerario findStatoPendingItinerarioByNomeItinerario(String nomeItinerario);
 
-    boolean existsByNomeItinerario(String nomeItinerario);
 }

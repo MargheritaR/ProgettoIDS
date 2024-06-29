@@ -15,7 +15,6 @@ public class CaricaFoto {
     public void InserimentoFoto(ArrayList<Itinerario> listaItinerari,Foto foto){
         if (foto == null)
             System.out.println("La foto è nulla");
-        //TODO creare la eccezione e lanciarla
 
         while (continua.equalsIgnoreCase("Y")) {
             Itinerario appoggio = ScegliFoto(listaItinerari,foto);
@@ -57,7 +56,6 @@ public class CaricaFoto {
             System.out.println("L'itinerario scelto non è stato trovato");
         if (!itinerarioScelto.getListaFoto().contains(foto))
             System.out.println("La foto esiste già nell'itinerario scelto");
-        //TODO creare la eccezione e lanciarla
         return itinerarioScelto;
     }
 }

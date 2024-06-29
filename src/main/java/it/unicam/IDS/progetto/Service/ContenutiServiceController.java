@@ -25,21 +25,18 @@ import java.util.List;
 public class ContenutiServiceController {
 
     private ContenutiListRepository contenutiRepository;
-
     private PDIListRepository pdiRepository;
-
     private UtenteListRepository utenteRepository;
-
-    private StatoPendingListPuntoInteresseRepository statoPendingPuntoInteresseRepository;
+    private StatoPendingListPuntoInteresseRepository statoPendingPDIRepository;
 
     @Autowired
     public ContenutiServiceController(ContenutiListRepository contenutiRepository, PDIListRepository pdiRepository,
                                       UtenteListRepository utenteRepository,
-                                      StatoPendingListPuntoInteresseRepository statoPendingPuntoInteresseRepository) {
+                                      StatoPendingListPuntoInteresseRepository statoPendingPDIRepository) {
         this.contenutiRepository = contenutiRepository;
         this.pdiRepository = pdiRepository;
         this.utenteRepository = utenteRepository;
-        this.statoPendingPuntoInteresseRepository = statoPendingPuntoInteresseRepository;
+        this.statoPendingPDIRepository = statoPendingPDIRepository;
     }
 
     @RequestMapping(value = "/getContenuti")
@@ -48,15 +45,14 @@ public class ContenutiServiceController {
     }
 
     @PostMapping(value = "/addContenuti/{nomePdi}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> addContenuti(@RequestParam("file") MultipartFile file, @PathVariable String nomePdi) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
+    public ResponseEntity<Object> addContenuti(@RequestParam("file") MultipartFile file,
+                                               @PathVariable("nomePdi") String nomePdi) throws IOException {
+        String ruoloUtente = findRuolo();
         if (pdiRepository.existsById(nomePdi)) {
             PuntoInteresse appoggio = pdiRepository.findByNomePDI(nomePdi);
             List listaContenuti = appoggio.getListaContenuti();
             if (!appoggio.getListaContenuti().contains(file)) {
-                File file1 = new File("/home/daniele-rossi/Scrivania/provaFile" + file.getOriginalFilename());
+                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
@@ -70,8 +66,8 @@ public class ContenutiServiceController {
                 StatoPendingPuntoInteresse statoPendingPuntoInteresse = new StatoPendingPuntoInteresse(appoggio.getNomePDI(),
                         appoggio.getCoordinate().getX(), appoggio.getCoordinate().getY());
                 statoPendingPuntoInteresse.setListaContenuti(appoggio.getListaContenuti());
-                statoPendingPuntoInteresseRepository.save(statoPendingPuntoInteresse);
-                return new ResponseEntity<>("Il contenuto è stato aggiunto" ,HttpStatus.OK);
+                statoPendingPDIRepository.save(statoPendingPuntoInteresse);
+                return new ResponseEntity<>("Il contenuto è stato aggiunto", HttpStatus.OK);
             } else {
                 pdiRepository.save(appoggio);
                 return new ResponseEntity<>("Il contenuto è stato aggiornato", HttpStatus.OK);
@@ -80,7 +76,8 @@ public class ContenutiServiceController {
     }
 
     @DeleteMapping(value = "/deleteContenuti/{nomePdi}/{idContenuto}")
-    public ResponseEntity<Object> deleteContenuti(@PathVariable String nomePdi, @PathVariable String idContenuto) {
+    public ResponseEntity<Object> deleteContenuti(@PathVariable("nomePdi") String nomePdi,
+                                                  @PathVariable("idContenuto") String idContenuto) {
         if (pdiRepository.existsById(nomePdi)) {
             PuntoInteresse appoggio = pdiRepository.findById(nomePdi).get();
             Contenuti appoggioContenuti = contenutiRepository.findById(idContenuto).get();
@@ -96,19 +93,17 @@ public class ContenutiServiceController {
     }
 
     @PutMapping(value = "/editContenuti/{nomePdi}/{idContenuti}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> editContenuti(@PathVariable String nomePdi, @PathVariable String idContenuti,
+    public ResponseEntity<Object> editContenuti(@PathVariable("nomePdi") String nomePdi,
+                                                @PathVariable("idContenuti") int idContenuti,
                                                 @RequestParam("file") MultipartFile file) throws IOException {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
         if (pdiRepository.existsById(nomePdi)) {
             PuntoInteresse appoggio = pdiRepository.findByNomePDI(nomePdi);
             Contenuti appoggioContenuti = contenutiRepository.findByIdContenuto(idContenuti);
             List listaContenuti = appoggio.getListaContenuti();
             if (listaContenuti.contains(appoggioContenuti)) {
                 listaContenuti.remove(appoggioContenuti);
-                contenutiRepository.deleteById(idContenuti);
-                File file1 = new File("/home/daniele-rossi/Scrivania/provaFile" + file.getOriginalFilename());
+                contenutiRepository.deleteById(String.valueOf(idContenuti));
+                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
@@ -116,19 +111,15 @@ public class ContenutiServiceController {
                 Contenuti contenuti = new Contenuti(file1);
                 listaContenuti.add(contenuti);
                 appoggio.setListaContenuti(listaContenuti);
-            }else throw new ContenutiNotFoundEccezione();
-            if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
-                pdiRepository.deleteById(nomePdi);
-                StatoPendingPuntoInteresse statoPendingPuntoInteresse = new StatoPendingPuntoInteresse(appoggio.getNomePDI(),
-                        appoggio.getCoordinate().getX(), appoggio.getCoordinate().getY());
-                statoPendingPuntoInteresse.setListaContenuti(appoggio.getListaContenuti());
-                statoPendingPuntoInteresseRepository.save(statoPendingPuntoInteresse);
-                return new ResponseEntity<>("Il contenuto è stato aggiunto" ,HttpStatus.OK);
-            } else {
-                pdiRepository.save(appoggio);
-                return new ResponseEntity<>("Il contenuto è stato aggiornato", HttpStatus.OK);
-            }
+            } else throw new ContenutiNotFoundEccezione();
+            pdiRepository.save(appoggio);
+            return new ResponseEntity<>("Il contenuto è stato aggiornato", HttpStatus.OK);
         } else throw new ContenutiNotFoundEccezione();
     }
 
+    private String findRuolo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        return String.valueOf(utente.getRuolo());
+    }
 }

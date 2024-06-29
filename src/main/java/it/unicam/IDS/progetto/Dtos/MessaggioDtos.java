@@ -1,8 +1,5 @@
 package it.unicam.IDS.progetto.Dtos;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 
 public class MessaggioDtos {

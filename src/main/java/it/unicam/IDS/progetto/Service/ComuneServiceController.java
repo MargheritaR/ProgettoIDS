@@ -15,7 +15,6 @@ public class ComuneServiceController {
 
     private ComuneListRepository comuneRepository;
 
-
     @Autowired
     public ComuneServiceController(ComuneListRepository comuneRepository) {
         this.comuneRepository = comuneRepository;
@@ -29,24 +28,24 @@ public class ComuneServiceController {
     @PostMapping(value = "/addComune")
     public ResponseEntity<Object> addComune(@RequestBody ComuneDtos c) {
         if (!comuneRepository.existsById(c.getNomeComune())) {
-            Comune comune1 = new Comune(c.getNomeComune(),c.getCoordinate().getX(),c.getCoordinate().getY());
-            comuneRepository.save(comune1);
+            Comune comune = new Comune(c.getNomeComune(),c.getAsseX(),c.getAsseY());
+            comuneRepository.save(comune);
             return new ResponseEntity<>("Comune creato ", HttpStatus.OK);
         } else throw new ComuneNotFountEccezione();
     }
 
     @PutMapping(value = "/editComune/{nomeComune}")
-    public ResponseEntity<Object> editComune(@RequestBody ComuneDtos c, @PathVariable String nomeComune){
+    public ResponseEntity<Object> editComune(@RequestBody ComuneDtos c, @PathVariable("nomeComune") String nomeComune){
         if (comuneRepository.existsById(nomeComune)) {
-            Comune comune1 = new Comune(c.getNomeComune(),c.getCoordinate().getX(),c.getCoordinate().getY());
+            Comune comune = new Comune(c.getNomeComune(),c.getAsseX(),c.getAsseY());
             comuneRepository.deleteById(nomeComune);
-            comuneRepository.save(comune1);
+            comuneRepository.save(comune);
             return new ResponseEntity<>("Comune è stato aggiornato con successo", HttpStatus.OK);
         } else throw new ComuneNotFountEccezione();
     }
 
     @DeleteMapping(value = "/deleteComune/{nomeComune}")
-    public ResponseEntity<Object> deleteComune(@PathVariable String nomeComune){
+    public ResponseEntity<Object> deleteComune(@PathVariable("nomeComune") String nomeComune){
         if (comuneRepository.existsById(nomeComune)) {
             comuneRepository.deleteById(nomeComune);
             return new ResponseEntity<>("Comune è stato eliminato con successo", HttpStatus.OK);

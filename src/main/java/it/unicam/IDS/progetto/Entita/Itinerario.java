@@ -1,10 +1,12 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class Itinerario {
 
     @Id
@@ -20,9 +22,6 @@ public class Itinerario {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = null;
         this.listaFoto = null;
-    }
-
-    public Itinerario() {
     }
 
     public String getNomeItinerario() {

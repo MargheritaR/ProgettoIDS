@@ -8,11 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class MessaggioEccezioneController {
 
-    @ExceptionHandler(value = MessaggioNoContentEccezione.class)
-    public ResponseEntity<Object> handleException(MessaggioNoContentEccezione e) {
-        return new ResponseEntity<>("Messaggio no content", HttpStatus.NOT_FOUND);
-    }
-
     @ExceptionHandler(value = MessaggioNotFoundEccezione.class)
     public ResponseEntity<Object> handleException(MessaggioNotFoundEccezione e) {
         return new ResponseEntity<>("Messaggio not found", HttpStatus.NOT_FOUND);

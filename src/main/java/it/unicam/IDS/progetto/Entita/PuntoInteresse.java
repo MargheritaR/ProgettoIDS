@@ -1,17 +1,15 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
 public class PuntoInteresse {
 
     @Id
-    @NotEmpty
     private String nomePDI;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -21,14 +19,11 @@ public class PuntoInteresse {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Contenuti> listaContenuti;
 
-    // costruttore
     public PuntoInteresse(String nomePDI,double asseX, double asseY) {
         this.nomePDI = nomePDI;
         this.coordinate = new Coordinate(nomePDI,asseX, asseY);
         this.listaContenuti = null;
     }
-
-    public PuntoInteresse() {}
 
     @Override
     public String toString() {

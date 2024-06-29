@@ -24,9 +24,7 @@ import java.io.IOException;
 public class PDIServiceController implements ContenutoBase {
 
     private PDIListRepository puntiInteresseRepository;
-
     private StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository;
-
     UtenteListRepository utenteRepository;
 
     public PDIServiceController() {
@@ -63,9 +61,7 @@ public class PDIServiceController implements ContenutoBase {
 
     @PostMapping(value = "/newPuntoInteresse")
     public ResponseEntity<Object> newPDI(@RequestBody PuntoInteresseDtos pdi) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
+        String ruoloUtente = findRuolo();
         if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
             StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(pdi.getNomePDI(), pdi.getAsseX(), pdi.getAsseY());
             if (!statoPendingListPuntoInteresseRepository.existsById(String.valueOf(statoPending.getIdNome()))) {
@@ -89,9 +85,7 @@ public class PDIServiceController implements ContenutoBase {
 
     @PutMapping(value = "/updatePuntoInteresse/{nomePDI}")
     public ResponseEntity<Object> updatePDI(@PathVariable("nomePDI") String nomePDI, @RequestBody PuntoInteresseDtos pdi) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
+        String ruoloUtente = findRuolo();
         if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
             if (statoPendingListPuntoInteresseRepository.existsStatoPendingPuntoInteresseByNomePDI(nomePDI)) {
                 StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
@@ -111,15 +105,29 @@ public class PDIServiceController implements ContenutoBase {
         return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
     }
 
-    // TODO Sistmare la collection di Contenuti
-    @PostMapping(value = "/fileUpload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        File file1 = new File("/home/margherita/Desktop/" + file.getOriginalFilename());
+    @PostMapping(value = "/fileUpload/{nomePDI}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> fileUpload(@PathVariable("nomePDI") String nomePDI,
+                                             @RequestParam("file") MultipartFile file) throws IOException {
+        String ruoloUtente = findRuolo();
+        File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
         fileOut.close();
-        return new ResponseEntity<>("File uploaded", HttpStatus.OK);
+        PuntoInteresse puntoInteresse = puntiInteresseRepository.findByNomePDI(nomePDI);
+        Contenuti contenuti = new Contenuti(file1);
+        puntoInteresse.getListaContenuti().add(contenuti);
+        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+            StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(puntoInteresse.getNomePDI(),
+                    puntoInteresse.getCoordinate().getX(),puntoInteresse.getCoordinate().getY(),
+                    puntoInteresse.getListaContenuti());
+            puntiInteresseRepository.delete(puntoInteresse);
+            statoPendingListPuntoInteresseRepository.save(statoPending);
+            return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
+        } else {
+            puntiInteresseRepository.save(puntoInteresse);
+            return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
+        }
     }
 
     @Override
@@ -135,5 +143,11 @@ public class PDIServiceController implements ContenutoBase {
         PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(), statoPending.getAsseY());
         puntiInteresseRepository.save(puntoInteresse);
         return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
+    }
+
+    private String findRuolo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        return String.valueOf(utente.getRuolo());
     }
 }

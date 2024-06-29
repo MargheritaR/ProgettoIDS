@@ -34,28 +34,38 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests( request -> request
-                        .requestMatchers("/h2-console/**","/utente/newUtente", "/utente/login",
-                                "/contenuti/getContenuti","/contestDiContribuzione/getContest",
-                                "/contestDiContribuzione/getVincitore/","/itinerari/getItinerari/",
-                                "/itinerari/getItinerari","/puntoInteresse/getPuntoInteresseById/{nomePDI}",
-                                "/puntoInteresse/getPuntoInteresse","/puntoInteresse/getStatoPending","contestDiContribuzione/inviaMessaggio",
-                                "/utente/getMessaggi").permitAll()
-                        /*
-                        .requestMatchers("/utente/**","/contenuti/**","comune/**",
-                                "contestDiContribuzione/**","itinerari/**","/puntoInteresse/**",
-                                "preferiti/**").hasRole("GESTOREPIATTAFORMA")
-                        .requestMatchers("/contenuti/**","/itinerari/**","puntoInteresse/**").hasRole("CURATORI")
-                        .requestMatchers("/contenuti/**","/itinerari/**",
-                                "/puntoInteresse/**").hasRole("CONTRIBUTORIAUTORIZZATI")
-                         */
-                        .requestMatchers("/contenuti/addContenuti/", "/contestDiContribuzione/proponiContest/",
-                                "/itinerari/newItinerario","/itinerari/AggiungiPdi/","/itinerari/AggiungiFoto/",
-                                "/puntoInteresse/newPuntoInteresse","/puntoInteresse/updatePuntoInteresse/{nomePDI}",
-                                "/puntoInteresse/fileUpload","/puntoInteresse/approvazioneStatoPending/{nomePDI}").hasRole("CONTRIBUTORI")
-                        /*
-                        .requestMatchers("/contestDiContribuzione/**").hasRole("ANIMATORI")
-                        .requestMatchers("/preferiti/**").hasRole("TURISTAUTORIZZATI")
-                         */
+                        .requestMatchers("/h2-console/**","/utente/newUtente", "/utente/login","/utente/getUtenti",
+                                "/utente/getUtenti/{id}","/comune/getComune","/contenuti/getContenuti",
+                                "/contestDiContribuzione/getContest",
+                                "/contestDiContribuzione/getVincitore/{nomeContest}",
+                                "/itinerari/getItinerari","/itinerari/getItinerari/{nomeItinerario}",
+                                "/puntoInteresse/getPuntoInteresse","/puntoInteresse/getPuntoInteresseById/{nomePDI}").permitAll()
+                        .requestMatchers("/comune/addComune","comune/editComune/{nomeComune}",
+                                "/comune/deleteComune/{nomeComune}",
+                                "utente/assegnamentoRuoli/{id}/{newRuolo}").hasRole("GESTOREPIATTAFORMA")
+                        .requestMatchers("/preferiti/**")
+                        .hasAnyRole("TURISTAUTORIZZATI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/contestDiContribuzione/addContest","/contestDiContribuzione/inviaMessaggio",
+                                "/contestDiContribuzione/deleteContest/{nomeContest}",
+                                "/contestDiContribuzione/editContest/{nomeContest}",
+                                "/contestDiContribuzione/validaContest/{nomeContest}/{idContenuto}",
+                                "/contestDiContribuzione/decidiVincitore/{nomeContest}/{idContenuto}")
+                        .hasAnyRole("ANIMATORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/puntoInteresse/getStatoPending",
+                                "/puntoInteresse/approvazioneStatoPending/{nomePDI}",
+                                "/itinerari/getStatoPending", "/itinerari/approvStatoPending/{idNomeItinearario}")
+                        .hasAnyRole("CURATORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/puntoInteresse/updatePuntoInteresse/{nomePDI}",
+                                "/puntoInteresse/deletePuntoInteresse/{nomePDI}","/itinerari/deleteItinerario/{nomeItinerario}",
+                                "/contenuti/editContenuti/{nomePdi}/{idContenuti}",
+                                "/contenuti/deleteContenuti/{nomePdi}/{idContenuto}")
+                        .hasAnyRole("CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
+                        .requestMatchers("contenuti/addContenuti/{nomePdi}",
+                                "contestDiContribuzione/proponiContest/{nomeContest}",
+                                "itinerari/newItinerario","itinerari/aggiungiPdi/{nomeItinerario}/{nomePdi}",
+                                "itinerari/aggiungiFoto/{nomeItinerario}","puntoInteresse/newPuntoInteresse",
+                                "/puntoInteresse/fileUpload/{nomePDI}")
+                        .hasAnyRole("CONTRIBUTORI","CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

@@ -15,7 +15,6 @@ public class Registrazione {
         System.out.println(listaComune);
         String comunescelto = scanner.nextLine();
 
-        //TODO creare eccezione e lanciarla
         if (comunescelto.equals(""))
             System.out.println("Il comune scelto non può essere vuoto");
         if (!listaComune.contains(comunescelto))

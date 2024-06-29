@@ -10,7 +10,6 @@ public class AssegnamentoRuoli {
     Scanner scanner = new Scanner(System.in);
 
     public void CambiaRuoli(ArrayList<Utente> listaUtente, Utente utente) {
-        //TODO aggiungere i controlli per il gestore piattaforma
         if (listaUtente.isEmpty())
             System.out.println("Non è possibile cambiare ruolo ad un utente essendo che non esisteno utenti");
         if (!listaUtente.contains(utente))

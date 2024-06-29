@@ -1,5 +1,6 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Service.ItinerariServiceController;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class StatoPendingItinerario {
+public class StatoPendingItinerario implements StatoPending {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +44,7 @@ public class StatoPendingItinerario {
         return nomeItinerario;
     }
 
-    public void setNomeItinerario(@NotNull String nomeItinerario) {
+    public void setNomeItinerario(String nomeItinerario) {
         this.nomeItinerario = nomeItinerario;
     }
 
@@ -61,5 +62,10 @@ public class StatoPendingItinerario {
 
     public void setListaFoto(List<Foto> listaFoto) {
         this.listaFoto = listaFoto;
+    }
+
+    @Override
+    public ContenutoBase factoryMethod() {
+        return new ItinerariServiceController();
     }
 }

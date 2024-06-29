@@ -10,10 +10,8 @@ public class CreaContestDiContribuzione {
                                 ContestDiContribuzione contestDiContribuzione) {
         if (contestDiContribuzione.getNomeContest().isEmpty())
             System.out.println("Il nome del contest di contribuzione non può essere nullo");
-        //TODO creare la eccezione e lanciarla
         if (listaContestDiContribuzione.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione esiste già");
-        //TODO creare la eccezione e lanciarla
 
         Controlli(listaContestDiContribuzione, contestDiContribuzione);
         ControlloTempo(contestDiContribuzione);

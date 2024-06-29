@@ -1,26 +1,42 @@
 package it.unicam.IDS.progetto.Dtos;
 
-import it.unicam.IDS.progetto.Entita.Coordinate;
-
 import jakarta.persistence.*;
 
-
 public class ComuneDtos {
+
     @Id
     private String nomeComune;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
-    private Coordinate coordinate;
+    private double asseX;
+    private double asseY;
 
-    public ComuneDtos(){ }
+    public ComuneDtos(String nomeComune, double asseX, double asseY) {
+        this.nomeComune = nomeComune;
+        this.asseX = asseX;
+        this.asseY = asseY;
+    }
 
     public String getNomeComune() {
         return nomeComune;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
+    public void setNomeComune(String nomeComune) {
+        this.nomeComune = nomeComune;
     }
 
+    public double getAsseX() {
+        return asseX;
+    }
+
+    public void setAsseX(double asseX) {
+        this.asseX = asseX;
+    }
+
+    public double getAsseY() {
+        return asseY;
+    }
+
+    public void setAsseY(double asseY) {
+        this.asseY = asseY;
+    }
 }

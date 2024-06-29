@@ -1,19 +1,18 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.File;
 
-// Foglia per il design pattern Composite
 @Entity
 public class Contenuti {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String idContenuto;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idContenuto;
 
-    @NotEmpty
+    @NotNull
     private File contenuto;
 
     public Contenuti(File contenuto) {
@@ -21,10 +20,9 @@ public class Contenuti {
     }
 
     public Contenuti() {
-
     }
 
-    public String getIdContenuto() {
+    public int getIdContenuto() {
         return idContenuto;
     }
 
@@ -33,7 +31,7 @@ public class Contenuti {
     }
 
 
-    public void setIdContenuto(String idContenuto) {
+    public void setIdContenuto(int idContenuto) {
         this.idContenuto = idContenuto;
     }
 

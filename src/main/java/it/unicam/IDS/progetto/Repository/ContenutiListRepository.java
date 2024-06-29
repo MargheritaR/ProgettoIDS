@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ContenutiListRepository extends CrudRepository<Contenuti, String> {
 
-    Contenuti findByIdContenuto(String idContenuto);
+    Contenuti findByIdContenuto(int idContenuto);
 }

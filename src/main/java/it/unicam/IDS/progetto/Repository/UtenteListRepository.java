@@ -9,4 +9,6 @@ public interface UtenteListRepository extends CrudRepository<Utente, String> {
 
     Utente findByUsername(String username);
 
+    Utente findById(int id);
+
 }

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class Autenticazione {
 /*
     public void Login(ArrayList<Utente> listaUtente, Utente utente) {
-        // TODO aggiungere il controllo del comune
         if (!listaUtente.contains(utente))
             System.out.println("Utente non trovato");
         if (FindUser(listaUtente, utente))

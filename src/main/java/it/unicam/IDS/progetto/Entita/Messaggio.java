@@ -1,13 +1,12 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Messaggio {
 
     @Id
@@ -22,8 +21,6 @@ public class Messaggio {
 
     @NotNull
     private String intestazione;
-
-    public Messaggio() {}
 
     public Messaggio(String mittente, String destinatario, String titolo, String intestazione) {
         this.mittente = mittente;

@@ -11,10 +11,8 @@ public class ProponiContestDiContribuzione {
                                 ContestDiContribuzione contestDiContribuzione, Contenuti contenuto) {
         if (contestDiContribuzione.getNomeContest().isEmpty())
             System.out.println("Il nome del contest di contribuzione non può essere nullo");
-        //TODO creare la eccezione e lanciarla
         if (listaContestDiContribuzione.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione esiste già");
-        //TODO creare la eccezione e lanciarla
         ControlliContenuto(contestDiContribuzione,contenuto);
         contestDiContribuzione.getListaContenuti().add(contenuto);
         System.out.println("Il contenuto è stato aggiunto al contest di contribuzione");

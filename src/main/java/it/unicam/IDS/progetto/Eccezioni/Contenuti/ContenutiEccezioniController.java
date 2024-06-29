@@ -1,6 +1,5 @@
 package it.unicam.IDS.progetto.Eccezioni.Contenuti;
 
-import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

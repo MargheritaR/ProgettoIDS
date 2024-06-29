@@ -1,11 +1,11 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,34 +14,37 @@ public class ContestDiContribuzione{
     @Id
     private String nomeContest;
 
-    @NotEmpty
+    @NotNull
     private String obiettivo;
 
-    @NotEmpty
+    @NotNull
     private String tematica;
 
-    @NotEmpty
+    @NotNull
     //limite massimo dei contenuti aggiungibili nel lasso di tempo del contest
     private LocalDate limiteMassimoC;
 
-    @NotEmpty
+    @NotNull
     //termine massimo di spedizione degli inviti
     private String termineMassimoS;
 
-    @NotEmpty
+    @NotNull
     //termine massimo di ricezione degli inviti
     private String termineMassimoR;
 
-    @NotEmpty
+    @NotNull
     private int sogliaInviti = 0;
 
-    @NotEmpty
+    @NotNull
     //tempo iniziale del lasso di tempo del contest
     private LocalDate tempoInizio;
 
-    @NotEmpty
+    @NotNull
     //tempo finale del lasso di tempo del contest
     private LocalDate tempoFine;
+
+    @NotNull
+    private File vincitore;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Contenuti> contenuti;
@@ -61,12 +64,12 @@ public class ContestDiContribuzione{
         this.termineMassimoS = termineMassimoS;
         this.tempoInizio = LocalDate.parse(tempoInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.tempoFine = LocalDate.parse(tempoFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.contenutiApprovati = new ArrayList<>();
+        this.vincitore = null;
+        this.contenuti = null;
+        this.contenutiApprovati = null;
     }
 
-    public ContestDiContribuzione() {
-
-    }
+    public ContestDiContribuzione() {}
 
     public String getNomeContest() {
         return nomeContest;
@@ -110,6 +113,23 @@ public class ContestDiContribuzione{
 
     public List<Contenuti> getContenutiApprovati() {
         return contenutiApprovati;
+    }
+
+    public File getVincitore() {
+        return vincitore;
+    }
+
+    public List<Contenuti> getContenuti() {
+        return contenuti;
+    }
+
+    public void setVincitore(File vincitore) {
+        this.vincitore = vincitore;
+    }
+
+
+    public void setContenuti(List<Contenuti> contenuti) {
+        this.contenuti = contenuti;
     }
 
     public void setNomeContest(String nomeContest) {

@@ -8,6 +8,6 @@ public class UtenteEccezioneController {
 
     @ExceptionHandler(value = UtenteNotFoundEccezione.class)
     public ResponseEntity<Object> handleException(UtenteNotFoundEccezione e) {
-        return new ResponseEntity<>("Messaggio no content", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Utente non trovato", HttpStatus.NOT_FOUND);
     }
 }

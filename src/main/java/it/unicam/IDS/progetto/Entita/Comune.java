@@ -1,11 +1,10 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
-
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
 public class Comune {
 
     @Id
@@ -15,17 +14,9 @@ public class Comune {
     @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
     private Coordinate coordinate;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Utente> listaUtente;
-
     public Comune(String nomeComune, double asseX, double asseY) {
         this.nomeComune = nomeComune;
-        //this.coordinate = new Coordinate(asseX, asseY);
-        this.listaUtente = null;
-    }
-
-    public Comune() {
-
+        this.coordinate = new Coordinate(nomeComune,asseX, asseY);
     }
 
     public String getNomeComune() {
@@ -36,20 +27,12 @@ public class Comune {
         return coordinate;
     }
 
-    public List<Utente> getListaUtente() {
-        return listaUtente;
-    }
-
     public void setNomeComune(String nomeComune) {
         this.nomeComune = nomeComune;
     }
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
-    }
-
-    public void setListaUtente(List<Utente> listaUtente) {
-        this.listaUtente = listaUtente;
     }
 
     @Override
