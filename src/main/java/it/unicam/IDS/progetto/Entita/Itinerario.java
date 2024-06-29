@@ -3,11 +3,12 @@ package it.unicam.IDS.progetto.Entita;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class Itinerario {
+public class Itinerario extends StatoPending {
 
     @Id
     private String nomeItinerario;

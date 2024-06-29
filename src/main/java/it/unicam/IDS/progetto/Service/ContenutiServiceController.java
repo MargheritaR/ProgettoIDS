@@ -52,7 +52,7 @@ public class ContenutiServiceController {
             PuntoInteresse appoggio = pdiRepository.findByNomePDI(nomePdi);
             List listaContenuti = appoggio.getListaContenuti();
             if (!appoggio.getListaContenuti().contains(file)) {
-                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
+                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
@@ -103,7 +103,7 @@ public class ContenutiServiceController {
             if (listaContenuti.contains(appoggioContenuti)) {
                 listaContenuti.remove(appoggioContenuti);
                 contenutiRepository.deleteById(String.valueOf(idContenuti));
-                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
+                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());

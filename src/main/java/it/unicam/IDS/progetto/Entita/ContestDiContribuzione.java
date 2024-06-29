@@ -75,101 +75,93 @@ public class ContestDiContribuzione{
         return nomeContest;
     }
 
-    public String getObiettivo() {
-        return obiettivo;
-    }
-
-    public String getTematica() {
-        return tematica;
-    }
-
-    public LocalDate getLimiteMassimoC() {
-        return limiteMassimoC;
-    }
-
-    public int getSogliaInviti() {
-        return sogliaInviti;
-    }
-
-    public String getTermineMassimoS() {
-        return termineMassimoS;
-    }
-
-    public String getTermineMassimoR() {
-        return termineMassimoR;
-    }
-
-    public LocalDate getTempoInizio() {
-        return tempoInizio;
-    }
-
-    public LocalDate getTempoFine() {
-        return tempoFine;
-    }
-
-    public List<Contenuti> getListaContenuti() {
-        return contenuti;
-    }
-
-    public List<Contenuti> getContenutiApprovati() {
-        return contenutiApprovati;
-    }
-
-    public File getVincitore() {
-        return vincitore;
-    }
-
-    public List<Contenuti> getContenuti() {
-        return contenuti;
-    }
-
-    public void setVincitore(File vincitore) {
-        this.vincitore = vincitore;
-    }
-
-
-    public void setContenuti(List<Contenuti> contenuti) {
-        this.contenuti = contenuti;
-    }
-
     public void setNomeContest(String nomeContest) {
         this.nomeContest = nomeContest;
+    }
+
+    public String getObiettivo() {
+        return obiettivo;
     }
 
     public void setObiettivo(String obiettivo) {
         this.obiettivo = obiettivo;
     }
 
+    public @NotNull String getTematica() {
+        return tematica;
+    }
+
     public void setTematica(String tematica) {
         this.tematica = tematica;
     }
 
-    public void setLimiteMassimoC(LocalDate limiteMassimoC) {
-        this.limiteMassimoC = this.limiteMassimoC;
+    public @NotNull LocalDate getLimiteMassimoC() {
+        return limiteMassimoC;
     }
 
-    public void setSogliaInviti(int sogliaInviti) {
-        this.sogliaInviti = sogliaInviti;
+    public void setLimiteMassimoC(LocalDate limiteMassimoC) {
+        this.limiteMassimoC = limiteMassimoC;
+    }
+
+    public @NotNull String getTermineMassimoS() {
+        return termineMassimoS;
     }
 
     public void setTermineMassimoS(String termineMassimoS) {
         this.termineMassimoS = termineMassimoS;
     }
 
+    public @NotNull String getTermineMassimoR() {
+        return termineMassimoR;
+    }
+
     public void setTermineMassimoR(String termineMassimoR) {
         this.termineMassimoR = termineMassimoR;
+    }
+
+    @NotNull
+    public int getSogliaInviti() {
+        return sogliaInviti;
+    }
+
+    public void setSogliaInviti(int sogliaInviti) {
+        this.sogliaInviti = sogliaInviti;
+    }
+
+    public @NotNull LocalDate getTempoInizio() {
+        return tempoInizio;
     }
 
     public void setTempoInizio(LocalDate tempoInizio) {
         this.tempoInizio = tempoInizio;
     }
 
+    public @NotNull LocalDate getTempoFine() {
+        return tempoFine;
+    }
+
     public void setTempoFine(LocalDate tempoFine) {
         this.tempoFine = tempoFine;
     }
 
-    public void setListaContenuti(List<Contenuti> contenuti) {
+    public @NotNull File getVincitore() {
+        return vincitore;
+    }
+
+    public void setVincitore(File vincitore) {
+        this.vincitore = vincitore;
+    }
+
+    public List<Contenuti> getContenuti() {
+        return contenuti;
+    }
+
+    public void setContenuti(List<Contenuti> contenuti) {
         this.contenuti = contenuti;
+    }
+
+    public List<Contenuti> getContenutiApprovati() {
+        return contenutiApprovati;
     }
 
     public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {

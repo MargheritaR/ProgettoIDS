@@ -23,19 +23,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/itinerari")
-public class ItinerariServiceController implements ContenutoBase {
+public class ItinerariServiceController {
 
     private ItinerarioListRepository itinerariRepository;
-    private PDIListRepository pdiRepository;
     private StatoPendingListItinerarioRepository statoPendingRepository;
     private UtenteListRepository utenteRepository;
 
     @Autowired
-    public ItinerariServiceController(ItinerarioListRepository itinerariRepository, PDIListRepository pdiRepository,
+    public ItinerariServiceController(ItinerarioListRepository itinerariRepository,
                                       StatoPendingListItinerarioRepository statoPendingRepository,
                                       UtenteListRepository utenteRepository) {
         this.itinerariRepository = itinerariRepository;
-        this.pdiRepository = pdiRepository;
         this.statoPendingRepository = statoPendingRepository;
         this.utenteRepository = utenteRepository;
     }
@@ -57,10 +55,10 @@ public class ItinerariServiceController implements ContenutoBase {
 
     @PostMapping(value = "/newItinerario")
     public ResponseEntity<Object> newItinerario(@RequestBody ItinerarioDtos it) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Utente utente = utenteRepository.findByUsername(authentication.getName());
-        String ruoloUtente = String.valueOf(utente.getRuolo());
-        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
+        String ruoloUtente = findRuolo();
+        IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingItinerario statoPending = new StatoPendingItinerario(it.getNomeItinerario());
             if (!statoPendingRepository.existsById(String.valueOf(statoPending.getId()))) {
                 statoPendingRepository.save(statoPending);
@@ -84,7 +82,9 @@ public class ItinerariServiceController implements ContenutoBase {
     @PutMapping(value = "AggiungiPdi/{nomeItinerario}/{nomePdi}")
     public ResponseEntity<Object> AggiungiPdi(@PathVariable("nomeItinerario") String nomeItinerario,
                                               @PathVariable("nomePdi") String nomePdi) {
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
         String ruoloUtente = findRuolo();
+        IStatoPending app = factory.newStatoPending(ruoloUtente);
         if (itinerariRepository.existsById(nomeItinerario)) {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaPdi = itinerario.getListaItinerarioPDI();
@@ -92,7 +92,7 @@ public class ItinerariServiceController implements ContenutoBase {
                 listaPdi.add(nomePdi);
                 itinerario.setListaItinerarioPDI(listaPdi);
             } else throw new ItinerariNotFoundEccezione();
-            if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+            if (app instanceof StatoPendingItinerario) {
                 itinerariRepository.delete(itinerario);
                 StatoPendingItinerario appoggio = new StatoPendingItinerario(itinerario.getNomeItinerario(),
                         itinerario.getListaItinerarioPDI(), itinerario.getListaFoto());
@@ -108,12 +108,14 @@ public class ItinerariServiceController implements ContenutoBase {
     @PutMapping(value = "/AggiungiFoto/{nomeItinerario}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> AggiungiFoto(@RequestParam("file") MultipartFile file,
                                                @PathVariable("nomeItinerario") String nomeItinerario) throws IOException {
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
         String ruoloUtente = findRuolo();
+        IStatoPending app = factory.newStatoPending(ruoloUtente);
         if (itinerariRepository.existsById(nomeItinerario)) {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaFoto = itinerario.getListaFoto();
             if (!itinerario.getListaFoto().contains(file)) {
-                File file1 = new File("/home/margherita/Desktop/" + file.getOriginalFilename());
+                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
@@ -121,7 +123,7 @@ public class ItinerariServiceController implements ContenutoBase {
                 Foto foto = new Foto(file1);
                 listaFoto.add(foto);
             } else throw new ItinerariNotFoundEccezione();
-            if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+            if (app instanceof StatoPendingItinerario) {
                 itinerariRepository.delete(itinerario);
                 StatoPendingItinerario appoggio = new StatoPendingItinerario(itinerario.getNomeItinerario(),
                         itinerario.getListaItinerarioPDI(), itinerario.getListaFoto());
@@ -134,7 +136,7 @@ public class ItinerariServiceController implements ContenutoBase {
         } else throw new ItinerariNotFoundEccezione();
     }
 
-    @Override
+
     @RequestMapping(value = "/getStatoPending")
     public ResponseEntity<Object> getStatoPending() {
         return new ResponseEntity<>(statoPendingRepository.findAll(), HttpStatus.OK);

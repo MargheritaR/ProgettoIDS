@@ -3,11 +3,12 @@ package it.unicam.IDS.progetto.Entita;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class PuntoInteresse {
+public class PuntoInteresse extends StatoPending {
 
     @Id
     private String nomePDI;

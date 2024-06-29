@@ -41,7 +41,7 @@ public class ContestDiContribuzioneServiceController {
         this.utenteRepository = utenteRepository;
         this.contenutiRepository = contenutiRepository;
         ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival", "bere",
-                "informatica", "12/06/2023", 5, "1/03/2023",
+                "informatica", "12/08/2024", 5, "1/03/2023",
                 "10/03/2023", "10/06/2023", "20/06/2023");
         contestRepository.save(contestDiContribuzione1);
     }
@@ -110,13 +110,13 @@ public class ContestDiContribuzioneServiceController {
                                                 @PathVariable("idContenuto") int idContenuto) {
         if (contestRepository.existsByNomeContest(nomeContest)) {
             ContestDiContribuzione contest = contestRepository.findByNomeContest(nomeContest);
-            Contenuti appoggio = contest.getListaContenuti().get(idContenuto);
-            List listaCNonApprovati = contest.getListaContenuti();
+            Contenuti appoggio = contest.getContenuti().get(idContenuto);
+            List listaCNonApprovati = contest.getContenuti();
             List listaCApprovati = contest.getContenutiApprovati();
             if (listaCNonApprovati.contains(appoggio)) {
                 listaCNonApprovati.remove(idContenuto);
                 listaCApprovati.add(appoggio);
-                contest.setListaContenuti(listaCNonApprovati);
+                contest.setContenuti(listaCNonApprovati);
                 contest.setContenutiApprovati(listaCApprovati);
                 contestRepository.save(contest);
             } else new ResponseEntity<>("Il contenuto è già stato validato nel contest di contribuzione", HttpStatus.OK);
@@ -129,20 +129,18 @@ public class ContestDiContribuzioneServiceController {
                                                  @PathVariable("nomeContest") String nomeContest) throws IOException {
         if (contestRepository.existsByNomeContest(nomeContest)) {
             ContestDiContribuzione appoggio = contestRepository.findByNomeContest(nomeContest);
-            List listaContenuti = appoggio.getListaContenuti();
             if (!appoggio.getLimiteMassimoC().isAfter(LocalDate.now()))
                 throw new ContestDiContribuzioneOverTimeLimitEccezione();
-            if (!appoggio.getListaContenuti().contains(file)) {
-                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
+            if (!appoggio.getContenuti().contains(file)) {
+                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
                 fileOut.close();
                 Contenuti contenuti = new Contenuti(file1);
-                listaContenuti.add(contenuti);
+                appoggio.getContenuti().add(contenuti);
+                contestRepository.save(appoggio);
             } else new ResponseEntity<>("Il contenuto è già stato inserito nel contest di contribuzione", HttpStatus.OK);
-            appoggio.setListaContenuti(listaContenuti);
-            contestRepository.save(appoggio);
             return new ResponseEntity<>("Il contenuto è stato aggiornato nel contest di contribuzione", HttpStatus.OK);
         } else throw new ContestDiContribuzioneNotFoundEccezione();
     }

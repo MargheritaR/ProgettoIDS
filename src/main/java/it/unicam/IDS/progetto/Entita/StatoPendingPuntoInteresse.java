@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class StatoPendingPuntoInteresse {
+public class StatoPendingPuntoInteresse  extends StatoPending{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

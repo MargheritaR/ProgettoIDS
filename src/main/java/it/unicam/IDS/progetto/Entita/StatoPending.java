@@ -1,8 +1,6 @@
 package it.unicam.IDS.progetto.Entita;
 
 
-public interface StatoPending {
-
-    ContenutoBase factoryMethod();
+public abstract class StatoPending implements IStatoPending {
 
 }

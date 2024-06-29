@@ -21,7 +21,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/puntoInteresse")
-public class PDIServiceController implements ContenutoBase {
+public class PDIServiceController {
 
     private PDIListRepository puntiInteresseRepository;
     private StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository;
@@ -61,8 +61,10 @@ public class PDIServiceController implements ContenutoBase {
 
     @PostMapping(value = "/newPuntoInteresse")
     public ResponseEntity<Object> newPDI(@RequestBody PuntoInteresseDtos pdi) {
+        IStatoPendingFactory factory = new StatoPendingPDIFactory();
         String ruoloUtente = findRuolo();
-        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+        IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(pdi.getNomePDI(), pdi.getAsseX(), pdi.getAsseY());
             if (!statoPendingListPuntoInteresseRepository.existsById(String.valueOf(statoPending.getIdNome()))) {
                 statoPendingListPuntoInteresseRepository.save(statoPending);
@@ -85,8 +87,10 @@ public class PDIServiceController implements ContenutoBase {
 
     @PutMapping(value = "/updatePuntoInteresse/{nomePDI}")
     public ResponseEntity<Object> updatePDI(@PathVariable("nomePDI") String nomePDI, @RequestBody PuntoInteresseDtos pdi) {
+        IStatoPendingFactory factory = new StatoPendingPDIFactory();
         String ruoloUtente = findRuolo();
-        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+        IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             if (statoPendingListPuntoInteresseRepository.existsStatoPendingPuntoInteresseByNomePDI(nomePDI)) {
                 StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
                 statoPending.setNomePDI(pdi.getNomePDI());
@@ -108,8 +112,10 @@ public class PDIServiceController implements ContenutoBase {
     @PostMapping(value = "/fileUpload/{nomePDI}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> fileUpload(@PathVariable("nomePDI") String nomePDI,
                                              @RequestParam("file") MultipartFile file) throws IOException {
+        IStatoPendingFactory factory = new StatoPendingPDIFactory();
         String ruoloUtente = findRuolo();
-        File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
+        IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
+        File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
@@ -117,7 +123,7 @@ public class PDIServiceController implements ContenutoBase {
         PuntoInteresse puntoInteresse = puntiInteresseRepository.findByNomePDI(nomePDI);
         Contenuti contenuti = new Contenuti(file1);
         puntoInteresse.getListaContenuti().add(contenuti);
-        if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(puntoInteresse.getNomePDI(),
                     puntoInteresse.getCoordinate().getX(),puntoInteresse.getCoordinate().getY(),
                     puntoInteresse.getListaContenuti());
@@ -130,7 +136,6 @@ public class PDIServiceController implements ContenutoBase {
         }
     }
 
-    @Override
     @RequestMapping(value = "/getStatoPending")
     public ResponseEntity<Object> getStatoPending() {
         return new ResponseEntity<>(statoPendingListPuntoInteresseRepository.findAll(), HttpStatus.OK);

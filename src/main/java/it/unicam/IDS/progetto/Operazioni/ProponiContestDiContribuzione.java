@@ -14,7 +14,7 @@ public class ProponiContestDiContribuzione {
         if (listaContestDiContribuzione.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione esiste già");
         ControlliContenuto(contestDiContribuzione,contenuto);
-        contestDiContribuzione.getListaContenuti().add(contenuto);
+        contestDiContribuzione.getContenuti().add(contenuto);
         System.out.println("Il contenuto è stato aggiunto al contest di contribuzione");
 
     }
@@ -23,7 +23,7 @@ public class ProponiContestDiContribuzione {
             System.out.println("Il contenuto non può essere nullo");
             return false;
         }
-        if(contestDiContribuzione.getListaContenuti().contains(contestDiContribuzione)){
+        if(contestDiContribuzione.getContenuti().contains(contestDiContribuzione)){
             System.out.println("Il contenuto proposto esiste già");
             return false;
         }

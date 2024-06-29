@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class StatoPendingItinerario implements StatoPending {
+public class StatoPendingItinerario extends StatoPending{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,8 +64,4 @@ public class StatoPendingItinerario implements StatoPending {
         this.listaFoto = listaFoto;
     }
 
-    @Override
-    public ContenutoBase factoryMethod() {
-        return new ItinerariServiceController();
-    }
 }
