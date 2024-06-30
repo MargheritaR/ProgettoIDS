@@ -25,6 +25,12 @@ public class Itinerario extends StatoPending {
         this.listaFoto = null;
     }
 
+    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
+        this.nomeItinerario = nomeItinerario;
+        this.listaItinerarioPDI = listaItinerarioPDI;
+        this.listaFoto = listaFoto;
+    }
+
     public String getNomeItinerario() {
         return nomeItinerario;
     }

@@ -1,6 +1,5 @@
 package it.unicam.IDS.progetto.Entita;
 
-import it.unicam.IDS.progetto.Service.ItinerariServiceController;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;

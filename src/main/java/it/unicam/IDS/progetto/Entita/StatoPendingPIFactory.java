@@ -1,6 +1,7 @@
 package it.unicam.IDS.progetto.Entita;
 
 public class StatoPendingPIFactory implements IStatoPendingFactory{
+
     @Override
     public StatoPending newStatoPending(String ruolo) {
         StatoPending statoPending;

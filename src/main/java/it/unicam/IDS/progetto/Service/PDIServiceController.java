@@ -115,7 +115,7 @@ public class PDIServiceController {
         IStatoPendingFactory factory = new StatoPendingPDIFactory();
         String ruoloUtente = findRuolo();
         IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
-        File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
+        File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
@@ -129,7 +129,7 @@ public class PDIServiceController {
                     puntoInteresse.getListaContenuti());
             puntiInteresseRepository.delete(puntoInteresse);
             statoPendingListPuntoInteresseRepository.save(statoPending);
-            return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
+            return new ResponseEntity<>("Punto di Interesse aggiunto allo statoPending", HttpStatus.OK);
         } else {
             puntiInteresseRepository.save(puntoInteresse);
             return new ResponseEntity<>("Punto di Interesse aggiunto con successo", HttpStatus.OK);
@@ -145,7 +145,8 @@ public class PDIServiceController {
     public ResponseEntity<Object> approvazioneStatoPending(@PathVariable String nomePDI) {
         StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
         statoPendingListPuntoInteresseRepository.delete(statoPending);
-        PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(), statoPending.getAsseY());
+        PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
+                statoPending.getAsseY(), statoPending.getListaContenuti());
         puntiInteresseRepository.save(puntoInteresse);
         return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
     }
