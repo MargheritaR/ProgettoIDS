@@ -1,6 +1,5 @@
 package it.unicam.IDS.progetto.Service;
 
-import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.StatoPendingListItinerarioRepository;

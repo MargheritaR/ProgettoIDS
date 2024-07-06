@@ -53,7 +53,7 @@ public class SecurityConfig {
                         .hasAnyRole("ANIMATORI","GESTOREPIATTAFORMA")
                         .requestMatchers("/puntoInteresse/getStatoPending",
                                 "/puntoInteresse/approvazioneStatoPending/{nomePDI}",
-                                "/itinerari/getStatoPending", "/itinerari/approvStatoPending/{nomeItinerario}")
+                                "/itinerari/getStatoPending", "/itinerari/approvStatoPending/{nomeItinerario}/{approv}")
                         .hasAnyRole("CURATORI","GESTOREPIATTAFORMA")
                         .requestMatchers("/puntoInteresse/updatePuntoInteresse/{nomePDI}",
                                 "/puntoInteresse/deletePuntoInteresse/{nomePDI}","/itinerari/deleteItinerario/{nomeItinerario}",
@@ -61,12 +61,13 @@ public class SecurityConfig {
                                 "/contenuti/deleteContenuti/{nomePdi}/{idContenuto}")
                         .hasAnyRole("CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
                         .requestMatchers("contenuti/addContenuti/{nomePdi}","/itinerari/newItinerario/{nomeItinerario}",
-                                "/itinerari/aggiungiPdi/{nomeItinerario}/{nomePDI}",
-                                "/itinerari/aggiungiFoto/{nomeItinerario}","puntoInteresse/newPuntoInteresse",
+                                "/itinerari/aggiungiPdi/{nomeItinerario}/{nomePDI}","puntoInteresse/newPuntoInteresse",
                                 "/puntoInteresse/fileUpload/{nomePDI}")
                         .hasAnyRole("CONTRIBUTORI","CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
                         .requestMatchers("/contestDiContribuzione/proponiContest/{nomeContest}")
                         .hasAnyRole("CONTRIBUTORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/itinerari/aggiungiFoto/{nomeItinerario}")
+                        .hasAnyRole("CONTRIBUTORI","GESTOREPIATTAFORMA","TURISTAUTORIZZATI")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
