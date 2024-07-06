@@ -141,14 +141,21 @@ public class PDIServiceController {
         return new ResponseEntity<>(statoPendingListPuntoInteresseRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/approvazioneStatoPending/{nomePDI}")
-    public ResponseEntity<Object> approvazioneStatoPending(@PathVariable String nomePDI) {
-        StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
-        statoPendingListPuntoInteresseRepository.delete(statoPending);
-        PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
-                statoPending.getAsseY(), statoPending.getListaContenuti());
-        puntiInteresseRepository.save(puntoInteresse);
-        return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
+    @RequestMapping(value = "/approvazioneStatoPending/{nomePDI}/{approv}")
+    public ResponseEntity<Object> approvazioneStatoPending(@PathVariable("nomePDI") String nomePDI,
+                                                           @PathVariable("approv") String approv) {
+        StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository
+                .findStatoPendingPuntoInteresseByNomePDI(nomePDI);
+        if (approv.equalsIgnoreCase("Y")) {
+            statoPendingListPuntoInteresseRepository.delete(statoPending);
+            PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
+                    statoPending.getAsseY(), statoPending.getListaContenuti());
+            puntiInteresseRepository.save(puntoInteresse);
+            return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
+        } else {
+            statoPendingListPuntoInteresseRepository.delete(statoPending);
+            return new ResponseEntity<>("Punto di interesse non approvato", HttpStatus.OK);
+        }
     }
 
     private String findRuolo() {
