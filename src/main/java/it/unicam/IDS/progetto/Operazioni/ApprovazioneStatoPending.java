@@ -24,17 +24,17 @@ public class ApprovazioneStatoPending<T> {
         }
     }
 
-    public void Approvazione(ArrayList<T> statoPending, ArrayList<Contenuti> listaContenuti, Contenuti contenutoScelto){
-        System.out.println("" + contenutoScelto + '\n' + '\n' + "Vuoi approvare il contenuto:  (Y/N)");
-        if (scanner.nextLine().equals("Y")) {
-            AggiuntaContenuti appoggio = new AggiuntaContenuti();
-            appoggio.AddContenuti(listaContenuti, contenutoScelto);
-            System.out.println("Il contenuto è stato approvato");
-        } else {
-            statoPending.remove(contenutoScelto);
-            System.out.println("Il contenuto non è stato approvato quindi è stato eliminato");
-        }
-    }
+//    public void Approvazione(ArrayList<T> statoPending, ArrayList<Contenuti> listaContenuti, Contenuti contenutoScelto){
+//        System.out.println("" + contenutoScelto + '\n' + '\n' + "Vuoi approvare il contenuto:  (Y/N)");
+//        if (scanner.nextLine().equals("Y")) {
+//            AggiuntaContenuti appoggio = new AggiuntaContenuti();
+//            appoggio.AddContenuti(listaContenuti, contenutoScelto);
+//            System.out.println("Il contenuto è stato approvato");
+//        } else {
+//            statoPending.remove(contenutoScelto);
+//            System.out.println("Il contenuto non è stato approvato quindi è stato eliminato");
+//        }
+//    }
 
     public void Approvazione(ArrayList<T> statoPending, ArrayList<Itinerario> listaItinerari, Itinerario itinerarioScelto){
         System.out.println("" + itinerarioScelto + '\n' + '\n' + "Vuoi approvare l'itinerario:  (Y/N)");
