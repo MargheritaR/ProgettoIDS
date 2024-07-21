@@ -24,7 +24,7 @@ public class ComuneServiceController {
     public ResponseEntity<Object> getComune() {
         return new ResponseEntity<>(comuneRepository.findAll(), HttpStatus.OK);
     }
-
+/*
     @PostMapping(value = "/addComune")
     public ResponseEntity<Object> addComune(@RequestBody ComuneDtos c) {
         if (!comuneRepository.existsById(c.getNomeComune())) {
@@ -33,7 +33,8 @@ public class ComuneServiceController {
             return new ResponseEntity<>("Comune creato ", HttpStatus.OK);
         } else throw new ComuneNotFountEccezione();
     }
-
+ */
+/*
     @PutMapping(value = "/editComune/{nomeComune}")
     public ResponseEntity<Object> editComune(@RequestBody ComuneDtos c, @PathVariable("nomeComune") String nomeComune){
         if (comuneRepository.existsById(nomeComune)) {
@@ -43,7 +44,7 @@ public class ComuneServiceController {
             return new ResponseEntity<>("Comune è stato aggiornato con successo", HttpStatus.OK);
         } else throw new ComuneNotFountEccezione();
     }
-
+*/
     @DeleteMapping(value = "/deleteComune/{nomeComune}")
     public ResponseEntity<Object> deleteComune(@PathVariable("nomeComune") String nomeComune){
         if (comuneRepository.existsById(nomeComune)) {
