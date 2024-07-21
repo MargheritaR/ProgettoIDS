@@ -1,6 +1,5 @@
 package it.unicam.IDS.progetto.Service;
 
-import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.StatoPendingListItinerarioRepository;
@@ -27,15 +26,17 @@ public class ItinerariServiceController {
 
     private ItinerarioListRepository itinerariRepository;
     private StatoPendingListItinerarioRepository statoPendingRepository;
+    private PDIListRepository pdiRepository;
     private UtenteListRepository utenteRepository;
 
     @Autowired
     public ItinerariServiceController(ItinerarioListRepository itinerariRepository,
                                       StatoPendingListItinerarioRepository statoPendingRepository,
-                                      UtenteListRepository utenteRepository) {
+                                      UtenteListRepository utenteRepository, PDIListRepository pdiRepository) {
         this.itinerariRepository = itinerariRepository;
         this.statoPendingRepository = statoPendingRepository;
         this.utenteRepository = utenteRepository;
+        this.pdiRepository = pdiRepository;
     }
 
     public ItinerariServiceController() {
@@ -53,19 +54,19 @@ public class ItinerariServiceController {
         } else throw new ItinerariNotFoundEccezione();
     }
 
-    @PostMapping(value = "/newItinerario")
-    public ResponseEntity<Object> newItinerario(@RequestBody ItinerarioDtos it) {
+    @PostMapping(value = "/newItinerario/{nomeItinerario}")
+    public ResponseEntity<Object> newItinerario(@PathVariable String nomeItinerario) {
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         String ruoloUtente = findRuolo();
         IStatoPending appoggio = factory.newStatoPending(ruoloUtente);
-        if (appoggio instanceof StatoPendingPuntoInteresse) {
-            StatoPendingItinerario statoPending = new StatoPendingItinerario(it.getNomeItinerario());
+        if (appoggio instanceof StatoPendingItinerario) {
+            StatoPendingItinerario statoPending = new StatoPendingItinerario(nomeItinerario);
             if (!statoPendingRepository.existsById(String.valueOf(statoPending.getId()))) {
                 statoPendingRepository.save(statoPending);
                 return new ResponseEntity<>("L'Itinerario è stato aggiunto allo Stato Pending", HttpStatus.OK);
             } else throw new ItinerariNotFoundEccezione();
         } else {
-            Itinerario itinerario = new Itinerario(it.getNomeItinerario());
+            Itinerario itinerario = new Itinerario(nomeItinerario);
             itinerariRepository.save(itinerario);
             return new ResponseEntity<>("Itinerario creato ", HttpStatus.OK);
         }
@@ -79,17 +80,18 @@ public class ItinerariServiceController {
         } else throw new ItinerariNotFoundEccezione();
     }
 
-    @PutMapping(value = "AggiungiPdi/{nomeItinerario}/{nomePdi}")
-    public ResponseEntity<Object> AggiungiPdi(@PathVariable("nomeItinerario") String nomeItinerario,
-                                              @PathVariable("nomePdi") String nomePdi) {
+    @PutMapping(value = "aggiungiPdi/{nomeItinerario}/{nomePDI}")
+    public ResponseEntity<Object> aggiungiPdi(@PathVariable("nomeItinerario") String nomeItinerario,
+                                              @PathVariable("nomePDI") String nomePDI) {
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         String ruoloUtente = findRuolo();
         IStatoPending app = factory.newStatoPending(ruoloUtente);
         if (itinerariRepository.existsById(nomeItinerario)) {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaPdi = itinerario.getListaItinerarioPDI();
-            if (!listaPdi.contains(nomePdi)) {
-                listaPdi.add(nomePdi);
+            if (!listaPdi.contains(nomePDI)) {
+                PuntoInteresse puntoInteresse = pdiRepository.findByNomePDI(nomePDI);
+                listaPdi.add(puntoInteresse);
                 itinerario.setListaItinerarioPDI(listaPdi);
             } else throw new ItinerariNotFoundEccezione();
             if (app instanceof StatoPendingItinerario) {
@@ -105,8 +107,8 @@ public class ItinerariServiceController {
         } else throw new ItinerariNotFoundEccezione();
     }
 
-    @PutMapping(value = "/AggiungiFoto/{nomeItinerario}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> AggiungiFoto(@RequestParam("file") MultipartFile file,
+    @PutMapping(value = "/aggiungiFoto/{nomeItinerario}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> aggiungiFoto(@RequestParam("file") MultipartFile file,
                                                @PathVariable("nomeItinerario") String nomeItinerario) throws IOException {
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         String ruoloUtente = findRuolo();
@@ -115,7 +117,7 @@ public class ItinerariServiceController {
             Itinerario itinerario = itinerariRepository.findByNomeItinerario(nomeItinerario);
             List listaFoto = itinerario.getListaFoto();
             if (!itinerario.getListaFoto().contains(file)) {
-                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
+                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
@@ -131,7 +133,7 @@ public class ItinerariServiceController {
                 return new ResponseEntity<>("Itinerario aggiunto allo stato di Pending", HttpStatus.OK);
             } else {
                 itinerariRepository.save(itinerario);
-                return new ResponseEntity<>("Punto di Interesse aggiunto", HttpStatus.OK);
+                return new ResponseEntity<>("File aggiunto con successo", HttpStatus.OK);
             }
         } else throw new ItinerariNotFoundEccezione();
     }
@@ -142,13 +144,12 @@ public class ItinerariServiceController {
         return new ResponseEntity<>(statoPendingRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/approvazioneStatoPending/{idNomeItinearario}")
-    public ResponseEntity<Object> approvazioneStatoPending(@PathVariable String idNomeItinerario) {
-        StatoPendingItinerario statoPending = statoPendingRepository.findStatoPendingItinerarioByNomeItinerario(idNomeItinerario);
+    @RequestMapping(value = "/approvStatoPending/{nomeItinerario}")
+    public ResponseEntity<Object> approvazioneStatoPending(@PathVariable("nomeItinerario") String nomeItinerario) {
+        StatoPendingItinerario statoPending = statoPendingRepository.findStatoPendingItinerarioByNomeItinerario(nomeItinerario);
         statoPendingRepository.delete(statoPending);
-        Itinerario itinerario = new Itinerario(statoPending.getNomeItinerario());
-        itinerario.setListaFoto(statoPending.getListaFoto());
-        itinerario.setListaItinerarioPDI(statoPending.getListaItinerarioPDI());
+        Itinerario itinerario = new Itinerario(statoPending.getNomeItinerario(),statoPending.getListaItinerarioPDI(),
+                statoPending.getListaFoto());
         itinerariRepository.save(itinerario);
         return new ResponseEntity<>("Itinerario approvato", HttpStatus.OK);
     }

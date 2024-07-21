@@ -1,6 +1,6 @@
 package it.unicam.IDS.progetto.Dtos;
 
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 public class ItinerarioDtos {
 
@@ -13,5 +13,9 @@ public class ItinerarioDtos {
 
     public String getNomeItinerario() {
         return nomeItinerario;
+    }
+
+    public void setNomeItinerario(String nomeItinerario) {
+        this.nomeItinerario = nomeItinerario;
     }
 }

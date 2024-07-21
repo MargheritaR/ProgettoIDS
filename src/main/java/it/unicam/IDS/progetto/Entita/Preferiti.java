@@ -1,25 +1,22 @@
 package it.unicam.IDS.progetto.Entita;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 public class Preferiti{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPreferiti;
 
-    @NotEmpty
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Itinerario> preferiti;
 
-    public Preferiti(List<Itinerario> preferiti) {
-        this.preferiti = preferiti;
+    public Preferiti() {
+        this.preferiti = new ArrayList<>();
     }
 
     public List<Itinerario> getPreferiti() {
@@ -34,7 +31,4 @@ public class Preferiti{
         return idPreferiti;
     }
 
-    public void setIdPreferiti(int idPreferiti) {
-        this.idPreferiti = idPreferiti;
-    }
 }

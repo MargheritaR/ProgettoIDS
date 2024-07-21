@@ -1,22 +1,29 @@
 package it.unicam.IDS.progetto.Service;
 
 import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiNotFoundEccezione;
+import it.unicam.IDS.progetto.Entita.Itinerario;
 import it.unicam.IDS.progetto.Entita.Preferiti;
+import it.unicam.IDS.progetto.Repository.ItinerarioListRepository;
 import it.unicam.IDS.progetto.Repository.PreferitiListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/preferiti")
 public class PreferitiServiceController {
 
     private PreferitiListRepository preferitiRepository;
+    private ItinerarioListRepository itinerarioRepository;
 
     @Autowired
-    public PreferitiServiceController(PreferitiListRepository preferitiRepository) {
+    public PreferitiServiceController(PreferitiListRepository preferitiRepository,
+                                      ItinerarioListRepository itinerarioRepository) {
         this.preferitiRepository = preferitiRepository;
+        this.itinerarioRepository = itinerarioRepository;
     }
 
     @RequestMapping(value = "/getPreferiti")
@@ -31,12 +38,15 @@ public class PreferitiServiceController {
         } else throw new PreferitiNotFoundEccezione();
     }
 
-    @PostMapping(value = "/newPreferiti")
-    public ResponseEntity<Object> newPreferiti(@RequestBody Preferiti preferiti) {
-        if (!preferitiRepository.existsById(String.valueOf(preferiti.getIdPreferiti()))){
-            preferitiRepository.save(preferiti);
-            return new ResponseEntity("Preferiti creato", HttpStatus.OK);
-        } else throw new PreferitiNotFoundEccezione();
+    @PostMapping(value = "/newPreferiti/{nomeItinerario}")
+    public ResponseEntity<Object> newPreferiti(@PathVariable("nomeItinerario") String nomeItinerario) {
+        Itinerario it = itinerarioRepository.findByNomeItinerario(nomeItinerario);
+        Preferiti preferiti = new Preferiti();
+        List lista = preferiti.getPreferiti();
+        lista.add(it);
+        preferiti.setPreferiti(lista);
+        preferitiRepository.save(preferiti);
+        return new ResponseEntity("Preferiti creato", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/deletePreferiti/{idPreferiti}")

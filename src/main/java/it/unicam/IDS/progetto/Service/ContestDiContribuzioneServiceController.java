@@ -97,24 +97,25 @@ public class ContestDiContribuzioneServiceController {
                                                   @PathVariable("idContenuto") int idContenuto) {
         if (contestRepository.existsByNomeContest(nomeContest)) {
             ContestDiContribuzione appoggio = contestRepository.findByNomeContest(nomeContest);
-            if (appoggio.getContenutiApprovati().contains(idContenuto)) {
+            if (!appoggio.getContenutiApprovati().contains(idContenuto)) {
                 Contenuti contenuti = contenutiRepository.findByIdContenuto(idContenuto);
                 appoggio.setVincitore(contenuti.getContenuto());
+                contestRepository.save(appoggio);
                 return new ResponseEntity<>("Il vincitore è stato deciso", HttpStatus.OK);
             } else throw new ContenutiNotFoundEccezione();
         } else throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
-    @RequestMapping(value = "/validaContest/{nomeContest}/{idContenuto}")
+    @PutMapping(value = "/validaContest/{nomeContest}/{idContenuto}")
     public ResponseEntity<Object> validaContest(@PathVariable("nomeContest") String nomeContest,
                                                 @PathVariable("idContenuto") int idContenuto) {
         if (contestRepository.existsByNomeContest(nomeContest)) {
             ContestDiContribuzione contest = contestRepository.findByNomeContest(nomeContest);
-            Contenuti appoggio = contest.getContenuti().get(idContenuto);
+            Contenuti appoggio = contest.getContenuti().get(idContenuto-1);
             List listaCNonApprovati = contest.getContenuti();
             List listaCApprovati = contest.getContenutiApprovati();
             if (listaCNonApprovati.contains(appoggio)) {
-                listaCNonApprovati.remove(idContenuto);
+                listaCNonApprovati.remove(idContenuto-1);
                 listaCApprovati.add(appoggio);
                 contest.setContenuti(listaCNonApprovati);
                 contest.setContenutiApprovati(listaCApprovati);
@@ -132,7 +133,7 @@ public class ContestDiContribuzioneServiceController {
             if (!appoggio.getLimiteMassimoC().isAfter(LocalDate.now()))
                 throw new ContestDiContribuzioneOverTimeLimitEccezione();
             if (!appoggio.getContenuti().contains(file)) {
-                File file1 = new File("/home/daniele-rossi/Scrivania/ProvaFile/" + file.getOriginalFilename());
+                File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
