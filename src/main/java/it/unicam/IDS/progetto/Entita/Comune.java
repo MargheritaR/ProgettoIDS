@@ -4,7 +4,6 @@ import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +19,6 @@ public class Comune {
 
     private String cap;
 
-    private List<Contenuti> listaContenuti;
-
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<PuntoInteresse> listaPDI;
 
@@ -32,7 +29,6 @@ public class Comune {
         this.nomeComune = nomeComune;
         this.coordinate = new Coordinate(nomeComune, asseX, asseY);
         this.cap = cap;
-        this.listaContenuti = null;
         this.listaPDI = null;
         this.listaPendingPDI = null;
     }
@@ -77,20 +73,47 @@ public class Comune {
         this.listaPendingPDI = listaPendingPDI;
     }
 
-    public void addContenuti(List<Contenuti> listaContenuti, Contenuti contenuto) {
-        if (listaContenuti.contains(contenuto))
+    public void addContenuti(String nomePDI,Contenuti contenuto) {
+        PuntoInteresse puntoInteresse = findPDI(nomePDI);
+//        if (puntoInteresse == null)
+//            System.out.println("Il punto di interesse non esiste");
+        if (puntoInteresse.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
 
-        listaContenuti.add(contenuto);
+        puntoInteresse.getListaContenuti().add(contenuto);
         System.out.println("Il contenuto è stato aggiunto al punto di interesse");
     }
 
-    public void rimuoviContenuti(List<Contenuti> listaContenuti, Contenuti contenuto) {
-        if (!listaContenuti.contains(contenuto))
+    public void addContenutiPending(String nomePDI, Contenuti contenuto) {
+        PuntoInteresse puntoInteresse = findPDI(nomePDI);
+//        if (puntoInteresse == null)
+//            System.out.println("Il punto di interesse non esiste");
+        if (puntoInteresse.getListaContenuti().contains(contenuto))
+            System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
+
+        puntoInteresse.getListaContenuti().add(contenuto);
+        listaPDI.remove(puntoInteresse);
+        listaPendingPDI.add(puntoInteresse);
+        System.out.println("Il contenuto è stato aggiunto allo stato pending");
+    }
+
+    public void rimuoviContenuti(String nomePDI, Contenuti contenuto) {
+        PuntoInteresse puntoInteresse = findPDI(nomePDI);
+//        if (puntoInteresse == null)
+//            System.out.println("Il punto di interesse non esiste");
+        if (!puntoInteresse.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto da eliminare non è presente nella piattaforma");
 
-        listaContenuti.remove(contenuto);
+        puntoInteresse.getListaContenuti().remove(contenuto);
         System.out.println("Il contenuto è stato eliminato dal punto di interesse");
+    }
+
+    private PuntoInteresse findPDI(String nomePdi){
+        for(PuntoInteresse pdi:listaPDI){
+            if(pdi.getNomePDI().equalsIgnoreCase(nomePdi))
+                return pdi;
+        }
+        return throw new PuntoInteresseNotFoundEccezione();
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
