@@ -1,8 +1,6 @@
 package it.unicam.IDS.progetto.Controller;
 
-import it.unicam.IDS.progetto.Entita.Comune;
-import it.unicam.IDS.progetto.Entita.Itinerario;
-import it.unicam.IDS.progetto.Entita.PuntoInteresse;
+import it.unicam.IDS.progetto.Entita.*;
 
 public class ControllerComune {
 
@@ -10,6 +8,18 @@ public class ControllerComune {
 
     public ControllerComune(Comune comune) {
         this.comune = comune;
+    }
+
+    public void addContenuti(String nomePDI, Contenuti contenuto){
+        comune.addContenuti(nomePDI, contenuto);
+    }
+
+    public void addContenutiPending(String nomePDI, Contenuti contenuto){
+        comune.addContenutiPending(nomePDI, contenuto);
+    }
+
+    public void rimuoviContenuti(String nomePDI, Contenuti contenuto){
+        comune.rimuoviContenuti(nomePDI, contenuto);
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
@@ -55,4 +65,14 @@ public class ControllerComune {
     public void rimuoviPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
         comune.rimuoviPdiItinerario(nomePuntoInteresse, nomeItinerario);
     }
+
+    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
+        comune.creaContestDiContribuzione(contestDiContribuzione);
+    }
+
+    public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
+        comune.eliminaContestDiContribuzione(contestDiContribuzione);
+    }
+
+
 }

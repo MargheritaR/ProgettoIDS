@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,79 +24,93 @@ public class Comune {
     private String cap;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<PuntoInteresse> listaPDI;
+    private ArrayList<PuntoInteresse> listaPDI;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<PuntoInteresse> listaPendingPDI;
+    private ArrayList<PuntoInteresse> listaPendingPDI;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Itinerario> listaItinerari;
+    private ArrayList<Itinerario> listaItinerari;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Itinerario> listaPendingItinerari;
+    private ArrayList<Itinerario> listaPendingItinerari;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private ArrayList<ContestDiContribuzione> listaContest;
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
         this.nomeComune = nomeComune;
         this.coordinate = new Coordinate(nomeComune, asseX, asseY);
         this.cap = cap;
-        this.listaPDI = null;
-        this.listaPendingPDI = null;
+        this.listaPDI = new ArrayList<>();
+        this.listaPendingPDI = new ArrayList<>();
+        this.listaContest = new ArrayList<>();
+        this.listaItinerari = new ArrayList<>();
+        this.listaPendingItinerari = new ArrayList<>();
     }
 
     public String getNomeComune() {
         return nomeComune;
     }
 
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
     public void setNomeComune(String nomeComune) {
         this.nomeComune = nomeComune;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
-    public String getCap() {
+    public @NotNull String getCap() {
         return cap;
     }
 
-    public void setCap(String cap) {
+    public void setCap(@NotNull String cap) {
         this.cap = cap;
     }
 
-    public List<PuntoInteresse> getListaPDI() {
+    public ArrayList<PuntoInteresse> getListaPDI() {
         return listaPDI;
     }
 
-    public void setListaPDI(List<PuntoInteresse> listaPDI) {
+    public void setListaPDI(ArrayList<PuntoInteresse> listaPDI) {
         this.listaPDI = listaPDI;
     }
 
-    public List<PuntoInteresse> getListaPendingPDI() {
+    public ArrayList<PuntoInteresse> getListaPendingPDI() {
         return listaPendingPDI;
     }
 
-    public void setListaPendingPDI(List<PuntoInteresse> listaPendingPDI) {
+    public void setListaPendingPDI(ArrayList<PuntoInteresse> listaPendingPDI) {
         this.listaPendingPDI = listaPendingPDI;
     }
 
-    public List<Itinerario> getListaItinerari() {
+    public ArrayList<Itinerario> getListaItinerari() {
         return listaItinerari;
     }
 
-    public void setListaItinerari(List<Itinerario> listaItinerari) {
+    public void setListaItinerari(ArrayList<Itinerario> listaItinerari) {
         this.listaItinerari = listaItinerari;
     }
 
-    public List<Itinerario> getListaPendingItinerari() {
+    public ArrayList<Itinerario> getListaPendingItinerari() {
         return listaPendingItinerari;
     }
 
-    public void setListaPendingItinerari(List<Itinerario> listaPendingItinerari) {
+    public void setListaPendingItinerari(ArrayList<Itinerario> listaPendingItinerari) {
         this.listaPendingItinerari = listaPendingItinerari;
+    }
+
+    public ArrayList<ContestDiContribuzione> getListaContest() {
+        return listaContest;
+    }
+
+    public void setListaContest(ArrayList<ContestDiContribuzione> listaContest) {
+        this.listaContest = listaContest;
     }
 
     public void addContenuti(String nomePDI, Contenuti contenuto) {
@@ -148,7 +163,7 @@ public class Comune {
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
-        if (listaPDI.contains(puntoPDI))
+        if ((listaPDI.size() == 1) && listaPDI.contains(puntoPDI))
             System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
 
         listaPDI.add(puntoPDI);
@@ -203,7 +218,7 @@ public class Comune {
 
     public void creaItinerario(Itinerario itinerario) {
         if(listaItinerari.contains(itinerario))
-            System.out.println("Il punto di interesse è già presente nella piattaforma");
+            System.out.println("L'itinerario è già presente nella piattaforma");
 
         listaItinerari.add(itinerario);
         System.out.println("L'itinerario è stato aggiunto");
@@ -253,4 +268,39 @@ public class Comune {
         System.out.println("Il punto di interesse è stato rimosso dall'itinerario");
     }
 
+    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
+        if(listaContest.contains(contestDiContribuzione))
+            System.out.println("Il contest di contribuzione è già presente nella piattaforma");
+        if(!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
+                contestDiContribuzione.getDpc().isAfter(contestDiContribuzione.getDataInizio())))
+            System.out.println("L'ultima data disponibile per la possibilità di aggiungere contenuti " +
+                    "per il contest di contribuzione non è compresa tra la data di inizio e la data di fine");
+        if (!contestDiContribuzione.getDataInizio().isBefore(contestDiContribuzione.getDataFine()))
+            System.out.println("La data di inizio deve essere  prima della data di fine");
+
+        listaContest.add(contestDiContribuzione);
+        System.out.println("Il contest di contribuzione è stato aggiunto");
+    }
+
+    public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
+        if(!listaContest.contains(contestDiContribuzione))
+            System.out.println("Il contest di contribuzione da eliminare non è presente nella piattaforma");
+        listaContest.remove(contestDiContribuzione);
+        System.out.println("Il contest di contribuzione è stato eliminato dalla piattaforma");
+
+    }
+
+    @Override
+    public String toString() {
+        return "Comune{" +
+                "nomeComune='" + nomeComune + '\'' +
+                ", coordinate=" + coordinate +
+                ", cap='" + cap + '\'' +
+                ", listaPDI=" + listaPDI +
+                ", listaPendingPDI=" + listaPendingPDI +
+                ", listaItinerari=" + listaItinerari +
+                ", listaPendingItinerari=" + listaPendingItinerari +
+                ", listaContest=" + listaContest +
+                '}';
+    }
 }

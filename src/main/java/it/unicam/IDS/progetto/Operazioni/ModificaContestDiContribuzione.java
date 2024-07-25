@@ -1,5 +1,5 @@
 package it.unicam.IDS.progetto.Operazioni;
-
+/*
 import it.unicam.IDS.progetto.Entita.ContestDiContribuzione;
 
 import java.time.LocalDate;
@@ -150,3 +150,4 @@ public class ModificaContestDiContribuzione {
     }
 
 }
+*/

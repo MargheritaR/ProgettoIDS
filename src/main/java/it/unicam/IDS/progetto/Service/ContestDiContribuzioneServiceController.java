@@ -1,5 +1,5 @@
 package it.unicam.IDS.progetto.Service;
-
+/*
 import it.unicam.IDS.progetto.Dtos.ContestDiContribuzioneDtos;
 import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
@@ -40,10 +40,10 @@ public class ContestDiContribuzioneServiceController {
         this.contestRepository = contestRepository;
         this.utenteRepository = utenteRepository;
         this.contenutiRepository = contenutiRepository;
-        ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival", "bere",
-                "informatica", "12/08/2024", 5, "1/03/2023",
-                "10/03/2023", "10/06/2023", "20/06/2023");
-        contestRepository.save(contestDiContribuzione1);
+//        ContestDiContribuzione contestDiContribuzione1 = new ContestDiContribuzione("springFestival", "bere",
+//                "informatica", "12/08/2024", 5, "1/03/2023",
+//                "10/03/2023", "10/06/2023", "20/06/2023");
+//        contestRepository.save(contestDiContribuzione1);
     }
 
     @RequestMapping(value = "/getContest")
@@ -54,10 +54,10 @@ public class ContestDiContribuzioneServiceController {
     @PostMapping(value = "/addContest")
     public ResponseEntity<Object> addContest(@RequestBody ContestDiContribuzioneDtos c) {
         if (!contestRepository.existsByNomeContest(c.getNomeContest())) {
-            ContestDiContribuzione contest = new ContestDiContribuzione(c.getNomeContest(), c.getObiettivo(), c.getTematica(),
-                    c.getLimiteMassimoC(), c.getSogliaInviti(), c.getTermineMassimoS(),
-                    c.getTermineMassimoR(), c.getTempoInizio(), c.getTempoFine());
-            contestRepository.save(contest);
+//            ContestDiContribuzione contest = new ContestDiContribuzione(c.getNomeContest(), c.getObiettivo(), c.getTematica(),
+//                    c.getLimiteMassimoC(), c.getSogliaInviti(), c.getTermineMassimoS(),
+//                    c.getTermineMassimoR(), c.getTempoInizio(), c.getTempoFine());
+//            contestRepository.save(contest);
             return new ResponseEntity<>("Il contest di contribuzione è stato creato con successo", HttpStatus.OK);
         } else throw new ContestDiContribuzioneNotFoundEccezione();
     }
@@ -74,15 +74,15 @@ public class ContestDiContribuzioneServiceController {
     public ResponseEntity<Object> editContest(@RequestBody ContestDiContribuzioneDtos c,
                                               @PathVariable("nomeContest") String nomeContest) {
         if (contestRepository.existsByNomeContest(nomeContest)) {
-            ContestDiContribuzione contest = new ContestDiContribuzione(c.getNomeContest(), c.getObiettivo(), c.getTematica(),
-                    c.getLimiteMassimoC(), c.getSogliaInviti(), c.getTermineMassimoS(),
-                    c.getTermineMassimoR(), c.getTempoInizio(), c.getTempoFine());
-            contestRepository.deleteById(nomeContest);
-            contestRepository.save(contest);
-            return new ResponseEntity<>("Il contest di contribuzione è stato aggiornato con successo", HttpStatus.OK);
-        } else throw new ContestDiContribuzioneNotFoundEccezione();
-
-    }
+//            ContestDiContribuzione contest = new ContestDiContribuzione(c.getNomeContest(), c.getObiettivo(), c.getTematica(),
+//                    c.getLimiteMassimoC(), c.getSogliaInviti(), c.getTermineMassimoS(),
+//                    c.getTermineMassimoR(), c.getTempoInizio(), c.getTempoFine());
+//            contestRepository.deleteById(nomeContest);
+//            contestRepository.save(contest);
+//          return new ResponseEntity<>("Il contest di contribuzione è stato aggiornato con successo", HttpStatus.OK);
+//        } else throw new ContestDiContribuzioneNotFoundEccezione();
+//
+//    }
 
     @RequestMapping(value = "/getVincitore/{nomeContest}")
     public ResponseEntity<Object> getVincitore(@PathVariable("nomeContest") String nomeContest) {
@@ -130,8 +130,8 @@ public class ContestDiContribuzioneServiceController {
                                                  @PathVariable("nomeContest") String nomeContest) throws IOException {
         if (contestRepository.existsByNomeContest(nomeContest)) {
             ContestDiContribuzione appoggio = contestRepository.findByNomeContest(nomeContest);
-            if (!appoggio.getLimiteMassimoC().isAfter(LocalDate.now()))
-                throw new ContestDiContribuzioneOverTimeLimitEccezione();
+//            if (!appoggio.getLimiteMassimoC().isAfter(LocalDate.now()))
+//                throw new ContestDiContribuzioneOverTimeLimitEccezione();
             if (!appoggio.getContenuti().contains(file)) {
                 File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
                 file1.createNewFile();
@@ -159,3 +159,4 @@ public class ContestDiContribuzioneServiceController {
 
 }
 
+*/

@@ -21,27 +21,19 @@ public class ContestDiContribuzione{
     private String tematica;
 
     @NotNull
-    //limite massimo dei contenuti aggiungibili nel lasso di tempo del contest
-    private LocalDate limiteMassimoC;
+    //ultima data disponibile per aggiungere i contenuti al contest di contribuzione
+    private LocalDate dpc;
 
     @NotNull
-    //termine massimo di spedizione degli inviti
-    private String termineMassimoS;
+    private boolean suInvito;
 
     @NotNull
-    //termine massimo di ricezione degli inviti
-    private String termineMassimoR;
+    //data inizio del contest di contribuzione
+    private LocalDate dataInizio;
 
     @NotNull
-    private int sogliaInviti = 0;
-
-    @NotNull
-    //tempo iniziale del lasso di tempo del contest
-    private LocalDate tempoInizio;
-
-    @NotNull
-    //tempo finale del lasso di tempo del contest
-    private LocalDate tempoFine;
+    //data fine del contest di contribuzione
+    private LocalDate dataFine;
 
     @NotNull
     private File vincitore;
@@ -53,17 +45,14 @@ public class ContestDiContribuzione{
     private List<Contenuti> contenutiApprovati;
 
     public ContestDiContribuzione(String nomeContest, String obiettivo, String tematica,
-                                  String limiteMassimoC, int sogliaInviti, String termineMassimoS,
-                                  String termineMassimoR, String tempoInizio, String tempoFine) {
+                                  String dpc, boolean suInvito, String dataInizio, String dataFine) {
         this.nomeContest = nomeContest;
         this.obiettivo = obiettivo;
         this.tematica = tematica;
-        this.limiteMassimoC = LocalDate.parse(limiteMassimoC, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.sogliaInviti = sogliaInviti;
-        this.termineMassimoR = termineMassimoR;
-        this.termineMassimoS = termineMassimoS;
-        this.tempoInizio = LocalDate.parse(tempoInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.tempoFine = LocalDate.parse(tempoFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.dpc = LocalDate.parse(dpc, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.suInvito= false;
+        this.dataInizio = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.dataFine = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.vincitore = null;
         this.contenuti = null;
         this.contenutiApprovati = null;
@@ -79,11 +68,11 @@ public class ContestDiContribuzione{
         this.nomeContest = nomeContest;
     }
 
-    public String getObiettivo() {
+    public @NotNull String getObiettivo() {
         return obiettivo;
     }
 
-    public void setObiettivo(String obiettivo) {
+    public void setObiettivo(@NotNull String obiettivo) {
         this.obiettivo = obiettivo;
     }
 
@@ -91,64 +80,48 @@ public class ContestDiContribuzione{
         return tematica;
     }
 
-    public void setTematica(String tematica) {
+    public void setTematica(@NotNull String tematica) {
         this.tematica = tematica;
     }
 
-    public @NotNull LocalDate getLimiteMassimoC() {
-        return limiteMassimoC;
+    public @NotNull LocalDate getDpc() {
+        return dpc;
     }
 
-    public void setLimiteMassimoC(LocalDate limiteMassimoC) {
-        this.limiteMassimoC = limiteMassimoC;
-    }
-
-    public @NotNull String getTermineMassimoS() {
-        return termineMassimoS;
-    }
-
-    public void setTermineMassimoS(String termineMassimoS) {
-        this.termineMassimoS = termineMassimoS;
-    }
-
-    public @NotNull String getTermineMassimoR() {
-        return termineMassimoR;
-    }
-
-    public void setTermineMassimoR(String termineMassimoR) {
-        this.termineMassimoR = termineMassimoR;
+    public void setDpc(@NotNull LocalDate dpc) {
+        this.dpc = dpc;
     }
 
     @NotNull
-    public int getSogliaInviti() {
-        return sogliaInviti;
+    public boolean isSuInvito() {
+        return suInvito;
     }
 
-    public void setSogliaInviti(int sogliaInviti) {
-        this.sogliaInviti = sogliaInviti;
+    public void setSuInvito(@NotNull boolean suInvito) {
+        this.suInvito = suInvito;
     }
 
-    public @NotNull LocalDate getTempoInizio() {
-        return tempoInizio;
+    public @NotNull LocalDate getDataInizio() {
+        return dataInizio;
     }
 
-    public void setTempoInizio(LocalDate tempoInizio) {
-        this.tempoInizio = tempoInizio;
+    public void setDataInizio(@NotNull LocalDate dataInizio) {
+        this.dataInizio = dataInizio;
     }
 
-    public @NotNull LocalDate getTempoFine() {
-        return tempoFine;
+    public @NotNull LocalDate getDataFine() {
+        return dataFine;
     }
 
-    public void setTempoFine(LocalDate tempoFine) {
-        this.tempoFine = tempoFine;
+    public void setDataFine(@NotNull LocalDate dataFine) {
+        this.dataFine = dataFine;
     }
 
     public @NotNull File getVincitore() {
         return vincitore;
     }
 
-    public void setVincitore(File vincitore) {
+    public void setVincitore(@NotNull File vincitore) {
         this.vincitore = vincitore;
     }
 
@@ -166,18 +139,5 @@ public class ContestDiContribuzione{
 
     public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {
         this.contenutiApprovati = contenutiApprovati;
-    }
-
-    @Override
-    public String toString() {
-        return "ContestDiContribuzione" +
-                "Nome del contest:" + nomeContest + '\n' +
-                ", obiettivo:" + obiettivo + '\n' +
-                ", tematica:" + tematica + '\n' +
-                ", limite Massimo dei Contenuti:" + limiteMassimoC +
-                ", termine massimo inviti spediti:" + termineMassimoS + '\n' +
-                ", termine massimo inviti ricevuti:" + termineMassimoR + '\n' +
-                ", soglia inviti:" + sogliaInviti + '\n' +
-                ", lasso di tempo:" + "tra" + tempoInizio + "e" + tempoFine + '\n';
     }
 }
