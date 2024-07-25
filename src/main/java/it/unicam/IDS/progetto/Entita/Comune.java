@@ -1,7 +1,9 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -17,6 +19,7 @@ public class Comune {
     @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
     private Coordinate coordinate;
 
+    @NotNull
     private String cap;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
@@ -24,6 +27,12 @@ public class Comune {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<PuntoInteresse> listaPendingPDI;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Itinerario> listaItinerari;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Itinerario> listaPendingItinerari;
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
         this.nomeComune = nomeComune;
@@ -73,7 +82,23 @@ public class Comune {
         this.listaPendingPDI = listaPendingPDI;
     }
 
-    public void addContenuti(String nomePDI,Contenuti contenuto) {
+    public List<Itinerario> getListaItinerari() {
+        return listaItinerari;
+    }
+
+    public void setListaItinerari(List<Itinerario> listaItinerari) {
+        this.listaItinerari = listaItinerari;
+    }
+
+    public List<Itinerario> getListaPendingItinerari() {
+        return listaPendingItinerari;
+    }
+
+    public void setListaPendingItinerari(List<Itinerario> listaPendingItinerari) {
+        this.listaPendingItinerari = listaPendingItinerari;
+    }
+
+    public void addContenuti(String nomePDI, Contenuti contenuto) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
 //        if (puntoInteresse == null)
 //            System.out.println("Il punto di interesse non esiste");
@@ -109,11 +134,17 @@ public class Comune {
     }
 
     private PuntoInteresse findPDI(String nomePdi){
-        for(PuntoInteresse pdi:listaPDI){
+        for(PuntoInteresse pdi:listaPDI)
             if(pdi.getNomePDI().equalsIgnoreCase(nomePdi))
                 return pdi;
-        }
-        return throw new PuntoInteresseNotFoundEccezione();
+        throw new PuntoInteresseNotFoundEccezione();
+    }
+
+    private Itinerario findItinerario(String nomeItinerario){
+        for(Itinerario it:listaItinerari)
+            if (it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
+                return it;
+        throw new ItinerariNotFoundEccezione();
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
@@ -140,16 +171,86 @@ public class Comune {
         System.out.println("il punto di interesse è stato eliminato");
     }
 
-    public void approvazioneStatoPendingPDI(PuntoInteresse pdiScelto, String scelta) {
-        if (!listaPendingPDI.contains(pdiScelto))
+    public void approvazioneStatoPendingPDI(String pdiScelto, String scelta) {
+        PuntoInteresse pdi = findPDI(pdiScelto);
+        if (!listaPendingPDI.contains(pdi))
             throw new PuntoInteresseNotFoundEccezione();
+
         if (scelta.equalsIgnoreCase("Y")) {
-            listaPendingPDI.remove(pdiScelto);
-            listaPDI.add(pdiScelto);
+            listaPendingPDI.remove(pdi);
+            listaPDI.add(pdi);
             System.out.println("Il punto di interesse è stato approvato");
         } else {
-            listaPendingPDI.remove(pdiScelto);
+            listaPendingPDI.remove(pdi);
             System.out.println("Il punto di interesse non è stato approvato quindi è stato eliminato");
         }
     }
+
+    public void approvazioneStatoPendingItinerario(String itinerarioScelto, String scelta) {
+        Itinerario it = findItinerario(itinerarioScelto);
+        if (!listaPendingItinerari.contains(it))
+            throw new ItinerariNotFoundEccezione();
+
+        if (scelta.equalsIgnoreCase("Y")) {
+            listaPendingItinerari.remove(it);
+            listaItinerari.add(it);
+            System.out.println("L'itinerario è stato approvato");
+        } else {
+            listaPendingItinerari.remove(it);
+            System.out.println("L'itinerario non è stato approvato quindi è stato eliminato");
+        }
+    }
+
+    public void creaItinerario(Itinerario itinerario) {
+        if(listaItinerari.contains(itinerario))
+            System.out.println("Il punto di interesse è già presente nella piattaforma");
+
+        listaItinerari.add(itinerario);
+        System.out.println("L'itinerario è stato aggiunto");
+    }
+
+    public void creaItinerarioPending(Itinerario itinerario) {
+        if(listaItinerari.contains(itinerario))
+            System.out.println("L'itinerario è già presente nella piattaforma");
+
+        listaPendingItinerari.add(itinerario);
+        System.out.println("L'itinerario è stato aggiunto allo stato pending");
+    }
+
+    public void eliminaItinerario(Itinerario itinerario) {
+        if(!listaItinerari.contains(itinerario))
+            System.out.println("L'itinerario da eliminare non è presente nella piattaforma");
+
+        listaItinerari.remove(itinerario);
+        System.out.println("L'itinerario è stato eliminato dalla piattaforma");
+    }
+
+    public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
+        Itinerario itinerario = findItinerario(nomeItinerario);
+        PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
+
+        //TODO controllare se vanno i controlli di null
+        itinerario.getListaItinerarioPDI().add(puntoInteresse);
+        System.out.println("Il punto di interesse è stato aggiunto all'itinerario");
+    }
+
+    public void aggiuntaPendingPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
+        Itinerario itinerario = findItinerario(nomeItinerario);
+        PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
+
+        itinerario.getListaItinerarioPDI().add(puntoInteresse);
+        listaItinerari.remove(itinerario);
+        System.out.println("Il punto di interesse è stato aggiunto all'itinerario");
+        listaPendingItinerari.add(itinerario);
+        System.out.println("L'itinerario è stato aggiunto allo stato di pending");
+    }
+
+    public void rimuoviPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
+        Itinerario itinerario = findItinerario(nomeItinerario);
+        PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
+
+        itinerario.getListaItinerarioPDI().remove(puntoInteresse);
+        System.out.println("Il punto di interesse è stato rimosso dall'itinerario");
+    }
+
 }
