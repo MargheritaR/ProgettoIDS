@@ -7,19 +7,19 @@ import jakarta.validation.constraints.NotEmpty;
 public class Coordinate {
 
     @Id
-    private String IdNomeCoordinate;
+    private String nomeCoordinate;
 
     @NotEmpty
-    private double X;
+    private double latitudine;
 
     @NotEmpty
-    private double Y;
+    private double longitudine;
 
     // costruttore
-    public Coordinate(String idNomePDI,double x, double y) {
-        this.IdNomeCoordinate = idNomePDI;
-        this.X = x;
-        this.Y = y;
+    public Coordinate(String idNomePDI, double latitudine, double longitudine) {
+        this.nomeCoordinate = idNomePDI;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
     }
 
     public Coordinate() {}
@@ -27,28 +27,28 @@ public class Coordinate {
     @Override
     public String toString() {
         return "{" +
-                "X=" + X +
-                ", Y=" + Y +
+                "X=" + latitudine +
+                ", Y=" + longitudine +
                 '}';
     }
 
-    public String getIdNomeCoordinate() {
-        return IdNomeCoordinate;
+    public String getNomeCoordinate() {
+        return nomeCoordinate;
     }
 
-    public double getX() {
-        return X;
+    public double getLatitudine() {
+        return latitudine;
     }
 
-    public void setX(double x) {
-        X = x;
+    public void setLatitudine(double latitudine) {
+        this.latitudine = latitudine;
     }
 
-    public double getY() {
-        return Y;
+    public double getLongitudine() {
+        return longitudine;
     }
 
-    public void setY(double y) {
-        Y = y;
+    public void setLongitudine(double longitudine) {
+        this.longitudine = longitudine;
     }
 }

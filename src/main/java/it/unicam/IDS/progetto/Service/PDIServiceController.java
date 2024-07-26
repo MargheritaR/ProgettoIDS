@@ -102,7 +102,7 @@ public class PDIServiceController {
             if (puntiInteresseRepository.existsById(nomePDI)) {
                 PuntoInteresse puntoInteresse = puntiInteresseRepository.findById(nomePDI).get();
                 puntoInteresse.setNomePDI(pdi.getNomePDI());
-                puntoInteresse.setCoordinate(pdi.getAsseX(), pdi.getAsseY());
+                //puntoInteresse.setCoordinate(pdi.getAsseX(), pdi.getAsseY());
                 puntiInteresseRepository.save(puntoInteresse);
             } else throw new PuntoInteresseNotFoundEccezione();
         }
@@ -121,11 +121,11 @@ public class PDIServiceController {
         fileOut.write(file.getBytes());
         fileOut.close();
         PuntoInteresse puntoInteresse = puntiInteresseRepository.findByNomePDI(nomePDI);
-        Contenuti contenuti = new Contenuti(file1);
-        puntoInteresse.getListaContenuti().add(contenuti);
+        //Contenuti contenuti = new Contenuti(file1);
+        //puntoInteresse.getListaContenuti().add(contenuti);
         if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingPuntoInteresse statoPending = new StatoPendingPuntoInteresse(puntoInteresse.getNomePDI(),
-                    puntoInteresse.getCoordinate().getX(),puntoInteresse.getCoordinate().getY(),
+                    puntoInteresse.getCoordinate().getLatitudine(),puntoInteresse.getCoordinate().getLongitudine(),
                     puntoInteresse.getListaContenuti());
             puntiInteresseRepository.delete(puntoInteresse);
             statoPendingListPuntoInteresseRepository.save(statoPending);
@@ -148,9 +148,9 @@ public class PDIServiceController {
                 .findStatoPendingPuntoInteresseByNomePDI(nomePDI);
         if (approv.equalsIgnoreCase("Y")) {
             statoPendingListPuntoInteresseRepository.delete(statoPending);
-            PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
+            /*PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
                     statoPending.getAsseY(), statoPending.getListaContenuti());
-            puntiInteresseRepository.save(puntoInteresse);
+            puntiInteresseRepository.save(puntoInteresse);*/
             return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
         } else {
             statoPendingListPuntoInteresseRepository.delete(statoPending);

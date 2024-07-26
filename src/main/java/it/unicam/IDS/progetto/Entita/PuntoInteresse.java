@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,49 +19,52 @@ public class PuntoInteresse extends StatoPending {
     private Coordinate coordinate;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Contenuti> listaContenuti;
+    private ArrayList<Contenuti> listaContenuti = new ArrayList<>();
 
-    public PuntoInteresse(String nomePDI,double asseX, double asseY) {
+    public PuntoInteresse(String nomePDI,double latitudine, double longitudine) {
         this.nomePDI = nomePDI;
-        this.coordinate = new Coordinate(nomePDI,asseX, asseY);
-        this.listaContenuti = null;
+        this.coordinate = new Coordinate(nomePDI,latitudine, longitudine);
+        //this.listaContenuti = null;
     }
 
+    /*
     public PuntoInteresse(String nomePDI, double asseX, double asseY, List<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
         this.coordinate = new Coordinate(nomePDI,asseX, asseY);
         this.listaContenuti = listaContenuti;
     }
+*/
 
     @Override
     public String toString() {
-        return "Punti di Interesse" + '\n' +
-                "nomePDI: " + nomePDI + '\n' +
-                "coordinate: " + coordinate + '\n';
+        return "PuntoInteresse{" +
+                "nomePDI='" + nomePDI + '\n' +
+                ", coordinate=" + coordinate + '\n' +
+                ", listaContenuti=" + listaContenuti +
+                '}';
     }
 
     public String getNomePDI() {
         return nomePDI;
     }
 
-    public List<Contenuti> getListaContenuti() {
-        return listaContenuti;
+    public void setNomePDI(String nomePDI) {
+        this.nomePDI = nomePDI;
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public void setCoordinate(double asseX, double asseY) {
-        this.coordinate = new Coordinate(nomePDI,asseX,asseY);
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
     }
 
-    public void setNomePDI(String nomePDI) {
-        this.nomePDI = nomePDI;
+    public ArrayList<Contenuti> getListaContenuti() {
+        return listaContenuti;
     }
 
-    public void setListaContenuti(List<Contenuti> listaContenuti) {
+    public void setListaContenuti(ArrayList<Contenuti> listaContenuti) {
         this.listaContenuti = listaContenuti;
     }
-
 }

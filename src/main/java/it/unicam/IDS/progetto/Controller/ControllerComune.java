@@ -74,5 +74,7 @@ public class ControllerComune {
         comune.eliminaContestDiContribuzione(contestDiContribuzione);
     }
 
-
+    public Comune getComune() {
+        return comune;
+    }
 }

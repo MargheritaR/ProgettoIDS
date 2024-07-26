@@ -140,4 +140,20 @@ public class ContestDiContribuzione{
     public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {
         this.contenutiApprovati = contenutiApprovati;
     }
+
+    @Override
+    public String toString() {
+        return "ContestDiContribuzione{" +
+                "nomeContest='" + nomeContest + '\'' +
+                ", obiettivo='" + obiettivo + '\'' +
+                ", tematica='" + tematica + '\'' +
+                ", dpc=" + dpc +
+                ", suInvito=" + suInvito +
+                ", dataInizio=" + dataInizio +
+                ", dataFine=" + dataFine +
+                ", vincitore=" + vincitore +
+                ", contenuti=" + contenuti +
+                ", contenutiApprovati=" + contenutiApprovati +
+                '}';
+    }
 }

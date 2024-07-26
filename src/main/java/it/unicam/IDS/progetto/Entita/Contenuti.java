@@ -13,9 +13,13 @@ public class Contenuti {
     private int idContenuto;
 
     @NotNull
+    private String nomeContenuto;
+
+    @NotNull
     private File contenuto;
 
-    public Contenuti(File contenuto) {
+    public Contenuti(String nomeContenuto, File contenuto) {
+        this.nomeContenuto = nomeContenuto;
         this.contenuto = contenuto;
     }
 
@@ -30,6 +34,9 @@ public class Contenuti {
         return contenuto;
     }
 
+    public String getNomeContenuto() {
+        return nomeContenuto;
+    }
 
     public void setIdContenuto(int idContenuto) {
         this.idContenuto = idContenuto;
@@ -39,12 +46,16 @@ public class Contenuti {
         this.contenuto = contenuto;
     }
 
+    public void setNomeContenuto(String nomeContenuto) {
+        this.nomeContenuto = nomeContenuto;
+    }
 
     @Override
     public String toString() {
         return "Contenuti{" +
-                "idContenuto='" + idContenuto + '\'' +
-                ", nomeContenuto='" + contenuto + '\'' +
+                "idContenuto=" + idContenuto + '\n' +
+                ", nomeContenuto='" + nomeContenuto + '\n' +
+                ", contenuto=" + contenuto +
                 '}';
     }
 }

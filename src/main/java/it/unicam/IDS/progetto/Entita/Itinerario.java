@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,22 +15,23 @@ public class Itinerario extends StatoPending {
     private String nomeItinerario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PuntoInteresse> listaItinerarioPDI;
+    private ArrayList<PuntoInteresse> listaItinerarioPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Foto> listaFoto;
+    private ArrayList<Foto> listaFoto = new ArrayList<>();
 
     public Itinerario(String nomeItinerario) {
         this.nomeItinerario = nomeItinerario;
-        this.listaItinerarioPDI = null;
-        this.listaFoto = null;
+        //this.listaItinerarioPDI = null;
+        //this.listaFoto = null;
     }
-
+    /*
     public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
     }
+     */
 
     public String getNomeItinerario() {
         return nomeItinerario;
@@ -39,19 +41,19 @@ public class Itinerario extends StatoPending {
         this.nomeItinerario = nomeItinerario;
     }
 
-    public List<PuntoInteresse> getListaItinerarioPDI() {
+    public ArrayList<PuntoInteresse> getListaItinerarioPDI() {
         return listaItinerarioPDI;
     }
 
-    public void setListaItinerarioPDI(List<PuntoInteresse> listaItinerarioPDI) {
+    public void setListaItinerarioPDI(ArrayList<PuntoInteresse> listaItinerarioPDI) {
         this.listaItinerarioPDI = listaItinerarioPDI;
     }
 
-    public List<Foto> getListaFoto() {
+    public ArrayList<Foto> getListaFoto() {
         return listaFoto;
     }
 
-    public void setListaFoto(List<Foto> listaFoto) {
+    public void setListaFoto(ArrayList<Foto> listaFoto) {
         this.listaFoto = listaFoto;
     }
 

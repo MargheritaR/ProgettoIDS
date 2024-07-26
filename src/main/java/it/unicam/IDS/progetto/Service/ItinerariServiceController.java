@@ -92,7 +92,7 @@ public class ItinerariServiceController {
             if (!listaPdi.contains(nomePDI)) {
                 PuntoInteresse puntoInteresse = pdiRepository.findByNomePDI(nomePDI);
                 listaPdi.add(puntoInteresse);
-                itinerario.setListaItinerarioPDI(listaPdi);
+                //itinerario.setListaItinerarioPDI(listaPdi);
             } else throw new ItinerariNotFoundEccezione();
             if (app instanceof StatoPendingItinerario) {
                 itinerariRepository.delete(itinerario);
@@ -148,9 +148,9 @@ public class ItinerariServiceController {
     public ResponseEntity<Object> approvazioneStatoPending(@PathVariable("nomeItinerario") String nomeItinerario) {
         StatoPendingItinerario statoPending = statoPendingRepository.findStatoPendingItinerarioByNomeItinerario(nomeItinerario);
         statoPendingRepository.delete(statoPending);
-        Itinerario itinerario = new Itinerario(statoPending.getNomeItinerario(),statoPending.getListaItinerarioPDI(),
-                statoPending.getListaFoto());
-        itinerariRepository.save(itinerario);
+        //Itinerario itinerario = new Itinerario(statoPending.getNomeItinerario(),statoPending.getListaItinerarioPDI(),
+        //        statoPending.getListaFoto());
+        //itinerariRepository.save(itinerario);
         return new ResponseEntity<>("Itinerario approvato", HttpStatus.OK);
     }
 

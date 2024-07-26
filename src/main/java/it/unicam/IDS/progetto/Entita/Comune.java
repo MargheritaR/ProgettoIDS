@@ -24,29 +24,24 @@ public class Comune {
     private String cap;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaPDI;
+    private ArrayList<PuntoInteresse> listaPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaPendingPDI;
+    private ArrayList<PuntoInteresse> listaPendingPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Itinerario> listaItinerari;
+    private ArrayList<Itinerario> listaItinerari = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Itinerario> listaPendingItinerari;
+    private ArrayList<Itinerario> listaPendingItinerari = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<ContestDiContribuzione> listaContest;
+    private ArrayList<ContestDiContribuzione> listaContest  = new ArrayList<>();
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
         this.nomeComune = nomeComune;
         this.coordinate = new Coordinate(nomeComune, asseX, asseY);
         this.cap = cap;
-        this.listaPDI = new ArrayList<>();
-        this.listaPendingPDI = new ArrayList<>();
-        this.listaContest = new ArrayList<>();
-        this.listaItinerari = new ArrayList<>();
-        this.listaPendingItinerari = new ArrayList<>();
     }
 
     public String getNomeComune() {
@@ -163,7 +158,7 @@ public class Comune {
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
-        if ((listaPDI.size() == 1) && listaPDI.contains(puntoPDI))
+        if (listaPDI.contains(puntoPDI))
             System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
 
         listaPDI.add(puntoPDI);
@@ -285,22 +280,22 @@ public class Comune {
     public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
         if(!listaContest.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione da eliminare non è presente nella piattaforma");
+
         listaContest.remove(contestDiContribuzione);
         System.out.println("Il contest di contribuzione è stato eliminato dalla piattaforma");
-
     }
 
     @Override
     public String toString() {
-        return "Comune{" +
-                "nomeComune='" + nomeComune + '\'' +
-                ", coordinate=" + coordinate +
-                ", cap='" + cap + '\'' +
-                ", listaPDI=" + listaPDI +
-                ", listaPendingPDI=" + listaPendingPDI +
-                ", listaItinerari=" + listaItinerari +
-                ", listaPendingItinerari=" + listaPendingItinerari +
-                ", listaContest=" + listaContest +
+        return "Comune{" + '\n' +
+                "nomeComune=" + nomeComune + '\n' +
+                "coordinate=" + coordinate + '\n' +
+                "cap=" + cap + '\n' +
+                "listaPDI=" + listaPDI + '\n' +
+                "listaPendingPDI=" + listaPendingPDI + '\n' +
+                "listaItinerari=" + listaItinerari + '\n' +
+                "listaPendingItinerari=" + listaPendingItinerari + '\n' +
+                "listaContest=" + listaContest +
                 '}';
     }
 }

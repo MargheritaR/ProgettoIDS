@@ -57,14 +57,14 @@ public class ContenutiServiceController {
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
                 fileOut.close();
-                Contenuti contenuti = new Contenuti(file1);
-                listaContenuti.add(contenuti);
-                appoggio.setListaContenuti(listaContenuti);
+                //Contenuti contenuti = new Contenuti(file1);
+                //listaContenuti.add(contenuti);
+                //appoggio.setListaContenuti(listaContenuti);
             }
             if (ruoloUtente.equalsIgnoreCase("role_contributori")) {
                 pdiRepository.deleteById(nomePdi);
                 StatoPendingPuntoInteresse statoPendingPuntoInteresse = new StatoPendingPuntoInteresse(appoggio.getNomePDI(),
-                        appoggio.getCoordinate().getX(), appoggio.getCoordinate().getY());
+                        appoggio.getCoordinate().getLatitudine(), appoggio.getCoordinate().getLongitudine());
                 statoPendingPuntoInteresse.setListaContenuti(appoggio.getListaContenuti());
                 statoPendingPDIRepository.save(statoPendingPuntoInteresse);
                 return new ResponseEntity<>("Il contenuto è stato aggiunto", HttpStatus.OK);
@@ -85,7 +85,7 @@ public class ContenutiServiceController {
             if (listaContenuti.contains(appoggioContenuti)) {
                 listaContenuti.remove(appoggioContenuti);
                 contenutiRepository.deleteById(idContenuto);
-                appoggio.setListaContenuti(listaContenuti);
+                //appoggio.setListaContenuti(listaContenuti);
                 pdiRepository.save(appoggio);
                 return new ResponseEntity<>("Il contenuto è stato eliminato", HttpStatus.OK);
             } else return new ResponseEntity<>("Il contenuto non esiste o è già stato eliminato", HttpStatus.NOT_FOUND);
@@ -108,9 +108,9 @@ public class ContenutiServiceController {
                 FileOutputStream fileOut = new FileOutputStream(file1);
                 fileOut.write(file.getBytes());
                 fileOut.close();
-                Contenuti contenuti = new Contenuti(file1);
-                listaContenuti.add(contenuti);
-                appoggio.setListaContenuti(listaContenuti);
+                //Contenuti contenuti = new Contenuti(file1);
+                //listaContenuti.add(contenuti);
+                //appoggio.setListaContenuti(listaContenuti);
             } else throw new ContenutiNotFoundEccezione();
             pdiRepository.save(appoggio);
             return new ResponseEntity<>("Il contenuto è stato aggiornato", HttpStatus.OK);
