@@ -1,11 +1,14 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribuzioneNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +160,20 @@ public class Comune {
         throw new ItinerariNotFoundEccezione();
     }
 
+    private ContestDiContribuzione findContest(String nomeContest){
+        for(ContestDiContribuzione cont:listaContest)
+            if (cont.getNomeContest().equalsIgnoreCase(nomeContest))
+                return cont;
+        throw new ContestDiContribuzioneNotFoundEccezione();
+    }
+
+    private Contenuti findContenuto(ContestDiContribuzione contest, String nomeContenuti){
+        for(Contenuti c:contest.getContenuti())
+            if(c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
+                return c;
+        throw new ContenutiNotFoundEccezione();
+    }
+
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
         if (listaPDI.contains(puntoPDI))
             System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
@@ -283,6 +300,51 @@ public class Comune {
 
         listaContest.remove(contestDiContribuzione);
         System.out.println("Il contest di contribuzione è stato eliminato dalla piattaforma");
+    }
+
+    public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo){
+        ContestDiContribuzione contest = findContest(nomeContest);
+        if(("obiettivo").equalsIgnoreCase(param)){
+            contest.setObiettivo(elemNuovo);
+            System.out.println("La modifica dell'obiettivo del contest di contribuzione è avvenuta");
+        } else{
+            contest.setTematica(elemNuovo);
+            System.out.println("La modifica della tematica del contest di contribuzione è avvenuta");
+        }
+
+    }
+
+    public void proponiContenuti(String nomeContest, File file){
+        ContestDiContribuzione contest = findContest(nomeContest);
+        if(contest.getContenuti().contains(file))
+            throw new ContenutiNotFoundEccezione();
+        Contenuti contenuto = new Contenuti(file.getName(),file);
+        contest.getContenuti().add(contenuto);
+        System.out.println("Il contenuto è stato proposto al contest di contribuzione");
+    }
+
+    public void validaContenuti(String nomeContest, String nomeContenuto, String approv){
+        ContestDiContribuzione contest = findContest(nomeContest);
+        Contenuti contenuto = findContenuto(contest,nomeContenuto);
+        if(approv.equalsIgnoreCase("Y")){
+            contest.getContenuti().remove(contenuto);
+            contest.getContenutiApprovati().add(contenuto);
+            System.out.println("Il contenuto è stato approvato");
+        }else{
+            contest.getContenuti().remove(contenuto);
+            System.out.println("Il contenuto è stato eliminato perchè non è stato approvato");
+        }
+    }
+
+    public void modificaComune(String param, String elemNuovo){
+        if(("nome").equalsIgnoreCase(param)){
+            setNomeComune(elemNuovo);
+            System.out.println("La modifica del nome del comune è avvenuta");
+        } else{
+            setCap(elemNuovo);
+            System.out.println("La modifica del CAP del comune è avvenuta");
+        }
+
     }
 
     @Override

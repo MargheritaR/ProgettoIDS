@@ -47,7 +47,17 @@ public class Main {
         comune.rimuoviContenuti("Chiesa di San Venanzio", contenuto);
         comune.rimuoviPdiItinerario("Sotto Corte", "Festa della Spada");
         */
+
+        //da provare
+        /*
+        comune.modificaComune();
+        comune.modificaContestDiContribuzione();
+        comune.proponiContenuti();
+        comune.validaContenuti();
+        */
+
         System.out.print(c);
+
 //        SpringApplication.run(Main.class, args);
 
 

@@ -2,6 +2,8 @@ package it.unicam.IDS.progetto.Controller;
 
 import it.unicam.IDS.progetto.Entita.*;
 
+import java.io.File;
+
 public class ControllerComune {
 
     private Comune comune;
@@ -72,6 +74,22 @@ public class ControllerComune {
 
     public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
         comune.eliminaContestDiContribuzione(contestDiContribuzione);
+    }
+
+    public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo){
+        comune.modificaContestDiContribuzione(nomeContest, param, elemNuovo);
+    }
+
+    public void proponiContenuti(String nomeContest, File file){
+        comune.proponiContenuti(nomeContest, file);
+    }
+
+    public void validaContenuti(String nomeContest, String nomeContenuto, String approv){
+        comune.validaContenuti(nomeContest, nomeContenuto, approv);
+    }
+
+    public void modificaComune(String param, String elemNuovo) {
+        comune.modificaComune(param, elemNuovo);
     }
 
     public Comune getComune() {
