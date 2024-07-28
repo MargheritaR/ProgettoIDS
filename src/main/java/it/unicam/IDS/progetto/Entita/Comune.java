@@ -4,13 +4,13 @@ import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribuzioneNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -40,6 +40,12 @@ public class Comune {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private ArrayList<ContestDiContribuzione> listaContest  = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private ArrayList<Itinerario> listaPreferitiItinerario  = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private ArrayList<PuntoInteresse> listaPreferitiPDI  = new ArrayList<>();
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
         this.nomeComune = nomeComune;
@@ -111,6 +117,8 @@ public class Comune {
         this.listaContest = listaContest;
     }
 
+
+
     public void addContenuti(String nomePDI, Contenuti contenuto) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
 //        if (puntoInteresse == null)
@@ -172,6 +180,20 @@ public class Comune {
             if(c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
                 return c;
         throw new ContenutiNotFoundEccezione();
+    }
+
+    private PuntoInteresse findPreferitiPdi(String nomePdi) {
+        for(PuntoInteresse pdi:listaPreferitiPDI)
+            if(pdi.getNomePDI().equalsIgnoreCase(nomePdi))
+                return pdi;
+        throw new PreferitiNotFoundEccezione();
+    }
+
+    private Itinerario findPreferitiItinerario(String nomeItinerario) {
+        for(Itinerario it:listaPreferitiItinerario)
+            if(it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
+                return it;
+        throw new PreferitiNotFoundEccezione();
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI) {
@@ -311,7 +333,6 @@ public class Comune {
             contest.setTematica(elemNuovo);
             System.out.println("La modifica della tematica del contest di contribuzione è avvenuta");
         }
-
     }
 
     public void proponiContenuti(String nomeContest, File file){
@@ -330,7 +351,7 @@ public class Comune {
             contest.getContenuti().remove(contenuto);
             contest.getContenutiApprovati().add(contenuto);
             System.out.println("Il contenuto è stato approvato");
-        }else{
+        } else {
             contest.getContenuti().remove(contenuto);
             System.out.println("Il contenuto è stato eliminato perchè non è stato approvato");
         }
@@ -340,11 +361,61 @@ public class Comune {
         if(("nome").equalsIgnoreCase(param)){
             setNomeComune(elemNuovo);
             System.out.println("La modifica del nome del comune è avvenuta");
-        } else{
+        } else {
             setCap(elemNuovo);
             System.out.println("La modifica del CAP del comune è avvenuta");
         }
+    }
 
+    public void aggiungiPreferitiItinerario(String nomeItinerario) {
+        Itinerario it = findItinerario(nomeItinerario);
+        //TODO cambiare eccezzione
+        if(listaPreferitiItinerario.contains(it))
+            throw new ItinerariNotFoundEccezione();
+
+        listaPreferitiItinerario.add(it);
+        System.out.println("L'itinerario è stato aggiunto ai preferiti");
+    }
+
+    public void aggiungiPreferitiPDI(String nomePdi) {
+        PuntoInteresse pdi = findPDI(nomePdi);
+        //TODO cambiare eccezzione
+        if(listaPreferitiPDI.contains(pdi))
+            throw new PuntoInteresseNotFoundEccezione();
+
+        listaPreferitiPDI.add(pdi);
+        System.out.println("IL punto di interesse è stato aggiunto ai preferiti");
+    }
+
+    public void rimuoviPreferitiPDI(String nomePdi) {
+        PuntoInteresse pdi = findPreferitiPdi(nomePdi);
+
+        listaPreferitiPDI.remove(pdi);
+        System.out.println("Il punto di interesse è stato rimosso dai preferiti");
+    }
+
+    public void rimuoviPreferitiItinerari(String nomeItinerari) {
+        Itinerario it = findPreferitiItinerario(nomeItinerari);
+
+        listaPreferitiItinerario.remove(it);
+        System.out.println("L'itinerario è stato rimosso dai preferiti");
+    }
+
+    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario){
+        Itinerario it = findItinerario(nomeItinerario);
+
+        it.getListaFoto().add(foto);
+        System.out.println("La foto è stata aggiunta all'itinerario");
+    }
+
+    public void aggiungiFotoItinerarioPending(Foto foto, String nomeItinerario){
+        Itinerario it = findItinerario(nomeItinerario);
+
+        it.getListaFoto().add(foto);
+        System.out.println("La foto è stato aggiunta all'itinerario");
+        listaItinerari.remove(it);
+        listaPendingItinerari.add(it);
+        System.out.println("L'itinerario è stato aggiunto allo stato di pending");
     }
 
     @Override

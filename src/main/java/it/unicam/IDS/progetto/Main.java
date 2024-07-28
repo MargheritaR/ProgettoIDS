@@ -54,6 +54,12 @@ public class Main {
         comune.modificaContestDiContribuzione();
         comune.proponiContenuti();
         comune.validaContenuti();
+        comune.aggiungiPreferitiItinerario();
+        comune.aggiungiPreferitiPDI();
+        comune.rimuoviPreferitiPDI();
+        comune.rimuoviPreferitiItinerari();
+        comune.aggiungiFotoItinerario();
+        comune.aggiungiFotoItinerarioPending();
         */
 
         System.out.print(c);

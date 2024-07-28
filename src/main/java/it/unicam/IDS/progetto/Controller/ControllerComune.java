@@ -92,6 +92,30 @@ public class ControllerComune {
         comune.modificaComune(param, elemNuovo);
     }
 
+    public void aggiungiPreferitiItinerario(String nomeItinerario) {
+        comune.aggiungiPreferitiItinerario(nomeItinerario);
+    }
+
+    public void aggiungiPreferitiPDI(String nomePdi) {
+        comune.aggiungiPreferitiPDI(nomePdi);
+    }
+
+    public void rimuoviPreferitiPDI(String nomePdi){
+        comune.rimuoviPreferitiPDI(nomePdi);
+    }
+
+    public void rimuoviPreferitiItinerari(String nomeItinerari) {
+        comune.rimuoviPreferitiItinerari(nomeItinerari);
+    }
+
+    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario){
+        comune.aggiungiFotoItinerario(foto, nomeItinerario);
+    }
+
+    public void aggiungiFotoItinerarioPending(Foto foto, String nomeItinerario){
+        comune.aggiungiFotoItinerarioPending(foto, nomeItinerario);
+    }
+
     public Comune getComune() {
         return comune;
     }
