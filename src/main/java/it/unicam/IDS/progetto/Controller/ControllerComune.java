@@ -12,12 +12,8 @@ public class ControllerComune {
         this.comune = comune;
     }
 
-    public void addContenuti(String nomePDI, Contenuti contenuto){
-        comune.addContenuti(nomePDI, contenuto);
-    }
-
-    public void addContenutiPending(String nomePDI, Contenuti contenuto){
-        comune.addContenutiPending(nomePDI, contenuto);
+    public void addContenuti(String nomePDI, Contenuti contenuto, String ruolo){
+        comune.addContenuti(nomePDI, contenuto, ruolo);
     }
 
     public void rimuoviContenuti(String nomePDI, Contenuti contenuto){
@@ -48,12 +44,8 @@ public class ControllerComune {
         comune.eliminaItinerario(itinerario);
     }
 
-    public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
-        comune.aggiuntaPdiItinerario(nomePuntoInteresse, nomeItinerario);
-    }
-
-    public void aggiuntaPendingPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
-        comune.aggiuntaPendingPdiItinerario(nomePuntoInteresse, nomeItinerario);
+    public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario, String ruolo) {
+        comune.aggiuntaPdiItinerario(nomePuntoInteresse, nomeItinerario, ruolo);
     }
 
     public void rimuoviPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
@@ -100,12 +92,8 @@ public class ControllerComune {
         comune.rimuoviPreferitiItinerari(nomeItinerari);
     }
 
-    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario){
-        comune.aggiungiFotoItinerario(foto, nomeItinerario);
-    }
-
-    public void aggiungiFotoItinerarioPending(Foto foto, String nomeItinerario){
-        comune.aggiungiFotoItinerarioPending(foto, nomeItinerario);
+    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo){
+        comune.aggiungiFotoItinerario(foto, nomeItinerario, ruolo);
     }
 
     public Comune getComune() {

@@ -106,26 +106,24 @@ public class Comune {
 
 
 
-    public void addContenuti(String nomePDI, Contenuti contenuto) {
+    public void addContenuti(String nomePDI, Contenuti contenuto, String ruolo) {
+        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
         if (puntoInteresse.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
-
         puntoInteresse.getListaContenuti().add(contenuto);
+
+        IStatoPendingFactory factory = new StatoPendingPDIFactory();
+        IStatoPending appoggio = factory.newStatoPending(ruolo);
+        if (appoggio instanceof StatoPendingPuntoInteresse){
+            StatoPendingPuntoInteresse pdi = new StatoPendingPuntoInteresse(puntoInteresse.getNomePDI(),
+                    puntoInteresse.getCoordinate().getLatitudine(),
+                    puntoInteresse.getCoordinate().getLongitudine(), puntoInteresse.getListaContenuti());
+            listaPDI.remove(puntoInteresse);
+            listaPendingPDI.add(pdi);
+        }
+
         System.out.println("Il contenuto è stato aggiunto al punto di interesse");
-    }
-
-    public void addContenutiPending(String nomePDI, Contenuti contenuto) {
-        PuntoInteresse puntoPDI = findPDI(nomePDI);
-        if (puntoPDI.getListaContenuti().contains(contenuto))
-            System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
-
-        puntoPDI.getListaContenuti().add(contenuto);
-        listaPDI.remove(puntoPDI);
-        StatoPendingPuntoInteresse puntoInteresse = new StatoPendingPuntoInteresse(puntoPDI.getNomePDI(),
-                puntoPDI.getCoordinate().getLatitudine(),puntoPDI.getCoordinate().getLongitudine(),puntoPDI.getListaContenuti());
-        listaPendingPDI.add(puntoInteresse);
-        System.out.println("Il contenuto è stato aggiunto allo stato pending");
     }
 
     public void rimuoviContenuti(String nomePDI, Contenuti contenuto) {
@@ -256,25 +254,22 @@ public class Comune {
         System.out.println("L'itinerario è stato eliminato dalla piattaforma");
     }
 
-    public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
+    public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario, String ruolo) {
+        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         Itinerario itinerario = findItinerario(nomeItinerario);
         PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
 
         //TODO controllare se vanno i controlli di null
         itinerario.getListaItinerarioPDI().add(puntoInteresse);
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
+        IStatoPending appoggio = factory.newStatoPending(ruolo);
+        if (appoggio instanceof StatoPendingItinerario){
+            StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario(),
+                    itinerario.getListaItinerarioPDI(),itinerario.getListaFoto());
+            listaItinerari.remove(itinerario);
+            listaPendingItinerari.add(it);
+        }
         System.out.println("Il punto di interesse è stato aggiunto all'itinerario");
-    }
-
-    public void aggiuntaPendingPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
-        Itinerario itinerario = findItinerario(nomeItinerario);
-        PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
-
-        itinerario.getListaItinerarioPDI().add(puntoInteresse);
-        listaItinerari.remove(itinerario);
-        System.out.println("Il punto di interesse è stato aggiunto all'itinerario");
-        StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario());
-        listaPendingItinerari.add(it);
-        System.out.println("L'itinerario è stato aggiunto allo stato di pending");
     }
 
     public void rimuoviPdiItinerario(String nomePuntoInteresse, String nomeItinerario) {
@@ -384,22 +379,19 @@ public class Comune {
         System.out.println("L'itinerario è stato rimosso dai preferiti");
     }
 
-    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario){
+    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo){
+        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         Itinerario it = findItinerario(nomeItinerario);
 
         it.getListaFoto().add(foto);
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
+        IStatoPending appoggio = factory.newStatoPending(ruolo);
+        if (appoggio instanceof StatoPendingItinerario){
+            StatoPendingItinerario itinerario = new StatoPendingItinerario(it.getNomeItinerario(), it.getListaItinerarioPDI(), it.getListaFoto());
+            listaItinerari.remove(it);
+            listaPendingItinerari.add(itinerario);
+        }
         System.out.println("La foto è stata aggiunta all'itinerario");
-    }
-
-    public void aggiungiFotoItinerarioPending(Foto foto, String nomeItinerario){
-        Itinerario it = findItinerario(nomeItinerario);
-
-        it.getListaFoto().add(foto);
-        System.out.println("La foto è stato aggiunta all'itinerario");
-        listaItinerari.remove(it);
-        StatoPendingItinerario itinerario = new StatoPendingItinerario(it.getNomeItinerario(),it.getListaItinerarioPDI(),it.getListaFoto());
-        listaPendingItinerari.add(itinerario);
-        System.out.println("L'itinerario è stato aggiunto allo stato di pending");
     }
 
     @Override
