@@ -30,13 +30,13 @@ public class Comune {
     private ArrayList<PuntoInteresse> listaPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaPendingPDI = new ArrayList<>();
+    private ArrayList<StatoPendingPuntoInteresse> listaPendingPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private ArrayList<Itinerario> listaItinerari = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Itinerario> listaPendingItinerari = new ArrayList<>();
+    private ArrayList<StatoPendingItinerario> listaPendingItinerari = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private ArrayList<ContestDiContribuzione> listaContest  = new ArrayList<>();
@@ -85,13 +85,7 @@ public class Comune {
         this.listaPDI = listaPDI;
     }
 
-    public ArrayList<PuntoInteresse> getListaPendingPDI() {
-        return listaPendingPDI;
-    }
 
-    public void setListaPendingPDI(ArrayList<PuntoInteresse> listaPendingPDI) {
-        this.listaPendingPDI = listaPendingPDI;
-    }
 
     public ArrayList<Itinerario> getListaItinerari() {
         return listaItinerari;
@@ -99,14 +93,6 @@ public class Comune {
 
     public void setListaItinerari(ArrayList<Itinerario> listaItinerari) {
         this.listaItinerari = listaItinerari;
-    }
-
-    public ArrayList<Itinerario> getListaPendingItinerari() {
-        return listaPendingItinerari;
-    }
-
-    public void setListaPendingItinerari(ArrayList<Itinerario> listaPendingItinerari) {
-        this.listaPendingItinerari = listaPendingItinerari;
     }
 
     public ArrayList<ContestDiContribuzione> getListaContest() {
@@ -119,10 +105,9 @@ public class Comune {
 
 
 
+
     public void addContenuti(String nomePDI, Contenuti contenuto) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
-//        if (puntoInteresse == null)
-//            System.out.println("Il punto di interesse non esiste");
         if (puntoInteresse.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
 
@@ -131,22 +116,20 @@ public class Comune {
     }
 
     public void addContenutiPending(String nomePDI, Contenuti contenuto) {
-        PuntoInteresse puntoInteresse = findPDI(nomePDI);
-//        if (puntoInteresse == null)
-//            System.out.println("Il punto di interesse non esiste");
-        if (puntoInteresse.getListaContenuti().contains(contenuto))
+        PuntoInteresse puntoPDI = findPDI(nomePDI);
+        if (puntoPDI.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
 
-        puntoInteresse.getListaContenuti().add(contenuto);
-        listaPDI.remove(puntoInteresse);
+        puntoPDI.getListaContenuti().add(contenuto);
+        listaPDI.remove(puntoPDI);
+        StatoPendingPuntoInteresse puntoInteresse = new StatoPendingPuntoInteresse(puntoPDI.getNomePDI(),
+                puntoPDI.getCoordinate().getLatitudine(),puntoPDI.getCoordinate().getLongitudine(),puntoPDI.getListaContenuti());
         listaPendingPDI.add(puntoInteresse);
         System.out.println("Il contenuto è stato aggiunto allo stato pending");
     }
 
     public void rimuoviContenuti(String nomePDI, Contenuti contenuto) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
-//        if (puntoInteresse == null)
-//            System.out.println("Il punto di interesse non esiste");
         if (!puntoInteresse.getListaContenuti().contains(contenuto))
             System.out.println("Il nome del contenuto da eliminare non è presente nella piattaforma");
 
@@ -196,20 +179,20 @@ public class Comune {
         throw new PreferitiNotFoundEccezione();
     }
 
-    public void inserimentoPDI(PuntoInteresse puntoPDI) {
+    public void inserimentoPDI(PuntoInteresse puntoPDI, String ruolo) {
+        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         if (listaPDI.contains(puntoPDI))
             System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
+        IStatoPendingFactory factory = new StatoPendingPDIFactory();
+        IStatoPending appoggio = factory.newStatoPending(ruolo);
+        if (appoggio instanceof StatoPendingPuntoInteresse){
+            StatoPendingPuntoInteresse puntoInteresse = new StatoPendingPuntoInteresse(puntoPDI.getNomePDI(),
+                    puntoPDI.getCoordinate().getLatitudine(),puntoPDI.getCoordinate().getLongitudine());
+            listaPendingPDI.add(puntoInteresse);
+        } else
+            listaPDI.add(puntoPDI);
 
-        listaPDI.add(puntoPDI);
         System.out.println("Il punto di interesse è stato aggiunto");
-    }
-
-    public void inserimentoPendingPDI(PuntoInteresse puntoPDI) {
-        if (listaPendingPDI.contains(puntoPDI))
-            System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
-
-        listaPendingPDI.add(puntoPDI);
-        System.out.println("Il punto di interesse è stato aggiunto allo stato di pending");
     }
 
     public void eliminaPDI(PuntoInteresse puntoPDI) {
@@ -250,20 +233,19 @@ public class Comune {
         }
     }
 
-    public void creaItinerario(Itinerario itinerario) {
+    public void creaItinerario(Itinerario itinerario, String ruolo) {
+        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         if(listaItinerari.contains(itinerario))
             System.out.println("L'itinerario è già presente nella piattaforma");
 
-        listaItinerari.add(itinerario);
+        IStatoPendingFactory factory = new StatoPendingPIFactory();
+        IStatoPending appoggio = factory.newStatoPending(ruolo);
+        if (appoggio instanceof StatoPendingItinerario){
+            StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario());
+            listaPendingItinerari.add(it);
+        } else
+            listaItinerari.add(itinerario);
         System.out.println("L'itinerario è stato aggiunto");
-    }
-
-    public void creaItinerarioPending(Itinerario itinerario) {
-        if(listaItinerari.contains(itinerario))
-            System.out.println("L'itinerario è già presente nella piattaforma");
-
-        listaPendingItinerari.add(itinerario);
-        System.out.println("L'itinerario è stato aggiunto allo stato pending");
     }
 
     public void eliminaItinerario(Itinerario itinerario) {
@@ -290,7 +272,8 @@ public class Comune {
         itinerario.getListaItinerarioPDI().add(puntoInteresse);
         listaItinerari.remove(itinerario);
         System.out.println("Il punto di interesse è stato aggiunto all'itinerario");
-        listaPendingItinerari.add(itinerario);
+        StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario());
+        listaPendingItinerari.add(it);
         System.out.println("L'itinerario è stato aggiunto allo stato di pending");
     }
 
@@ -414,7 +397,8 @@ public class Comune {
         it.getListaFoto().add(foto);
         System.out.println("La foto è stato aggiunta all'itinerario");
         listaItinerari.remove(it);
-        listaPendingItinerari.add(it);
+        StatoPendingItinerario itinerario = new StatoPendingItinerario(it.getNomeItinerario(),it.getListaItinerarioPDI(),it.getListaFoto());
+        listaPendingItinerari.add(itinerario);
         System.out.println("L'itinerario è stato aggiunto allo stato di pending");
     }
 

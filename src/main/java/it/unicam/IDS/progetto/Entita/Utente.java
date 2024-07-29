@@ -36,7 +36,7 @@ public class Utente implements UserDetails{
     public Utente(String username,String password) {
         this.password = password;
         this.username = username;
-        this.ruolo = Ruoli.ROLE_UTENTENONAUTENTICATO;
+        this.ruolo = Ruoli.ROLE_TURISTA;
         this.listaMessaggiNonLetti = null;
         this.listaMessaggiLetti = null;
     }

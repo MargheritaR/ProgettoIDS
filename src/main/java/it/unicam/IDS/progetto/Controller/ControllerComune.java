@@ -24,12 +24,8 @@ public class ControllerComune {
         comune.rimuoviContenuti(nomePDI, contenuto);
     }
 
-    public void inserimentoPDI(PuntoInteresse puntoPDI) {
-        comune.inserimentoPDI(puntoPDI);
-    }
-
-    public void inserimentoPendingPDI(PuntoInteresse puntoPDI) {
-        comune.inserimentoPendingPDI(puntoPDI);
+    public void inserimentoPDI(PuntoInteresse puntoPDI, String ruolo) {
+        comune.inserimentoPDI(puntoPDI,ruolo);
     }
 
     public void eliminaPDI(PuntoInteresse puntoPDI) {
@@ -44,12 +40,8 @@ public class ControllerComune {
         comune.approvazioneStatoPendingItinerario(itinerarioScelto, scelta);
     }
 
-    public void creaItinerario(Itinerario itinerario) {
-        comune.creaItinerario(itinerario);
-    }
-
-    public void creaItinerarioPending(Itinerario itinerario) {
-        comune.creaItinerarioPending(itinerario);
+    public void creaItinerario(Itinerario itinerario,String ruolo) {
+        comune.creaItinerario(itinerario, ruolo);
     }
 
     public void eliminaItinerario(Itinerario itinerario) {
