@@ -1,6 +1,7 @@
 package it.unicam.IDS.progetto;
 
 import it.unicam.IDS.progetto.Controller.ControllerComune;
+import it.unicam.IDS.progetto.Controller.ControllerUtenti;
 import it.unicam.IDS.progetto.Entita.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,8 +14,10 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        Comune c = new Comune();
+        Utente u= new Utente();
+        Comune c = new Comune(u.getListaUtenti());
         ControllerComune comune = new ControllerComune(c);
+        ControllerUtenti utenti = new ControllerUtenti(u);
         // /home/daniele-rossi/Scrivania/provaFile/prova1  /home/daniele-rossi/Scrivania/provaFile/prova2
         // /home/margherita/Desktop/ProvaFile/contenuto1   /home/margherita/Desktop/ProvaFile/contenuto2
         Contenuti contenuto = new Contenuti("Contenuto1",new File("/home/margherita/Desktop/ProvaFile/contenuto1"));
@@ -46,10 +49,6 @@ public class Main {
         comune.eliminaPDI(pdi2);
         comune.rimuoviContenuti("Chiesa di San Venanzio", contenuto);
         comune.rimuoviPdiItinerario("Sotto Corte", "Festa della Spada");
-        */
-
-        //da provare
-        /*
         comune.modificaComune();
         comune.modificaContestDiContribuzione();
         comune.proponiContenuti();
@@ -61,6 +60,12 @@ public class Main {
         comune.aggiungiFotoItinerario();
         comune.aggiungiFotoItinerarioPending();
         */
+
+        /*
+        utenti.assegnamentoRuoli();
+        utenti.leggiMessaggi();
+        utenti.registrazione();
+         */
 
         System.out.print(c);
 

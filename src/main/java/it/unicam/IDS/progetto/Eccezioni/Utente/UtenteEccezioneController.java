@@ -10,4 +10,9 @@ public class UtenteEccezioneController {
     public ResponseEntity<Object> handleException(UtenteNotFoundEccezione e) {
         return new ResponseEntity<>("Utente non trovato", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = UtenteAlreadyExistsEccezioni.class)
+    public ResponseEntity<Object> handleException(UtenteAlreadyExistsEccezioni e) {
+        return new ResponseEntity<>("Utente esiste già", HttpStatus.NOT_FOUND);
+    }
 }

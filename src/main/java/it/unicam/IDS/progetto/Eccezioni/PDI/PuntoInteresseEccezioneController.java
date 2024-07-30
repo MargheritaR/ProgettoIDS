@@ -12,4 +12,10 @@ public class PuntoInteresseEccezioneController {
     public ResponseEntity<Object> hanldeException(PuntoInteresseNotFoundEccezione e) {
         return new ResponseEntity<>("Punto Interesse non trovato", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = PuntoInteresseAlreadyExitsEccezione.class)
+    public ResponseEntity<Object> hanldeException(PuntoInteresseAlreadyExitsEccezione e) {
+        return new ResponseEntity<>("Punto Interesse già esiste", HttpStatus.NOT_FOUND);
+    }
+
 }

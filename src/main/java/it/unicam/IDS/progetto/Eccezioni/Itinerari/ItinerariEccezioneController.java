@@ -8,7 +8,12 @@ public class ItinerariEccezioneController {
 
     @ExceptionHandler(value = ItinerariNotFoundEccezione.class)
     public ResponseEntity<Object> handleException(ItinerariNotFoundEccezione e) {
-        e.getMessage();
         return new ResponseEntity<>("Itinerario non trovato", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = ItinerariAlreadyExistEccezione.class)
+    public ResponseEntity<Object> handleException(ItinerariAlreadyExistEccezione e) {
+        return new ResponseEntity<>("Itinerario esiste già", HttpStatus.NOT_FOUND);
+    }
+
 }

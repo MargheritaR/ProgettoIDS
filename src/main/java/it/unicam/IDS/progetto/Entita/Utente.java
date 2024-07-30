@@ -1,12 +1,18 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggiEmptyEccezione;
+import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggioNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteAlreadyExistsEccezioni;
+import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,6 +24,12 @@ public class Utente implements UserDetails{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotNull
+    private String nome;
+
+    @NotNull
+    private String cognome;
+
     @NotEmpty
     private String password;
 
@@ -28,17 +40,20 @@ public class Utente implements UserDetails{
     private Ruoli ruolo;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Messaggio> listaMessaggiNonLetti;
+    private List<Messaggio> listaMessaggiNonLetti = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Messaggio> listaMessaggiLetti;
+    private List<Messaggio> listaMessaggiLetti = new ArrayList<>();
 
-    public Utente(String username,String password) {
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<Utente> listaUtenti = new ArrayList<>();
+
+    public Utente(String username,String password,String nome,String cognome) {
         this.password = password;
         this.username = username;
+        this.nome = nome;
+        this.cognome = cognome;
         this.ruolo = Ruoli.ROLE_TURISTA;
-        this.listaMessaggiNonLetti = null;
-        this.listaMessaggiLetti = null;
     }
 
     public int getId() {
@@ -112,6 +127,68 @@ public class Utente implements UserDetails{
 
     public void setListaMessaggiLetti(List<Messaggio> listaMessaggiLetti) {
         this.listaMessaggiLetti = listaMessaggiLetti;
+    }
+
+    public @NotNull String getNome() {
+        return nome;
+    }
+
+    public void setNome(@NotNull String nome) {
+        this.nome = nome;
+    }
+
+    public @NotNull String getCognome() {
+        return cognome;
+    }
+
+    public void setCognome(@NotNull String cognome) {
+        this.cognome = cognome;
+    }
+
+    public ArrayList<Utente> getListaUtenti() {
+        return listaUtenti;
+    }
+
+    public void setListaUtenti(ArrayList<Utente> listaUtenti) {
+        this.listaUtenti = listaUtenti;
+    }
+
+    public void leggiMessaggi(String titoloMessaggio){
+        if (listaMessaggiNonLetti == null)
+            throw new MessaggiEmptyEccezione();
+
+        Messaggio messaggio = findMessaggi(titoloMessaggio);
+        System.out.println(messaggio);
+        listaMessaggiNonLetti.remove(messaggio);
+        listaMessaggiLetti.add(messaggio);
+    }
+
+    private Messaggio findMessaggi(String titoloMessaggi) {
+        for(Messaggio m : listaMessaggiNonLetti)
+            if(m.getTitolo().equals(titoloMessaggi))
+                return m;
+        throw new MessaggioNotFoundEccezione();
+    }
+
+    private Utente findUtente(String nomeUtente) {
+        for(Utente u : listaUtenti)
+            if(u.getNome().equals(nomeUtente))
+                return u;
+        throw new UtenteNotFoundEccezione();
+    }
+
+    public void assegnamentoRuoli(String nomeUtente,String ruolo){
+        Utente utente = findUtente(nomeUtente);
+        utente.setRuolo(Ruoli.valueOf(ruolo));
+        System.out.println("La modifica del ruolo dell'utente è stata effettuata");
+    }
+
+    public void registrazione(Utente utente) {
+        for(Utente u : listaUtenti)
+            if(u.getNome().equalsIgnoreCase(utente.getNome()))
+                throw new UtenteAlreadyExistsEccezioni();
+        listaUtenti.add(utente);
+        System.out.println("La registrazione è avvenuta con successo");
     }
 
     @Override
