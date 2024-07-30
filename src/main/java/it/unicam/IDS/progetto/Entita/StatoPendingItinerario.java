@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,10 +19,10 @@ public class StatoPendingItinerario extends StatoPending{
     private String nomeItinerario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PuntoInteresse> listaItinerarioPDI;
+    private ArrayList<PuntoInteresse> listaItinerarioPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Foto> listaFoto;
+    private ArrayList<Foto> listaFoto = new ArrayList<>();
 
     public StatoPendingItinerario(String nomeItinerario) {
         this.nomeItinerario = nomeItinerario;
@@ -29,7 +30,8 @@ public class StatoPendingItinerario extends StatoPending{
         this.listaFoto = null;
     }
 
-    public StatoPendingItinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
+    public StatoPendingItinerario(String nomeItinerario, ArrayList<PuntoInteresse> listaItinerarioPDI,
+                                  ArrayList<Foto> listaFoto) {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
@@ -47,20 +49,33 @@ public class StatoPendingItinerario extends StatoPending{
         this.nomeItinerario = nomeItinerario;
     }
 
-    public List<PuntoInteresse> getListaItinerarioPDI() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<PuntoInteresse> getListaItinerarioPDI() {
         return listaItinerarioPDI;
     }
 
-    public void setListaItinerarioPDI(List<PuntoInteresse> listaItinerarioPDI) {
+    public void setListaItinerarioPDI(ArrayList<PuntoInteresse> listaItinerarioPDI) {
         this.listaItinerarioPDI = listaItinerarioPDI;
     }
 
-    public List<Foto> getListaFoto() {
+    public ArrayList<Foto> getListaFoto() {
         return listaFoto;
     }
 
-    public void setListaFoto(List<Foto> listaFoto) {
+    public void setListaFoto(ArrayList<Foto> listaFoto) {
         this.listaFoto = listaFoto;
     }
 
+    @Override
+    public String toString() {
+        return "StatoPendingItinerario{" +
+                "id=" + id +
+                ", nomeItinerario='" + nomeItinerario + '\'' +
+                ", listaItinerarioPDI=" + listaItinerarioPDI +
+                ", listaFoto=" + listaFoto +
+                '}';
+    }
 }

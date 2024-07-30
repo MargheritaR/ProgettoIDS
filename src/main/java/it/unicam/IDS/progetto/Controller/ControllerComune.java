@@ -96,12 +96,16 @@ public class ControllerComune {
         comune.aggiungiFotoItinerario(foto, nomeItinerario, ruolo);
     }
 
-    public void InviaMessaggi(Messaggio messaggio){
+    public void inviaMessaggi(Messaggio messaggio){
         comune.inviaMessaggi(messaggio);
     }
 
     public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio){
         comune.decidiContenutoVincitore(nomeContest, nomeContenuto, messaggio);
+    }
+
+    public void rimuoviFotoItinerario(int idFoto, String nomeItinerario){
+        comune.rimuoviFotoItinerario(idFoto, nomeItinerario);
     }
 
     public Comune getComune() {

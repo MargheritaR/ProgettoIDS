@@ -76,4 +76,15 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
     public void setListaContenuti(ArrayList<Contenuti> listaContenuti) {
         this.listaContenuti = listaContenuti;
     }
+
+    @Override
+    public String toString() {
+        return "StatoPendingPuntoInteresse{" +
+                "idNome=" + idNome +
+                ", nomePDI='" + nomePDI + '\'' +
+                ", asseX=" + asseX +
+                ", asseY=" + asseY +
+                ", listaContenuti=" + listaContenuti +
+                '}';
+    }
 }

@@ -54,7 +54,7 @@ public class Comune {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<PuntoInteresse> listaPreferitiPDI = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Utente> listaUtenti;
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
@@ -190,12 +190,11 @@ public class Comune {
         throw new PuntoInteresseNotFoundEccezione();
     }
 
-    private StatoPendingPuntoInteresse findPDIPending(String nomePdi){
+    private StatoPendingPuntoInteresse findPDIPending(String nomePdi) {
         for (StatoPendingPuntoInteresse pdi : listaPendingPDI)
             if (pdi.getNomePDI().equalsIgnoreCase(nomePdi))
                 return pdi;
         throw new PuntoInteresseNotFoundEccezione();
-
     }
 
     private Itinerario findItinerario(String nomeItinerario) {
@@ -204,7 +203,8 @@ public class Comune {
                 return it;
         throw new ItinerariNotFoundEccezione();
     }
-    private StatoPendingItinerario findItinerriPending(String nomeItinerario){
+
+    private StatoPendingItinerario findItinerariPending(String nomeItinerario) {
         for (StatoPendingItinerario it : listaPendingItinerari)
             if (it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
                 return it;
@@ -225,7 +225,7 @@ public class Comune {
         throw new ContenutiNotFoundEccezione();
     }
 
-    private Contenuti findContenutoPDI(PuntoInteresse puntoInteresse, String nomeContenuti){
+    private Contenuti findContenutoPDI(PuntoInteresse puntoInteresse, String nomeContenuti) {
         for (Contenuti c : puntoInteresse.getListaContenuti())
             if (c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
                 return c;
@@ -247,8 +247,8 @@ public class Comune {
     }
 
     private Utente findUtente(String nomeUtente) {
-        for(Utente utente:listaUtenti)
-            if(utente.getNome().equalsIgnoreCase(nomeUtente))
+        for (Utente utente : listaUtenti)
+            if (utente.getNome().equalsIgnoreCase(nomeUtente))
                 return utente;
         throw new UtenteNotFoundEccezione();
     }
@@ -263,8 +263,7 @@ public class Comune {
             StatoPendingPuntoInteresse puntoInteresse = new StatoPendingPuntoInteresse(puntoPDI.getNomePDI(),
                     puntoPDI.getCoordinate().getLatitudine(), puntoPDI.getCoordinate().getLongitudine());
             listaPendingPDI.add(puntoInteresse);
-        } else
-            listaPDI.add(puntoPDI);
+        } else listaPDI.add(puntoPDI);
 
         System.out.println("Il punto di interesse è stato aggiunto");
     }
@@ -290,11 +289,11 @@ public class Comune {
     }
 
     public void approvazioneStatoPendingItinerario(String itinerarioScelto, String scelta) {
-        Itinerario it = findItinerario(itinerarioScelto);
+        StatoPendingItinerario it = findItinerariPending(itinerarioScelto);
 
         if (scelta.equalsIgnoreCase("Y")) {
             listaPendingItinerari.remove(it);
-            Itinerario itinerario = new Itinerario(it.getNomeItinerario(),it.getListaItinerarioPDI(),it.getListaFoto());
+            Itinerario itinerario = new Itinerario(it.getNomeItinerario(), it.getListaItinerarioPDI(), it.getListaFoto());
             listaItinerari.add(itinerario);
             System.out.println("L'itinerario è stato approvato");
         } else {
@@ -313,13 +312,12 @@ public class Comune {
         if (appoggio instanceof StatoPendingItinerario) {
             StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario());
             listaPendingItinerari.add(it);
-        } else
-            listaItinerari.add(itinerario);
+        } else listaItinerari.add(itinerario);
         System.out.println("L'itinerario è stato aggiunto");
     }
 
     public void eliminaItinerario(String nomeItinerario) {
-        Itinerario itinerario= findItinerario(nomeItinerario);
+        Itinerario itinerario = findItinerario(nomeItinerario);
         listaItinerari.remove(itinerario);
         System.out.println("L'itinerario è stato eliminato dalla piattaforma");
     }
@@ -355,8 +353,8 @@ public class Comune {
         if (!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
                 contestDiContribuzione.getDpc().isAfter(contestDiContribuzione.getDataInizio())))
             throw new ContestOverTimeLimitEccezione();
-            if (!contestDiContribuzione.getDataInizio().isBefore(contestDiContribuzione.getDataFine()))
-                throw new ContestInvalidDataEccezione();
+        if (!contestDiContribuzione.getDataInizio().isBefore(contestDiContribuzione.getDataFine()))
+            throw new ContestInvalidDataEccezione();
 
         listaContest.add(contestDiContribuzione);
         System.out.println("Il contest di contribuzione è stato aggiunto");
@@ -458,21 +456,28 @@ public class Comune {
         System.out.println("La foto è stata aggiunta all'itinerario");
     }
 
-    public void inviaMessaggi(Messaggio messaggio){
+    public void inviaMessaggi(Messaggio messaggio) {
         Utente destinatario = findUtente(messaggio.getDestinatario());
 
         destinatario.getListaMessaggiNonLetti().add(messaggio);
-        System.out.println("Messaggio inviato a: "+ destinatario.getNome());
+        System.out.println("Messaggio inviato a: " + destinatario.getNome());
     }
 
-    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio){
+    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio) {
         ContestDiContribuzione cont = findContest(nomeContest);
-        Contenuti contenuto = findContenutoContest(cont,nomeContenuto);
+        Contenuti contenuto = findContenutoContest(cont, nomeContenuto);
         inviaMessaggi(messaggio);
 
         cont.setVincitore(contenuto.getContenuto());
         System.out.println("Il vincitore è stato scelto");
+    }
 
+    public void rimuoviFotoItinerario(int idFoto, String nomeItinerario) {
+        Itinerario itinerario = findItinerario(nomeItinerario);
+        Foto foto = itinerario.getListaFoto().get(idFoto);
+
+        itinerario.getListaFoto().remove(foto);
+        System.out.println("La foto è stata rimossa dall'itinerario");
     }
 
     @Override
@@ -485,7 +490,11 @@ public class Comune {
                 "listaPendingPDI=" + listaPendingPDI + '\n' +
                 "listaItinerari=" + listaItinerari + '\n' +
                 "listaPendingItinerari=" + listaPendingItinerari + '\n' +
-                "listaContest=" + listaContest +
+                "listaContest=" + listaContest + '\n' +
+                "listaPreferitiItinerario=" + listaPreferitiItinerario + '\n' +
+                "listaPreferitiPDI=" + listaPreferitiPDI + '\n' +
+                "listaUtenti=" + listaUtenti +
                 '}';
     }
+
 }
