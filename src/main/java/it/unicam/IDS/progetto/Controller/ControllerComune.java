@@ -96,6 +96,10 @@ public class ControllerComune {
         comune.aggiungiFotoItinerario(foto, nomeItinerario, ruolo);
     }
 
+    public void InviaMessaggi(Messaggio messaggio){
+        comune.InviaMessaggi(messaggio);
+    }
+
     public Comune getComune() {
         return comune;
     }

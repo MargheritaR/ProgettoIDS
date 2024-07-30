@@ -5,6 +5,7 @@ import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribu
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
@@ -26,31 +27,38 @@ public class Comune {
     @NotNull
     private String cap;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<PuntoInteresse> listaPDI = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<StatoPendingPuntoInteresse> listaPendingPDI = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Itinerario> listaItinerari = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<StatoPendingItinerario> listaPendingItinerari = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<ContestDiContribuzione> listaContest  = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<ContestDiContribuzione> listaContest = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<Itinerario> listaPreferitiItinerario = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<PuntoInteresse> listaPreferitiPDI = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Itinerario> listaPreferitiItinerario  = new ArrayList<>();
-
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaPreferitiPDI  = new ArrayList<>();
+    private ArrayList<Utente> listaUtenti;
 
     public Comune(String nomeComune, double asseX, double asseY, String cap) {
         this.nomeComune = nomeComune;
         this.coordinate = new Coordinate(nomeComune, asseX, asseY);
         this.cap = cap;
+    }
+
+    public Comune(ArrayList<Utente> listaUtenti) {
+        this.listaUtenti = listaUtenti;
     }
 
     public String getNomeComune() {
@@ -85,8 +93,6 @@ public class Comune {
         this.listaPDI = listaPDI;
     }
 
-
-
     public ArrayList<Itinerario> getListaItinerari() {
         return listaItinerari;
     }
@@ -103,9 +109,6 @@ public class Comune {
         this.listaContest = listaContest;
     }
 
-
-
-
     public void addContenuti(String nomePDI, Contenuti contenuto, String ruolo) {
         //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
@@ -115,7 +118,7 @@ public class Comune {
 
         IStatoPendingFactory factory = new StatoPendingPDIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
-        if (appoggio instanceof StatoPendingPuntoInteresse){
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingPuntoInteresse pdi = new StatoPendingPuntoInteresse(puntoInteresse.getNomePDI(),
                     puntoInteresse.getCoordinate().getLatitudine(),
                     puntoInteresse.getCoordinate().getLongitudine(), puntoInteresse.getListaContenuti());
@@ -135,46 +138,53 @@ public class Comune {
         System.out.println("Il contenuto è stato eliminato dal punto di interesse");
     }
 
-    private PuntoInteresse findPDI(String nomePdi){
-        for(PuntoInteresse pdi:listaPDI)
-            if(pdi.getNomePDI().equalsIgnoreCase(nomePdi))
+    private PuntoInteresse findPDI(String nomePdi) {
+        for (PuntoInteresse pdi : listaPDI)
+            if (pdi.getNomePDI().equalsIgnoreCase(nomePdi))
                 return pdi;
         throw new PuntoInteresseNotFoundEccezione();
     }
 
-    private Itinerario findItinerario(String nomeItinerario){
-        for(Itinerario it:listaItinerari)
+    private Itinerario findItinerario(String nomeItinerario) {
+        for (Itinerario it : listaItinerari)
             if (it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
                 return it;
         throw new ItinerariNotFoundEccezione();
     }
 
-    private ContestDiContribuzione findContest(String nomeContest){
-        for(ContestDiContribuzione cont:listaContest)
+    private ContestDiContribuzione findContest(String nomeContest) {
+        for (ContestDiContribuzione cont : listaContest)
             if (cont.getNomeContest().equalsIgnoreCase(nomeContest))
                 return cont;
         throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
-    private Contenuti findContenuto(ContestDiContribuzione contest, String nomeContenuti){
-        for(Contenuti c:contest.getContenuti())
-            if(c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
+    private Contenuti findContenuto(ContestDiContribuzione contest, String nomeContenuti) {
+        for (Contenuti c : contest.getContenuti())
+            if (c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
                 return c;
         throw new ContenutiNotFoundEccezione();
     }
 
     private PuntoInteresse findPreferitiPdi(String nomePdi) {
-        for(PuntoInteresse pdi:listaPreferitiPDI)
-            if(pdi.getNomePDI().equalsIgnoreCase(nomePdi))
+        for (PuntoInteresse pdi : listaPreferitiPDI)
+            if (pdi.getNomePDI().equalsIgnoreCase(nomePdi))
                 return pdi;
         throw new PreferitiNotFoundEccezione();
     }
 
     private Itinerario findPreferitiItinerario(String nomeItinerario) {
-        for(Itinerario it:listaPreferitiItinerario)
-            if(it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
+        for (Itinerario it : listaPreferitiItinerario)
+            if (it.getNomeItinerario().equalsIgnoreCase(nomeItinerario))
                 return it;
         throw new PreferitiNotFoundEccezione();
+    }
+
+    private Utente findUtente(String nomeUtente) {
+        for(Utente utente:listaUtenti)
+            if(utente.getNome().equalsIgnoreCase(nomeUtente))
+                return utente;
+        throw new UtenteNotFoundEccezione();
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI, String ruolo) {
@@ -183,9 +193,9 @@ public class Comune {
             System.out.println("Il nome del punto di interesse è già presente nella piattaforma");
         IStatoPendingFactory factory = new StatoPendingPDIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
-        if (appoggio instanceof StatoPendingPuntoInteresse){
+        if (appoggio instanceof StatoPendingPuntoInteresse) {
             StatoPendingPuntoInteresse puntoInteresse = new StatoPendingPuntoInteresse(puntoPDI.getNomePDI(),
-                    puntoPDI.getCoordinate().getLatitudine(),puntoPDI.getCoordinate().getLongitudine());
+                    puntoPDI.getCoordinate().getLatitudine(), puntoPDI.getCoordinate().getLongitudine());
             listaPendingPDI.add(puntoInteresse);
         } else
             listaPDI.add(puntoPDI);
@@ -233,12 +243,12 @@ public class Comune {
 
     public void creaItinerario(Itinerario itinerario, String ruolo) {
         //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
-        if(listaItinerari.contains(itinerario))
+        if (listaItinerari.contains(itinerario))
             System.out.println("L'itinerario è già presente nella piattaforma");
 
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
-        if (appoggio instanceof StatoPendingItinerario){
+        if (appoggio instanceof StatoPendingItinerario) {
             StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario());
             listaPendingItinerari.add(it);
         } else
@@ -247,7 +257,7 @@ public class Comune {
     }
 
     public void eliminaItinerario(Itinerario itinerario) {
-        if(!listaItinerari.contains(itinerario))
+        if (!listaItinerari.contains(itinerario))
             System.out.println("L'itinerario da eliminare non è presente nella piattaforma");
 
         listaItinerari.remove(itinerario);
@@ -263,9 +273,9 @@ public class Comune {
         itinerario.getListaItinerarioPDI().add(puntoInteresse);
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
-        if (appoggio instanceof StatoPendingItinerario){
+        if (appoggio instanceof StatoPendingItinerario) {
             StatoPendingItinerario it = new StatoPendingItinerario(itinerario.getNomeItinerario(),
-                    itinerario.getListaItinerarioPDI(),itinerario.getListaFoto());
+                    itinerario.getListaItinerarioPDI(), itinerario.getListaFoto());
             listaItinerari.remove(itinerario);
             listaPendingItinerari.add(it);
         }
@@ -280,10 +290,10 @@ public class Comune {
         System.out.println("Il punto di interesse è stato rimosso dall'itinerario");
     }
 
-    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
-        if(listaContest.contains(contestDiContribuzione))
+    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione) {
+        if (listaContest.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione è già presente nella piattaforma");
-        if(!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
+        if (!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
                 contestDiContribuzione.getDpc().isAfter(contestDiContribuzione.getDataInizio())))
             System.out.println("L'ultima data disponibile per la possibilità di aggiungere contenuti " +
                     "per il contest di contribuzione non è compresa tra la data di inizio e la data di fine");
@@ -294,38 +304,38 @@ public class Comune {
         System.out.println("Il contest di contribuzione è stato aggiunto");
     }
 
-    public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
-        if(!listaContest.contains(contestDiContribuzione))
+    public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione) {
+        if (!listaContest.contains(contestDiContribuzione))
             System.out.println("Il contest di contribuzione da eliminare non è presente nella piattaforma");
 
         listaContest.remove(contestDiContribuzione);
         System.out.println("Il contest di contribuzione è stato eliminato dalla piattaforma");
     }
 
-    public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo){
+    public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo) {
         ContestDiContribuzione contest = findContest(nomeContest);
-        if(("obiettivo").equalsIgnoreCase(param)){
+        if (("obiettivo").equalsIgnoreCase(param)) {
             contest.setObiettivo(elemNuovo);
             System.out.println("La modifica dell'obiettivo del contest di contribuzione è avvenuta");
-        } else{
+        } else {
             contest.setTematica(elemNuovo);
             System.out.println("La modifica della tematica del contest di contribuzione è avvenuta");
         }
     }
 
-    public void proponiContenuti(String nomeContest, File file){
+    public void proponiContenuti(String nomeContest, File file) {
         ContestDiContribuzione contest = findContest(nomeContest);
-        if(contest.getContenuti().contains(file))
+        if (contest.getContenuti().contains(file))
             throw new ContenutiNotFoundEccezione();
-        Contenuti contenuto = new Contenuti(file.getName(),file);
+        Contenuti contenuto = new Contenuti(file.getName(), file);
         contest.getContenuti().add(contenuto);
         System.out.println("Il contenuto è stato proposto al contest di contribuzione");
     }
 
-    public void validaContenuti(String nomeContest, String nomeContenuto, String approv){
+    public void validaContenuti(String nomeContest, String nomeContenuto, String approv) {
         ContestDiContribuzione contest = findContest(nomeContest);
-        Contenuti contenuto = findContenuto(contest,nomeContenuto);
-        if(approv.equalsIgnoreCase("Y")){
+        Contenuti contenuto = findContenuto(contest, nomeContenuto);
+        if (approv.equalsIgnoreCase("Y")) {
             contest.getContenuti().remove(contenuto);
             contest.getContenutiApprovati().add(contenuto);
             System.out.println("Il contenuto è stato approvato");
@@ -335,8 +345,8 @@ public class Comune {
         }
     }
 
-    public void modificaComune(String param, String elemNuovo){
-        if(("nome").equalsIgnoreCase(param)){
+    public void modificaComune(String param, String elemNuovo) {
+        if (("nome").equalsIgnoreCase(param)) {
             setNomeComune(elemNuovo);
             System.out.println("La modifica del nome del comune è avvenuta");
         } else {
@@ -348,7 +358,7 @@ public class Comune {
     public void aggiungiPreferitiItinerario(String nomeItinerario) {
         Itinerario it = findItinerario(nomeItinerario);
         //TODO cambiare eccezzione
-        if(listaPreferitiItinerario.contains(it))
+        if (listaPreferitiItinerario.contains(it))
             throw new ItinerariNotFoundEccezione();
 
         listaPreferitiItinerario.add(it);
@@ -358,7 +368,7 @@ public class Comune {
     public void aggiungiPreferitiPDI(String nomePdi) {
         PuntoInteresse pdi = findPDI(nomePdi);
         //TODO cambiare eccezzione
-        if(listaPreferitiPDI.contains(pdi))
+        if (listaPreferitiPDI.contains(pdi))
             throw new PuntoInteresseNotFoundEccezione();
 
         listaPreferitiPDI.add(pdi);
@@ -379,19 +389,26 @@ public class Comune {
         System.out.println("L'itinerario è stato rimosso dai preferiti");
     }
 
-    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo){
+    public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo) {
         //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
         Itinerario it = findItinerario(nomeItinerario);
 
         it.getListaFoto().add(foto);
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
-        if (appoggio instanceof StatoPendingItinerario){
+        if (appoggio instanceof StatoPendingItinerario) {
             StatoPendingItinerario itinerario = new StatoPendingItinerario(it.getNomeItinerario(), it.getListaItinerarioPDI(), it.getListaFoto());
             listaItinerari.remove(it);
             listaPendingItinerari.add(itinerario);
         }
         System.out.println("La foto è stata aggiunta all'itinerario");
+    }
+
+    public void InviaMessaggi(Messaggio messaggio){
+        Utente destinatario = findUtente(messaggio.getDestinatario());
+
+        destinatario.getListaMessaggiNonLetti().add(messaggio);
+        System.out.println("Messaggio inviato a: "+ destinatario.getNome());
     }
 
     @Override
