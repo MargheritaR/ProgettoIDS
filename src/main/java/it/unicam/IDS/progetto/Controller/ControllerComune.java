@@ -16,16 +16,16 @@ public class ControllerComune {
         comune.addContenuti(nomePDI, contenuto, ruolo);
     }
 
-    public void rimuoviContenuti(String nomePDI, Contenuti contenuto){
-        comune.rimuoviContenuti(nomePDI, contenuto);
+    public void rimuoviContenuti(String nomePDI, String nomeContenuto){
+        comune.rimuoviContenuti(nomePDI, nomeContenuto);
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI, String ruolo) {
         comune.inserimentoPDI(puntoPDI,ruolo);
     }
 
-    public void eliminaPDI(PuntoInteresse puntoPDI) {
-        comune.eliminaPDI(puntoPDI);
+    public void eliminaPDI(String nomePDI) {
+        comune.eliminaPDI(nomePDI);
     }
 
     public void approvazioneStatoPendingPDI(String pdiScelto, String scelta) {
@@ -40,8 +40,8 @@ public class ControllerComune {
         comune.creaItinerario(itinerario, ruolo);
     }
 
-    public void eliminaItinerario(Itinerario itinerario) {
-        comune.eliminaItinerario(itinerario);
+    public void eliminaItinerario(String nomeItinerario) {
+        comune.eliminaItinerario(nomeItinerario);
     }
 
     public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario, String ruolo) {
@@ -56,8 +56,8 @@ public class ControllerComune {
         comune.creaContestDiContribuzione(contestDiContribuzione);
     }
 
-    public void eliminaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione){
-        comune.eliminaContestDiContribuzione(contestDiContribuzione);
+    public void eliminaContestDiContribuzione(String nomeContest){
+        comune.eliminaContestDiContribuzione(nomeContest);
     }
 
     public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo){
@@ -97,7 +97,11 @@ public class ControllerComune {
     }
 
     public void InviaMessaggi(Messaggio messaggio){
-        comune.InviaMessaggi(messaggio);
+        comune.inviaMessaggi(messaggio);
+    }
+
+    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio){
+        comune.decidiContenutoVincitore(nomeContest, nomeContenuto, messaggio);
     }
 
     public Comune getComune() {

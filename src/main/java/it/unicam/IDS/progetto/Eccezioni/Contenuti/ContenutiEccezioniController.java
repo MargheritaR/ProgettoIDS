@@ -9,6 +9,12 @@ public class ContenutiEccezioniController {
     @ExceptionHandler(value = ContenutiNotFoundEccezione.class)
     public ResponseEntity<Object> handleException(ContenutiNotFoundEccezione e) {
         e.getMessage();
-        return new ResponseEntity<>("Contenuto non trovato", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Il contenuto non è stato trovato", HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = ContentAlreadyExistEccezione.class)
+    public ResponseEntity<Object> handleException(ContentAlreadyExistEccezione e) {
+        e.getMessage();
+        return new ResponseEntity<>("Il contenuto esiste già", HttpStatus.NOT_FOUND);
     }
 }

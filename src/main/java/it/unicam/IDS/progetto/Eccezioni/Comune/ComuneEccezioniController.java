@@ -9,6 +9,6 @@ public class ComuneEccezioniController {
     @ExceptionHandler(value = ComuneNotFountEccezione.class)
     public ResponseEntity<Object> handleException(ComuneNotFountEccezione e) {
         e.getMessage();
-        return new ResponseEntity<>("Comune non trovato", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Il comune non è trovato", HttpStatus.NOT_FOUND);
     }
 }

@@ -27,13 +27,13 @@ public class PuntoInteresse extends StatoPending {
         //this.listaContenuti = null;
     }
 
-    /*
-    public PuntoInteresse(String nomePDI, double asseX, double asseY, List<Contenuti> listaContenuti) {
+
+    public PuntoInteresse(String nomePDI, double asseX, double asseY, ArrayList<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
         this.coordinate = new Coordinate(nomePDI,asseX, asseY);
         this.listaContenuti = listaContenuti;
     }
-*/
+
 
     @Override
     public String toString() {

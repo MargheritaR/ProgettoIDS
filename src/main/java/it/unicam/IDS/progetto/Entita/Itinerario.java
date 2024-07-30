@@ -25,13 +25,13 @@ public class Itinerario extends StatoPending {
         //this.listaItinerarioPDI = null;
         //this.listaFoto = null;
     }
-    /*
-    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
+
+    public Itinerario(String nomeItinerario, ArrayList<PuntoInteresse> listaItinerarioPDI, ArrayList<Foto> listaFoto) {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
     }
-     */
+
 
     public String getNomeItinerario() {
         return nomeItinerario;

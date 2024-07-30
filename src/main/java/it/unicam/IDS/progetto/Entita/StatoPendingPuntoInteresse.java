@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +25,7 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
     private double asseY;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Contenuti> listaContenuti;
+    private ArrayList<Contenuti> listaContenuti;
 
     public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY) {
         this.nomePDI = nomePDI;
@@ -33,7 +34,7 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
         this.listaContenuti = null;
     }
 
-    public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY, List<Contenuti> listaContenuti) {
+    public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY, ArrayList<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
         this.asseX = asseX;
         this.asseY = asseY;
@@ -68,11 +69,11 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
         this.asseY = asseY;
     }
 
-    public List<Contenuti> getListaContenuti() {
+    public ArrayList<Contenuti> getListaContenuti() {
         return listaContenuti;
     }
 
-    public void setListaContenuti(List<Contenuti> listaContenuti) {
+    public void setListaContenuti(ArrayList<Contenuti> listaContenuti) {
         this.listaContenuti = listaContenuti;
     }
 }
