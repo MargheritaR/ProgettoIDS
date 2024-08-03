@@ -14,11 +14,11 @@ public class ControllerUtenti {
         utente.assegnamentoRuoli(nomeUtente,ruolo);
     }
 
-    public void leggiMessaggi(String titoloMessaggio){
-        utente.leggiMessaggi(titoloMessaggio);
+    public void leggiMessaggi(String titoloMessaggio, String nomeUtente){
+        utente.leggiMessaggi(titoloMessaggio, nomeUtente);
     }
 
-    public void registrazione(Utente utente){
-        utente.registrazione(utente);
+    public void registrazione(Utente u){
+        utente.registrazione(u);
     }
 }

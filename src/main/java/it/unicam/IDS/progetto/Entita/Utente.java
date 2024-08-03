@@ -34,7 +34,7 @@ public class Utente implements UserDetails{
     private String password;
 
     @NotEmpty
-    private String username;
+    private String email;
 
     @Enumerated(value = EnumType.STRING)
     private Ruoli ruolo;
@@ -48,9 +48,9 @@ public class Utente implements UserDetails{
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Utente> listaUtenti = new ArrayList<>();
 
-    public Utente(String username,String password,String nome,String cognome) {
+    public Utente(String email,String password,String nome,String cognome) {
         this.password = password;
-        this.username = username;
+        this.email = email;
         this.nome = nome;
         this.cognome = cognome;
         this.ruolo = Ruoli.ROLE_TURISTA;
@@ -74,7 +74,7 @@ public class Utente implements UserDetails{
     }
 
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class Utente implements UserDetails{
     }
 
     public void setUsername(String nome) {
-        this.username = nome;
+        this.email = nome;
     }
 
     public List<Messaggio> getListaMessaggiNonLetti() {
@@ -153,18 +153,20 @@ public class Utente implements UserDetails{
         this.listaUtenti = listaUtenti;
     }
 
-    public void leggiMessaggi(String titoloMessaggio){
+    public void leggiMessaggi(String titoloMessaggio, String nomeUtente){
+        // la variabile nomeUtente verrà tolta dalla firma del metodo in springboot e sarà sostituita con il token
         if (listaMessaggiNonLetti == null)
             throw new MessaggiEmptyEccezione();
 
-        Messaggio messaggio = findMessaggi(titoloMessaggio);
+        Utente utente = findUtente(nomeUtente);
+        Messaggio messaggio = findMessaggi(titoloMessaggio, utente);
         System.out.println(messaggio);
         listaMessaggiNonLetti.remove(messaggio);
         listaMessaggiLetti.add(messaggio);
     }
 
-    private Messaggio findMessaggi(String titoloMessaggi) {
-        for(Messaggio m : listaMessaggiNonLetti)
+    private Messaggio findMessaggi(String titoloMessaggi,Utente utente) {
+        for(Messaggio m : utente.listaMessaggiNonLetti)
             if(m.getTitolo().equals(titoloMessaggi))
                 return m;
         throw new MessaggioNotFoundEccezione();
@@ -196,7 +198,7 @@ public class Utente implements UserDetails{
         return "Utente: " + '\n' +
                 "id: " + id + '\n' +
                 "password: " + password + '\n' +
-                "nome: " + username + '\n' +
+                "nome: " + email + '\n' +
                 "ruolo: " + ruolo + '\n' +
                 "listaMessaggiNonLetti: " + listaMessaggiNonLetti + '\n' +
                 "listaMessaggiLetti: " + listaMessaggiLetti + '\n';

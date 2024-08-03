@@ -60,4 +60,14 @@ public class Messaggio {
     public void setIntestazione(String intestazione) {
         this.intestazione = intestazione;
     }
+
+    @Override
+    public String toString() {
+        return "Messaggio{" +
+                "titolo='" + titolo + '\'' +
+                ", mittente='" + mittente + '\'' +
+                ", destinatario='" + destinatario + '\'' +
+                ", intestazione='" + intestazione + '\'' +
+                '}';
+    }
 }

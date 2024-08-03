@@ -218,8 +218,15 @@ public class Comune {
         throw new ContestDiContribuzioneNotFoundEccezione();
     }
 
-    private Contenuti findContenutoContest(ContestDiContribuzione contest, String nomeContenuti) {
+    private Contenuti findContenutoContestNonApprovato(ContestDiContribuzione contest, String nomeContenuti) {
         for (Contenuti c : contest.getContenuti())
+            if (c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
+                return c;
+        throw new ContenutiNotFoundEccezione();
+    }
+
+    private Contenuti findContenutoContestApprovato(ContestDiContribuzione contest, String nomeContenuti) {
+        for (Contenuti c : contest.getContenutiApprovati())
             if (c.getNomeContenuto().equalsIgnoreCase(nomeContenuti))
                 return c;
         throw new ContenutiNotFoundEccezione();
@@ -371,10 +378,11 @@ public class Comune {
         if (("obiettivo").equalsIgnoreCase(param)) {
             contest.setObiettivo(elemNuovo);
             System.out.println("La modifica dell'obiettivo del contest di contribuzione è avvenuta");
-        } else {
+        } else if(("tematica".equalsIgnoreCase(param))){
             contest.setTematica(elemNuovo);
             System.out.println("La modifica della tematica del contest di contribuzione è avvenuta");
-        }
+        } else System.out.println("Parametro non valido, inserire l'obiettivo o la " +
+                "tematica del contest che si vuole modificare");
     }
 
     public void proponiContenuti(String nomeContest, File file) {
@@ -388,7 +396,7 @@ public class Comune {
 
     public void validaContenuti(String nomeContest, String nomeContenuto, String approv) {
         ContestDiContribuzione contest = findContest(nomeContest);
-        Contenuti contenuto = findContenutoContest(contest, nomeContenuto);
+        Contenuti contenuto = findContenutoContestNonApprovato(contest, nomeContenuto);
         if (approv.equalsIgnoreCase("Y")) {
             contest.getContenuti().remove(contenuto);
             contest.getContenutiApprovati().add(contenuto);
@@ -403,10 +411,10 @@ public class Comune {
         if (("nome").equalsIgnoreCase(param)) {
             setNomeComune(elemNuovo);
             System.out.println("La modifica del nome del comune è avvenuta");
-        } else {
+        } else if(("cap").equalsIgnoreCase(param)){
             setCap(elemNuovo);
             System.out.println("La modifica del CAP del comune è avvenuta");
-        }
+        } else System.out.println("Parametro invalido, inserire il nome o il cap del comune che si vuole modificare");
     }
 
     public void aggiungiPreferitiItinerario(String nomeItinerario) {
@@ -465,7 +473,7 @@ public class Comune {
 
     public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio) {
         ContestDiContribuzione cont = findContest(nomeContest);
-        Contenuti contenuto = findContenutoContest(cont, nomeContenuto);
+        Contenuti contenuto = findContenutoContestApprovato(cont, nomeContenuto);
         inviaMessaggi(messaggio);
 
         cont.setVincitore(contenuto.getContenuto());

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -39,10 +40,10 @@ public class ContestDiContribuzione{
     private File vincitore;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Contenuti> contenuti;
+    private ArrayList<Contenuti> contenuti = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Contenuti> contenutiApprovati;
+    private ArrayList<Contenuti> contenutiApprovati = new ArrayList<>();
 
     public ContestDiContribuzione(String nomeContest, String obiettivo, String tematica,
                                   String dpc, boolean suInvito, String dataInizio, String dataFine) {
@@ -50,12 +51,12 @@ public class ContestDiContribuzione{
         this.obiettivo = obiettivo;
         this.tematica = tematica;
         this.dpc = LocalDate.parse(dpc, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.suInvito= false;
+        this.suInvito= suInvito;
         this.dataInizio = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.dataFine = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.vincitore = null;
-        this.contenuti = null;
-        this.contenutiApprovati = null;
+//        this.contenuti = null;
+//        this.contenutiApprovati = null;
     }
 
     public ContestDiContribuzione() {}
@@ -125,19 +126,19 @@ public class ContestDiContribuzione{
         this.vincitore = vincitore;
     }
 
-    public List<Contenuti> getContenuti() {
+    public ArrayList<Contenuti> getContenuti() {
         return contenuti;
     }
 
-    public void setContenuti(List<Contenuti> contenuti) {
+    public void setContenuti(ArrayList<Contenuti> contenuti) {
         this.contenuti = contenuti;
     }
 
-    public List<Contenuti> getContenutiApprovati() {
+    public ArrayList<Contenuti> getContenutiApprovati() {
         return contenutiApprovati;
     }
 
-    public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {
+    public void setContenutiApprovati(ArrayList<Contenuti> contenutiApprovati) {
         this.contenutiApprovati = contenutiApprovati;
     }
 
