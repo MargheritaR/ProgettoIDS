@@ -2,6 +2,7 @@ package it.unicam.IDS.progetto.Entita;
 
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContentAlreadyExistEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
+import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestAlreadyExistEccezione;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribuzioneNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestInvalidDataEccezione;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestOverTimeLimitEccezione;
@@ -57,9 +58,9 @@ public class Comune {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Utente> listaUtenti;
 
-    public Comune(String nomeComune, double asseX, double asseY, String cap) {
+    public Comune(String nomeComune, double latitudine, double longitudine, String cap) {
         this.nomeComune = nomeComune;
-        this.coordinate = new Coordinate(nomeComune, asseX, asseY);
+        this.coordinate = new Coordinate(nomeComune, latitudine, longitudine);
         this.cap = cap;
     }
 
@@ -286,7 +287,7 @@ public class Comune {
 
         if (scelta.equalsIgnoreCase("Y")) {
             listaPendingPDI.remove(pdi);
-            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getAsseX(), pdi.getAsseY(), pdi.getListaContenuti());
+            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getLatitudine(), pdi.getLongitudine(), pdi.getListaContenuti());
             listaPDI.add(puntoInteresse);
             System.out.println("Il punto di interesse è stato approvato");
         } else {
@@ -354,14 +355,16 @@ public class Comune {
         System.out.println("Il punto di interesse è stato rimosso dall'itinerario");
     }
 
-    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione) {
+    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione, ArrayList<String> listaInvitati) {
         if (listaContest.contains(contestDiContribuzione))
-            throw new ContentAlreadyExistEccezione();
+            throw new ContestAlreadyExistEccezione();
         if (!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
                 contestDiContribuzione.getDpc().isAfter(contestDiContribuzione.getDataInizio())))
             throw new ContestOverTimeLimitEccezione();
         if (!contestDiContribuzione.getDataInizio().isBefore(contestDiContribuzione.getDataFine()))
             throw new ContestInvalidDataEccezione();
+        if(contestDiContribuzione.isSuInvito() == true)
+            System.out.println("Spedisci gli inviti");
 
         listaContest.add(contestDiContribuzione);
         System.out.println("Il contest di contribuzione è stato aggiunto");

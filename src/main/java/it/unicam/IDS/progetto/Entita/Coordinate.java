@@ -27,8 +27,8 @@ public class Coordinate {
     @Override
     public String toString() {
         return "{" +
-                "X=" + latitudine +
-                ", Y=" + longitudine +
+                "latitudine =" + latitudine +
+                ", longitudine =" + longitudine +
                 '}';
     }
 

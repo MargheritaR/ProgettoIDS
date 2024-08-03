@@ -28,9 +28,9 @@ public class PuntoInteresse extends StatoPending {
     }
 
 
-    public PuntoInteresse(String nomePDI, double asseX, double asseY, ArrayList<Contenuti> listaContenuti) {
+    public PuntoInteresse(String nomePDI, double latitudine, double longitudine, ArrayList<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
-        this.coordinate = new Coordinate(nomePDI,asseX, asseY);
+        this.coordinate = new Coordinate(nomePDI,latitudine, longitudine);
         this.listaContenuti = listaContenuti;
     }
 

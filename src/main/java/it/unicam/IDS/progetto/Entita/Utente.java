@@ -174,7 +174,7 @@ public class Utente implements UserDetails{
 
     private Utente findUtente(String nomeUtente) {
         for(Utente u : listaUtenti)
-            if(u.getNome().equals(nomeUtente))
+            if(u.getUsername().equals(nomeUtente))
                 return u;
         throw new UtenteNotFoundEccezione();
     }
@@ -187,7 +187,7 @@ public class Utente implements UserDetails{
 
     public void registrazione(Utente utente) {
         for(Utente u : listaUtenti)
-            if(u.getNome().equalsIgnoreCase(utente.getNome()))
+            if(u.getUsername().equalsIgnoreCase(utente.getUsername()))
                 throw new UtenteAlreadyExistsEccezioni();
         listaUtenti.add(utente);
         System.out.println("La registrazione è avvenuta con successo");

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,25 +18,25 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
     private String nomePDI;
 
     @NotNull
-    private double asseX;
+    private double latitudine;
 
     @NotNull
-    private double asseY;
+    private double longitudine;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private ArrayList<Contenuti> listaContenuti;
 
-    public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY) {
+    public StatoPendingPuntoInteresse(String nomePDI, double latitudine, double longitudine) {
         this.nomePDI = nomePDI;
-        this.asseX = asseX;
-        this.asseY = asseY;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
         this.listaContenuti = null;
     }
 
-    public StatoPendingPuntoInteresse(String nomePDI, double asseX, double asseY, ArrayList<Contenuti> listaContenuti) {
+    public StatoPendingPuntoInteresse(String nomePDI, double latitudine, double longitudine, ArrayList<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
-        this.asseX = asseX;
-        this.asseY = asseY;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
         this.listaContenuti = listaContenuti;
     }
 
@@ -53,20 +52,20 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
         this.nomePDI = nomePDI;
     }
 
-    public double getAsseX() {
-        return asseX;
+    public double getLatitudine() {
+        return latitudine;
     }
 
-    public void setAsseX(double asseX) {
-        this.asseX = asseX;
+    public void setLatitudine(double asseX) {
+        this.latitudine = asseX;
     }
 
-    public double getAsseY() {
-        return asseY;
+    public double getLongitudine() {
+        return longitudine;
     }
 
-    public void setAsseY(double asseY) {
-        this.asseY = asseY;
+    public void setLongitudine(double asseY) {
+        this.longitudine = asseY;
     }
 
     public ArrayList<Contenuti> getListaContenuti() {
@@ -82,8 +81,8 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
         return "StatoPendingPuntoInteresse{" +
                 "idNome=" + idNome +
                 ", nomePDI='" + nomePDI + '\'' +
-                ", asseX=" + asseX +
-                ", asseY=" + asseY +
+                ", asseX=" + latitudine +
+                ", asseY=" + longitudine +
                 ", listaContenuti=" + listaContenuti +
                 '}';
     }

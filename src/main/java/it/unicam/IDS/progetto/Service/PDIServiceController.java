@@ -94,8 +94,8 @@ public class PDIServiceController {
             if (statoPendingListPuntoInteresseRepository.existsStatoPendingPuntoInteresseByNomePDI(nomePDI)) {
                 StatoPendingPuntoInteresse statoPending = statoPendingListPuntoInteresseRepository.findStatoPendingPuntoInteresseByNomePDI(nomePDI);
                 statoPending.setNomePDI(pdi.getNomePDI());
-                statoPending.setAsseX(pdi.getAsseX());
-                statoPending.setAsseY(pdi.getAsseY());
+                statoPending.setLatitudine(pdi.getAsseX());
+                statoPending.setLongitudine(pdi.getAsseY());
                 statoPendingListPuntoInteresseRepository.save(statoPending);
             } else throw new PuntoInteresseNotFoundEccezione();
         } else {
