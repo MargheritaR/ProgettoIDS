@@ -76,20 +76,20 @@ public class ControllerComune {
         comune.modificaComune(param, elemNuovo);
     }
 
-    public void aggiungiPreferitiItinerario(String nomeItinerario) {
-        comune.aggiungiPreferitiItinerario(nomeItinerario);
+    public void aggiungiPreferitiItinerario(String nomeItinerario,String nomeUtente) {
+        comune.aggiungiPreferitiItinerario(nomeItinerario,nomeUtente);
     }
 
-    public void aggiungiPreferitiPDI(String nomePdi) {
-        comune.aggiungiPreferitiPDI(nomePdi);
+    public void aggiungiPreferitiPDI(String nomePdi,String nomeUtente) {
+        comune.aggiungiPreferitiPDI(nomePdi,nomeUtente);
     }
 
-    public void rimuoviPreferitiPDI(String nomePdi){
-        comune.rimuoviPreferitiPDI(nomePdi);
+    public void rimuoviPreferitiPDI(String nomePdi,String nomeUtente){
+        comune.rimuoviPreferitiPDI(nomePdi,nomeUtente);
     }
 
-    public void rimuoviPreferitiItinerari(String nomeItinerari) {
-        comune.rimuoviPreferitiItinerari(nomeItinerari);
+    public void rimuoviPreferitiItinerari(String nomeItinerari,String nomeUtente) {
+        comune.rimuoviPreferitiItinerari(nomeItinerari,nomeUtente);
     }
 
     public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo){

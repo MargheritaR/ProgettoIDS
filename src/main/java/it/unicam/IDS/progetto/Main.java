@@ -71,10 +71,10 @@ public class Main {
         comune.approvazioneStatoPendingItinerario("Festa della Spada","Y");
         comune.rimuoviPdiItinerario("Sotto Corte", "Festa della Spada");
         comune.rimuoviFotoItinerario(0,"Festa della Spada");
-        comune.aggiungiPreferitiItinerario("Maratona");
-        comune.aggiungiPreferitiPDI("Chiesa di San Venanzio");
-        comune.rimuoviPreferitiPDI("Chiesa di San Venanzio");
-        comune.rimuoviPreferitiItinerari("Maratona");
+        comune.aggiungiPreferitiItinerario("Maratona","Daniele");
+        comune.aggiungiPreferitiPDI("Chiesa di San Venanzio","Daniele");
+        comune.rimuoviPreferitiPDI("Chiesa di San Venanzio","Daniele");
+        comune.rimuoviPreferitiItinerari("Maratona","Daniele");
         comune.creaContestDiContribuzione(cont);
         comune.eliminaContestDiContribuzione("Progetto");
         comune.modificaContestDiContribuzione("Progetto","obiettivo","prova");

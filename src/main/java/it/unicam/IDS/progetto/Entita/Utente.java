@@ -18,7 +18,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor
-public class Utente implements UserDetails{
+public class Utente implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +46,15 @@ public class Utente implements UserDetails{
     private List<Messaggio> listaMessaggiLetti = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<Itinerario> listaPreferitiItinerario = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private ArrayList<PuntoInteresse> listaPreferitiPDI = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private ArrayList<Utente> listaUtenti = new ArrayList<>();
 
-    public Utente(String email,String password,String nome,String cognome) {
+    public Utente(String email, String password, String nome, String cognome) {
         this.password = password;
         this.email = email;
         this.nome = nome;
@@ -153,7 +159,23 @@ public class Utente implements UserDetails{
         this.listaUtenti = listaUtenti;
     }
 
-    public void leggiMessaggi(String titoloMessaggio, String nomeUtente){
+    public ArrayList<Itinerario> getListaPreferitiItinerario() {
+        return listaPreferitiItinerario;
+    }
+
+    public void setListaPreferitiItinerario(ArrayList<Itinerario> listaPreferitiItinerario) {
+        this.listaPreferitiItinerario = listaPreferitiItinerario;
+    }
+
+    public ArrayList<PuntoInteresse> getListaPreferitiPDI() {
+        return listaPreferitiPDI;
+    }
+
+    public void setListaPreferitiPDI(ArrayList<PuntoInteresse> listaPreferitiPDI) {
+        this.listaPreferitiPDI = listaPreferitiPDI;
+    }
+
+    public void leggiMessaggi(String titoloMessaggio, String nomeUtente) {
         // la variabile nomeUtente verrà tolta dalla firma del metodo in springboot e sarà sostituita con il token
         if (listaMessaggiNonLetti == null)
             throw new MessaggiEmptyEccezione();
@@ -165,29 +187,29 @@ public class Utente implements UserDetails{
         listaMessaggiLetti.add(messaggio);
     }
 
-    private Messaggio findMessaggi(String titoloMessaggi,Utente utente) {
-        for(Messaggio m : utente.listaMessaggiNonLetti)
-            if(m.getTitolo().equals(titoloMessaggi))
+    private Messaggio findMessaggi(String titoloMessaggi, Utente utente) {
+        for (Messaggio m : utente.listaMessaggiNonLetti)
+            if (m.getTitolo().equals(titoloMessaggi))
                 return m;
         throw new MessaggioNotFoundEccezione();
     }
 
     private Utente findUtente(String nomeUtente) {
-        for(Utente u : listaUtenti)
-            if(u.getUsername().equals(nomeUtente))
+        for (Utente u : listaUtenti)
+            if (u.getUsername().equals(nomeUtente))
                 return u;
         throw new UtenteNotFoundEccezione();
     }
 
-    public void assegnamentoRuoli(String nomeUtente,String ruolo){
+    public void assegnamentoRuoli(String nomeUtente, String ruolo) {
         Utente utente = findUtente(nomeUtente);
         utente.setRuolo(Ruoli.valueOf(ruolo));
         System.out.println("La modifica del ruolo dell'utente è stata effettuata");
     }
 
     public void registrazione(Utente utente) {
-        for(Utente u : listaUtenti)
-            if(u.getUsername().equalsIgnoreCase(utente.getUsername()))
+        for (Utente u : listaUtenti)
+            if (u.getUsername().equalsIgnoreCase(utente.getUsername()))
                 throw new UtenteAlreadyExistsEccezioni();
         listaUtenti.add(utente);
         System.out.println("La registrazione è avvenuta con successo");
@@ -201,6 +223,9 @@ public class Utente implements UserDetails{
                 "nome: " + email + '\n' +
                 "ruolo: " + ruolo + '\n' +
                 "listaMessaggiNonLetti: " + listaMessaggiNonLetti + '\n' +
-                "listaMessaggiLetti: " + listaMessaggiLetti + '\n';
+                "listaMessaggiLetti: " + listaMessaggiLetti + '\n' +
+                "listaPreferitiItinerario=" + listaPreferitiItinerario + '\n' +
+                "listaPreferitiPDI=" + listaPreferitiPDI + '\n' +
+                '}';
     }
 }
