@@ -19,21 +19,19 @@ public class PuntoInteresse extends StatoPending {
     private Coordinate coordinate;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Contenuti> listaContenuti = new ArrayList<>();
+    private List<Contenuti> listaContenuti;
 
     public PuntoInteresse(String nomePDI,double latitudine, double longitudine) {
         this.nomePDI = nomePDI;
         this.coordinate = new Coordinate(nomePDI,latitudine, longitudine);
-        //this.listaContenuti = null;
+        this.listaContenuti = null;
     }
 
-
-    public PuntoInteresse(String nomePDI, double latitudine, double longitudine, ArrayList<Contenuti> listaContenuti) {
+    public PuntoInteresse(String nomePDI, double latitudine, double longitudine, List<Contenuti> listaContenuti) {
         this.nomePDI = nomePDI;
         this.coordinate = new Coordinate(nomePDI,latitudine, longitudine);
         this.listaContenuti = listaContenuti;
     }
-
 
     @Override
     public String toString() {
@@ -60,11 +58,11 @@ public class PuntoInteresse extends StatoPending {
         this.coordinate = coordinate;
     }
 
-    public ArrayList<Contenuti> getListaContenuti() {
+    public List<Contenuti> getListaContenuti() {
         return listaContenuti;
     }
 
-    public void setListaContenuti(ArrayList<Contenuti> listaContenuti) {
+    public void setListaContenuti(List<Contenuti> listaContenuti) {
         this.listaContenuti = listaContenuti;
     }
 }

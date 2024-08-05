@@ -40,19 +40,19 @@ public class Utente implements UserDetails {
     private Ruoli ruolo;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Messaggio> listaMessaggiNonLetti = new ArrayList<>();
+    private List<Messaggio> listaMessaggiNonLetti;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Messaggio> listaMessaggiLetti = new ArrayList<>();
+    private List<Messaggio> listaMessaggiLetti;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<Itinerario> listaPreferitiItinerario = new ArrayList<>();
+    private List<Itinerario> listaPreferitiItinerario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaPreferitiPDI = new ArrayList<>();
+    private List<PuntoInteresse> listaPreferitiPDI;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<Utente> listaUtenti = new ArrayList<>();
+    private List<Utente> listaUtenti;
 
     public Utente(String email, String password, String nome, String cognome) {
         this.password = password;
@@ -60,6 +60,11 @@ public class Utente implements UserDetails {
         this.nome = nome;
         this.cognome = cognome;
         this.ruolo = Ruoli.ROLE_TURISTA;
+        this.listaMessaggiNonLetti = null;
+        this.listaMessaggiLetti = null;
+        this.listaPreferitiItinerario = null;
+        this.listaPreferitiPDI = null;
+        this.listaUtenti = null;
     }
 
     public int getId() {
@@ -151,27 +156,27 @@ public class Utente implements UserDetails {
         this.cognome = cognome;
     }
 
-    public ArrayList<Utente> getListaUtenti() {
+    public List<Utente> getListaUtenti() {
         return listaUtenti;
     }
 
-    public void setListaUtenti(ArrayList<Utente> listaUtenti) {
+    public void setListaUtenti(List<Utente> listaUtenti) {
         this.listaUtenti = listaUtenti;
     }
 
-    public ArrayList<Itinerario> getListaPreferitiItinerario() {
+    public List<Itinerario> getListaPreferitiItinerario() {
         return listaPreferitiItinerario;
     }
 
-    public void setListaPreferitiItinerario(ArrayList<Itinerario> listaPreferitiItinerario) {
+    public void setListaPreferitiItinerario(List<Itinerario> listaPreferitiItinerario) {
         this.listaPreferitiItinerario = listaPreferitiItinerario;
     }
 
-    public ArrayList<PuntoInteresse> getListaPreferitiPDI() {
+    public List<PuntoInteresse> getListaPreferitiPDI() {
         return listaPreferitiPDI;
     }
 
-    public void setListaPreferitiPDI(ArrayList<PuntoInteresse> listaPreferitiPDI) {
+    public void setListaPreferitiPDI(List<PuntoInteresse> listaPreferitiPDI) {
         this.listaPreferitiPDI = listaPreferitiPDI;
     }
 

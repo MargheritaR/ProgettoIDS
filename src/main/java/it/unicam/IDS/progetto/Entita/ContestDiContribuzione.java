@@ -40,10 +40,10 @@ public class ContestDiContribuzione{
     private File vincitore;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Contenuti> contenuti = new ArrayList<>();
+    private List<Contenuti> contenuti;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private ArrayList<Contenuti> contenutiApprovati = new ArrayList<>();
+    private List<Contenuti> contenutiApprovati;
 
     public ContestDiContribuzione(String nomeContest, String obiettivo, String tematica,
                                   String dpc, boolean suInvito, String dataInizio, String dataFine) {
@@ -55,8 +55,8 @@ public class ContestDiContribuzione{
         this.dataInizio = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.dataFine = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.vincitore = null;
-//        this.contenuti = null;
-//        this.contenutiApprovati = null;
+        this.contenuti = null;
+        this.contenutiApprovati = null;
     }
 
     public ContestDiContribuzione() {}
@@ -126,19 +126,19 @@ public class ContestDiContribuzione{
         this.vincitore = vincitore;
     }
 
-    public ArrayList<Contenuti> getContenuti() {
+    public List<Contenuti> getContenuti() {
         return contenuti;
     }
 
-    public void setContenuti(ArrayList<Contenuti> contenuti) {
+    public void setContenuti(List<Contenuti> contenuti) {
         this.contenuti = contenuti;
     }
 
-    public ArrayList<Contenuti> getContenutiApprovati() {
+    public List<Contenuti> getContenutiApprovati() {
         return contenutiApprovati;
     }
 
-    public void setContenutiApprovati(ArrayList<Contenuti> contenutiApprovati) {
+    public void setContenutiApprovati(List<Contenuti> contenutiApprovati) {
         this.contenutiApprovati = contenutiApprovati;
     }
 

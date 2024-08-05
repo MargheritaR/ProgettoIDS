@@ -15,18 +15,18 @@ public class Itinerario extends StatoPending {
     private String nomeItinerario;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<PuntoInteresse> listaItinerarioPDI = new ArrayList<>();
+    private List<PuntoInteresse> listaItinerarioPDI;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private ArrayList<Foto> listaFoto = new ArrayList<>();
+    private List<Foto> listaFoto;
 
     public Itinerario(String nomeItinerario) {
         this.nomeItinerario = nomeItinerario;
-        //this.listaItinerarioPDI = null;
-        //this.listaFoto = null;
+        this.listaItinerarioPDI = null;
+        this.listaFoto = null;
     }
 
-    public Itinerario(String nomeItinerario, ArrayList<PuntoInteresse> listaItinerarioPDI, ArrayList<Foto> listaFoto) {
+    public Itinerario(String nomeItinerario, List<PuntoInteresse> listaItinerarioPDI, List<Foto> listaFoto) {
         this.nomeItinerario = nomeItinerario;
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
@@ -41,19 +41,19 @@ public class Itinerario extends StatoPending {
         this.nomeItinerario = nomeItinerario;
     }
 
-    public ArrayList<PuntoInteresse> getListaItinerarioPDI() {
+    public List<PuntoInteresse> getListaItinerarioPDI() {
         return listaItinerarioPDI;
     }
 
-    public void setListaItinerarioPDI(ArrayList<PuntoInteresse> listaItinerarioPDI) {
+    public void setListaItinerarioPDI(List<PuntoInteresse> listaItinerarioPDI) {
         this.listaItinerarioPDI = listaItinerarioPDI;
     }
 
-    public ArrayList<Foto> getListaFoto() {
+    public List<Foto> getListaFoto() {
         return listaFoto;
     }
 
-    public void setListaFoto(ArrayList<Foto> listaFoto) {
+    public void setListaFoto(List<Foto> listaFoto) {
         this.listaFoto = listaFoto;
     }
 

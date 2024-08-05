@@ -1,5 +1,5 @@
 package it.unicam.IDS.progetto.Security;
-/*
+
 import it.unicam.IDS.progetto.Entita.Utente;
 import it.unicam.IDS.progetto.Repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class UtentiDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Utente utente = utenteRepository.findByUsername(username);
+        Utente utente = utenteRepository.findByEmail(username);
         if (utente == null) {
             throw new UsernameNotFoundException("User not found with username");
         }
@@ -36,4 +36,3 @@ public class UtentiDetailsService implements UserDetailsService {
         return new User(utente.getUsername(), utente.getPassword(), authorities);
     }
 }
- */
