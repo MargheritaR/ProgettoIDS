@@ -3,12 +3,12 @@ package it.unicam.IDS.progetto.Repository;
 import it.unicam.IDS.progetto.Entita.Utente;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UtenteListRepository extends CrudRepository<Utente, String> {
+public interface UtenteRepository extends CrudRepository<Utente, String> {
 
-    boolean existsByUsername(String username);
+   /* boolean existsByUsername(String username);
 
     Utente findByUsername(String username);
 
     Utente findById(int id);
-
+*/
 }

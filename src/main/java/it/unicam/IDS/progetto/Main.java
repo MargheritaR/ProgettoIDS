@@ -14,7 +14,7 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-        Utente u = new Utente();
+        /*Utente u = new Utente();
         ControllerUtenti utenti = new ControllerUtenti(u);
         Utente utente1 = new Utente("margherita@gmail.com","Valida1","Margherita","Ramazzotti");
         Utente utente2 = new Utente("daniele@gmail.com","Valida2","Daniele","Rossi");
@@ -88,8 +88,6 @@ public class Main {
         comune.inviaMessaggi(messaggio1);
         utenti.leggiMessaggi("Prova","Margherita");
 */
-        System.out.print(c);
-
-//        SpringApplication.run(Main.class, args);
+        SpringApplication.run(Main.class, args);
     }
 }

@@ -1,5 +1,6 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Dtos.ContenutiDtos;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContentAlreadyExistEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestAlreadyExistEccezione;
@@ -134,13 +135,19 @@ public class Comune {
         this.listaUtenti = listaUtenti;
     }
 
-    public void addContenuti(String nomePDI, Contenuti contenuto, String ruolo) {
-        //uso la string ruolo, che verrà tolta in spring boot, per controllare che ruolo ha l'utente
+    public void aggiungiContenuti(String nomePDI, ContenutiDtos contenutiDtos, String ruolo) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
-        if (puntoInteresse.getListaContenuti().contains(contenuto))
-            System.out.println("Il nome del contenuto inserito è già presente nella piattaforma");
-        puntoInteresse.getListaContenuti().add(contenuto);
+        if (puntoInteresse.getListaContenuti().contains(contenutiDtos.getNomeContenuto()))
+            throw new ContentAlreadyExistEccezione();
+        Contenuti contenuti = new Contenuti(contenutiDtos.getNomeContenuto(),contenutiDtos.getContenuto());
+        puntoInteresse.getListaContenuti().add(contenuti);
 
+        statoPendingContenuti(ruolo, puntoInteresse);
+
+        //System.out.println("Il contenuto è stato aggiunto al punto di interesse");
+    }
+
+    private void statoPendingContenuti(String ruolo, PuntoInteresse puntoInteresse){
         IStatoPendingFactory factory = new StatoPendingPDIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
         if (appoggio instanceof StatoPendingPuntoInteresse) {
@@ -150,8 +157,6 @@ public class Comune {
             listaPDI.remove(puntoInteresse);
             listaPendingPDI.add(pdi);
         }
-
-        System.out.println("Il contenuto è stato aggiunto al punto di interesse");
     }
 
     public void rimuoviContenuti(String nomePDI, String nomeContenuto) {
@@ -159,7 +164,7 @@ public class Comune {
         Contenuti contenuti = findContenutoPDI(puntoInteresse, nomeContenuto);
 
         puntoInteresse.getListaContenuti().remove(contenuti);
-        System.out.println("Il contenuto è stato eliminato dal punto di interesse");
+        //System.out.println("Il contenuto è stato eliminato dal punto di interesse");
     }
 
     private PuntoInteresse findPDI(String nomePdi) {

@@ -1,11 +1,11 @@
 package it.unicam.IDS.progetto.Service;
-
+/*
 import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.PDIListRepository;
 import it.unicam.IDS.progetto.Repository.StatoPendingListPuntoInteresseRepository;
-import it.unicam.IDS.progetto.Repository.UtenteListRepository;
+import it.unicam.IDS.progetto.Repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ public class PDIServiceController {
 
     private PDIListRepository puntiInteresseRepository;
     private StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository;
-    UtenteListRepository utenteRepository;
+    UtenteRepository utenteRepository;
 
     public PDIServiceController() {
     }
@@ -33,7 +33,7 @@ public class PDIServiceController {
     @Autowired
     public PDIServiceController(PDIListRepository puntiInteresseRepository,
                                 StatoPendingListPuntoInteresseRepository statoPendingListPuntoInteresseRepository,
-                                UtenteListRepository utenteRepository) {
+                                UtenteRepository utenteRepository) {
         this.puntiInteresseRepository = puntiInteresseRepository;
         this.statoPendingListPuntoInteresseRepository = statoPendingListPuntoInteresseRepository;
         this.utenteRepository = utenteRepository;
@@ -150,7 +150,7 @@ public class PDIServiceController {
             statoPendingListPuntoInteresseRepository.delete(statoPending);
             /*PuntoInteresse puntoInteresse = new PuntoInteresse(statoPending.getNomePDI(), statoPending.getAsseX(),
                     statoPending.getAsseY(), statoPending.getListaContenuti());
-            puntiInteresseRepository.save(puntoInteresse);*/
+            puntiInteresseRepository.save(puntoInteresse);
             return new ResponseEntity<>("Punto di interesse approvato", HttpStatus.OK);
         } else {
             statoPendingListPuntoInteresseRepository.delete(statoPending);
@@ -164,3 +164,4 @@ public class PDIServiceController {
         return String.valueOf(utente.getRuolo());
     }
 }
+*/

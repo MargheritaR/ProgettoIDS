@@ -1,10 +1,8 @@
 package it.unicam.IDS.progetto.Service;
-
+/*
 import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.Itinerario;
-import it.unicam.IDS.progetto.Entita.Preferiti;
 import it.unicam.IDS.progetto.Repository.ItinerarioListRepository;
-import it.unicam.IDS.progetto.Repository.PreferitiListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,3 +57,4 @@ public class PreferitiServiceController {
 
 
 }
+*/

@@ -1,7 +1,7 @@
 package it.unicam.IDS.progetto.Security;
-
+/*
 import it.unicam.IDS.progetto.Entita.Utente;
-import it.unicam.IDS.progetto.Repository.UtenteListRepository;
+import it.unicam.IDS.progetto.Repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,10 +18,10 @@ import java.util.List;
 @Service
 public class UtentiDetailsService implements UserDetailsService {
 
-    private final UtenteListRepository utenteRepository;
+    private final UtenteRepository utenteRepository;
 
     @Autowired
-    public UtentiDetailsService(UtenteListRepository utenteRepository) {
+    public UtentiDetailsService(UtenteRepository utenteRepository) {
         this.utenteRepository = utenteRepository;
     }
 
@@ -36,3 +36,4 @@ public class UtentiDetailsService implements UserDetailsService {
         return new User(utente.getUsername(), utente.getPassword(), authorities);
     }
 }
+ */

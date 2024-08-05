@@ -7,13 +7,13 @@ public class PuntoInteresseDtos {
     @Id
     private String nomePDI;
 
-    private double asseX;
-    private double asseY;
+    private double latitudine;
+    private double longitudine;
 
-    public PuntoInteresseDtos(String nomePDI, double asseX, double asseY) {
+    public PuntoInteresseDtos(String nomePDI, double latitudine, double longitudine) {
         this.nomePDI = nomePDI;
-        this.asseX = asseX;
-        this.asseY = asseY;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
     }
 
     public String getNomePDI() {
@@ -24,19 +24,19 @@ public class PuntoInteresseDtos {
         this.nomePDI = nomePDI;
     }
 
-    public double getAsseX() {
-        return asseX;
+    public double getLatitudine() {
+        return latitudine;
     }
 
-    public void setAsseX(double asseX) {
-        this.asseX = asseX;
+    public void setLatitudine(double latitudine) {
+        this.latitudine = latitudine;
     }
 
-    public double getAsseY() {
-        return asseY;
+    public double getLongitudine() {
+        return longitudine;
     }
 
-    public void setAsseY(double asseY) {
-        this.asseY = asseY;
+    public void setLongitudine(double longitudine) {
+        this.longitudine = longitudine;
     }
 }

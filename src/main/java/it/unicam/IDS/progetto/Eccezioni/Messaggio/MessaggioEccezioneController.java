@@ -13,7 +13,7 @@ public class MessaggioEccezioneController {
         return new ResponseEntity<>("Il messaggio non è stato trovato", HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(value = MessaggioNotFoundEccezione.class)
+    @ExceptionHandler(value = MessaggiEmptyEccezione.class)
     public ResponseEntity<Object> handleException(MessaggiEmptyEccezione e) {
         return new ResponseEntity<>("La lista messaggi è vuota", HttpStatus.NOT_FOUND);
     }

@@ -1,5 +1,5 @@
 package it.unicam.IDS.progetto.Security;
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +33,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions().disable())
-                .authorizeHttpRequests( request -> request
+                /*.authorizeHttpRequests( request -> request
                         .requestMatchers("/h2-console/**","/utente/newUtente", "/utente/login","/utente/getUtenti",
                                 "/utente/getUtenti/{id}","/comune/getComune","/contenuti/getContenuti",
                                 "/contestDiContribuzione/getContest",
@@ -75,6 +75,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+
                 .build();
     }
 
@@ -88,3 +90,4 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 }
+*/

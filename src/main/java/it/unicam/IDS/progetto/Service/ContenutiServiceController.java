@@ -1,11 +1,11 @@
 package it.unicam.IDS.progetto.Service;
-
+/*
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.ContenutiListRepository;
 import it.unicam.IDS.progetto.Repository.PDIListRepository;
 import it.unicam.IDS.progetto.Repository.StatoPendingListPuntoInteresseRepository;
-import it.unicam.IDS.progetto.Repository.UtenteListRepository;
+import it.unicam.IDS.progetto.Repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,12 +26,12 @@ public class ContenutiServiceController {
 
     private ContenutiListRepository contenutiRepository;
     private PDIListRepository pdiRepository;
-    private UtenteListRepository utenteRepository;
+    private UtenteRepository utenteRepository;
     private StatoPendingListPuntoInteresseRepository statoPendingPDIRepository;
 
     @Autowired
     public ContenutiServiceController(ContenutiListRepository contenutiRepository, PDIListRepository pdiRepository,
-                                      UtenteListRepository utenteRepository,
+                                      UtenteRepository utenteRepository,
                                       StatoPendingListPuntoInteresseRepository statoPendingPDIRepository) {
         this.contenutiRepository = contenutiRepository;
         this.pdiRepository = pdiRepository;
@@ -123,3 +123,4 @@ public class ContenutiServiceController {
         return String.valueOf(utente.getRuolo());
     }
 }
+*/

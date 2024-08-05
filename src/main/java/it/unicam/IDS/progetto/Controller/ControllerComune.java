@@ -1,23 +1,55 @@
 package it.unicam.IDS.progetto.Controller;
 
+import it.unicam.IDS.progetto.Dtos.ContenutiDtos;
 import it.unicam.IDS.progetto.Entita.*;
+import it.unicam.IDS.progetto.Repository.ComuneRepository;
+import it.unicam.IDS.progetto.Repository.UtenteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 
+@RestController
+@RequestMapping(value = "/comune")
 public class ControllerComune {
 
-    private Comune comune;
+    private ComuneRepository comuneRepository;
 
-    public ControllerComune(Comune comune) {
-        this.comune = comune;
+    private UtenteRepository utenteRepository;
+
+   @Autowired
+    public ControllerComune(ComuneRepository comuneRepository, UtenteRepository utenteRepository) {
+        this.comuneRepository = comuneRepository;
+        this.utenteRepository = utenteRepository;
+        /*Comune comune = new Comune("Camerino", 43.5, 32.1, "62032");
+        this.comuneRepository.save(comune);*/
     }
 
-    public void addContenuti(String nomePDI, Contenuti contenuto, String ruolo){
-        comune.addContenuti(nomePDI, contenuto, ruolo);
+   /* @PostMapping(value = "/aggiungiContenuti/{nomePDI}")
+    public ResponseEntity<Object> aggiungiContenuti(@PathVariable("nomePDI") String nomePDI, @RequestBody ContenutiDtos contenutiDtos){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByUsername(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
+        getComune().aggiungiContenuti(nomePDI, contenutiDtos, ruolo);
+
+        return new ResponseEntity<>("Il contenuto è stato aggiunto al punto di interesse",HttpStatus.OK);
+    }*/
+
+   /* @DeleteMapping(value = "/rimuoviContenuti/{nomePDI}/{nomeContenuto}")
+    public ResponseEntity<Object> rimuoviContenuti(@PathVariable("nomePDI") String nomePDI,
+                                                   @PathVariable("nomeContenuto") String nomeContenuto) {
+        getComune().rimuoviContenuti(nomePDI, nomeContenuto);
+
+        return new ResponseEntity<>("Il contenuto è stato eliminato dal punto di interesse", HttpStatus.OK);
     }
 
-    public void rimuoviContenuti(String nomePDI, String nomeContenuto){
-        comune.rimuoviContenuti(nomePDI, nomeContenuto);
+    @RequestMapping(value = "/getContenuti")
+    public ResponseEntity<Object> getContenuti() {
+        return new ResponseEntity<>(comuneRepository.findAll(), HttpStatus.OK);
     }
 
     public void inserimentoPDI(PuntoInteresse puntoPDI, String ruolo) {
@@ -109,6 +141,6 @@ public class ControllerComune {
     }
 
     public Comune getComune() {
-        return comune;
-    }
+        return comuneRepository.findByNomeComune("Camerino");
+    }*/
 }

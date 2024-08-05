@@ -1,9 +1,7 @@
 package it.unicam.IDS.progetto.Service;
-
-import it.unicam.IDS.progetto.Dtos.ComuneDtos;
+/*
 import it.unicam.IDS.progetto.Eccezioni.Comune.ComuneNotFountEccezione;
-import it.unicam.IDS.progetto.Entita.Comune;
-import it.unicam.IDS.progetto.Repository.ComuneListRepository;
+import it.unicam.IDS.progetto.Repository.ComuneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/comune")
 public class ComuneServiceController {
 
-    private ComuneListRepository comuneRepository;
+    private ComuneRepository comuneRepository;
 
     @Autowired
-    public ComuneServiceController(ComuneListRepository comuneRepository) {
+    public ComuneServiceController(ComuneRepository comuneRepository) {
         this.comuneRepository = comuneRepository;
     }
 
@@ -44,7 +42,7 @@ public class ComuneServiceController {
             return new ResponseEntity<>("Comune è stato aggiornato con successo", HttpStatus.OK);
         } else throw new ComuneNotFountEccezione();
     }
-*/
+
     @DeleteMapping(value = "/deleteComune/{nomeComune}")
     public ResponseEntity<Object> deleteComune(@PathVariable("nomeComune") String nomeComune){
         if (comuneRepository.existsById(nomeComune)) {
@@ -53,3 +51,4 @@ public class ComuneServiceController {
         } else throw new ComuneNotFountEccezione();
     }
 }
+*/

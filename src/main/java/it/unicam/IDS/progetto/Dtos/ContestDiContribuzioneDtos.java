@@ -2,6 +2,8 @@ package it.unicam.IDS.progetto.Dtos;
 
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
+
 public class ContestDiContribuzioneDtos {
 
     @Id
@@ -12,71 +14,80 @@ public class ContestDiContribuzioneDtos {
     private String tematica;
 
     //limite massimo dei contenuti aggiungibili nel lasso di tempo del contest
-    private String limiteMassimoC;
+    private String dpc;
 
-    //termine massimo di spedizione degli inviti
-    private String termineMassimoS;
-
-    //termine massimo di ricezione degli inviti
-    private String termineMassimoR;
-
-    private int sogliaInviti = 0;
+    private boolean suInvito;
 
     //tempo iniziale del lasso di tempo del contest
-    private String tempoInizio;
+    private LocalDate dataInizio;
 
     //tempo finale del lasso di tempo del contest
-    private String tempoFine;
+    private LocalDate dataFine;
 
-    public ContestDiContribuzioneDtos(String nomeContest, String obiettivo, String tematica,
-                                      String limiteMassimoC, String termineMassimoS, String termineMassimoR,
-                                      int sogliaInviti, String tempoInizio, String tempoFine) {
+    public ContestDiContribuzioneDtos(String nomeContest, String obiettivo, String tematica, String dpc,
+                                      boolean suInvito, LocalDate dataInizio, LocalDate dataFine) {
         this.nomeContest = nomeContest;
         this.obiettivo = obiettivo;
         this.tematica = tematica;
-        this.limiteMassimoC = limiteMassimoC;
-        this.termineMassimoS = termineMassimoS;
-        this.termineMassimoR = termineMassimoR;
-        this.sogliaInviti = sogliaInviti;
-        this.tempoInizio = tempoInizio;
-        this.tempoFine = tempoFine;
+        this.dpc = dpc;
+        this.suInvito = suInvito;
+        this.dataInizio = dataInizio;
+        this.dataFine = dataFine;
     }
 
     public String getNomeContest() {
         return nomeContest;
     }
 
-    public  String getObiettivo() {
+    public void setNomeContest(String nomeContest) {
+        this.nomeContest = nomeContest;
+    }
+
+    public String getObiettivo() {
         return obiettivo;
     }
 
-    public  String getTematica() {
+    public void setObiettivo(String obiettivo) {
+        this.obiettivo = obiettivo;
+    }
+
+    public String getTematica() {
         return tematica;
     }
 
-    public  String getLimiteMassimoC() {
-        return limiteMassimoC;
+    public void setTematica(String tematica) {
+        this.tematica = tematica;
     }
 
-    public  String getTermineMassimoS() {
-        return termineMassimoS;
+    public String getDpc() {
+        return dpc;
     }
 
-    public  String getTermineMassimoR() {
-        return termineMassimoR;
+    public void setDpc(String dpc) {
+        this.dpc = dpc;
     }
 
-    public int getSogliaInviti() {
-        return sogliaInviti;
+    public boolean isSuInvito() {
+        return suInvito;
     }
 
-    public  String getTempoInizio() {
-        return tempoInizio;
+    public void setSuInvito(boolean suInvito) {
+        this.suInvito = suInvito;
     }
 
-    public  String getTempoFine() {
-        return tempoFine;
+    public LocalDate getDataInizio() {
+        return dataInizio;
     }
 
+    public void setDataInizio(LocalDate dataInizio) {
+        this.dataInizio = dataInizio;
+    }
 
+    public LocalDate getDataFine() {
+        return dataFine;
+    }
+
+    public void setDataFine(LocalDate dataFine) {
+        this.dataFine = dataFine;
+    }
 }

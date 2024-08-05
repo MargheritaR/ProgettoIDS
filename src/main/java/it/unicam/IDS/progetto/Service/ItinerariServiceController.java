@@ -1,11 +1,11 @@
 package it.unicam.IDS.progetto.Service;
-
+/*
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.StatoPendingListItinerarioRepository;
 import it.unicam.IDS.progetto.Repository.ItinerarioListRepository;
 import it.unicam.IDS.progetto.Repository.PDIListRepository;
-import it.unicam.IDS.progetto.Repository.UtenteListRepository;
+import it.unicam.IDS.progetto.Repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,12 +27,12 @@ public class ItinerariServiceController {
     private ItinerarioListRepository itinerariRepository;
     private StatoPendingListItinerarioRepository statoPendingRepository;
     private PDIListRepository pdiRepository;
-    private UtenteListRepository utenteRepository;
+    private UtenteRepository utenteRepository;
 
     @Autowired
     public ItinerariServiceController(ItinerarioListRepository itinerariRepository,
                                       StatoPendingListItinerarioRepository statoPendingRepository,
-                                      UtenteListRepository utenteRepository, PDIListRepository pdiRepository) {
+                                      UtenteRepository utenteRepository, PDIListRepository pdiRepository) {
         this.itinerariRepository = itinerariRepository;
         this.statoPendingRepository = statoPendingRepository;
         this.utenteRepository = utenteRepository;
@@ -161,3 +161,4 @@ public class ItinerariServiceController {
     }
 
 }
+*/
