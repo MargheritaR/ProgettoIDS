@@ -19,13 +19,13 @@ public class ContestDiContribuzioneDtos {
     private boolean suInvito;
 
     //tempo iniziale del lasso di tempo del contest
-    private LocalDate dataInizio;
+    private String dataInizio;
 
     //tempo finale del lasso di tempo del contest
-    private LocalDate dataFine;
+    private String dataFine;
 
     public ContestDiContribuzioneDtos(String nomeContest, String obiettivo, String tematica, String dpc,
-                                      boolean suInvito, LocalDate dataInizio, LocalDate dataFine) {
+                                      boolean suInvito, String dataInizio, String dataFine) {
         this.nomeContest = nomeContest;
         this.obiettivo = obiettivo;
         this.tematica = tematica;
@@ -75,19 +75,19 @@ public class ContestDiContribuzioneDtos {
         this.suInvito = suInvito;
     }
 
-    public LocalDate getDataInizio() {
+    public String getDataInizio() {
         return dataInizio;
     }
 
-    public void setDataInizio(LocalDate dataInizio) {
+    public void setDataInizio(String dataInizio) {
         this.dataInizio = dataInizio;
     }
 
-    public LocalDate getDataFine() {
+    public String getDataFine() {
         return dataFine;
     }
 
-    public void setDataFine(LocalDate dataFine) {
+    public void setDataFine(String dataFine) {
         this.dataFine = dataFine;
     }
 }

@@ -1,14 +1,13 @@
 package it.unicam.IDS.progetto.Entita;
 
 import it.unicam.IDS.progetto.Dtos.ContenutiDtos;
+import it.unicam.IDS.progetto.Dtos.ContestDiContribuzioneDtos;
 import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
 import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
+import it.unicam.IDS.progetto.Eccezioni.Comune.ComuneParamInvalidEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContentAlreadyExistEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
-import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestAlreadyExistEccezione;
-import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestDiContribuzioneNotFoundEccezione;
-import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestInvalidDataEccezione;
-import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.ContestOverTimeLimitEccezione;
+import it.unicam.IDS.progetto.Eccezioni.ContestDiContribuzione.*;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariAlreadyExistEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Itinerari.ItinerariNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseAlreadyExitsEccezione;
@@ -29,10 +28,14 @@ import java.util.List;
 public class Comune {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @NotNull
     private String nomeComune;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
+    @JoinColumn(name = "id", referencedColumnName = "coordinate_id")
     private Coordinate coordinate;
 
     @NotNull
@@ -70,6 +73,10 @@ public class Comune {
 
     public Comune(ArrayList<Utente> listaUtenti) {
         this.listaUtenti = listaUtenti;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getNomeComune() {
@@ -144,12 +151,12 @@ public class Comune {
         this.listaUtenti = listaUtenti;
     }
 
-    public void aggiungiContenuti(String nomePDI, ContenutiDtos contenutiDtos, String ruolo) {
+    public void aggiungiContenuti(String nomePDI,File file, String ruolo) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
-        if (puntoInteresse.getListaContenuti().contains(contenutiDtos.getNomeContenuto()))
+        Contenuti contenuto = new Contenuti(file.getName(),file);
+        if (puntoInteresse.getListaContenuti().contains(contenuto.getNomeContenuto()))
             throw new ContentAlreadyExistEccezione();
-        Contenuti contenuti = new Contenuti(contenutiDtos.getNomeContenuto(),contenutiDtos.getContenuto());
-        puntoInteresse.getListaContenuti().add(contenuti);
+        puntoInteresse.getListaContenuti().add(contenuto);
 
         statoPendingContenuti(ruolo, puntoInteresse);
     }
@@ -279,11 +286,8 @@ public class Comune {
             listaPendingPDI.remove(pdi);
             PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getLatitudine(), pdi.getLongitudine(), pdi.getListaContenuti());
             listaPDI.add(puntoInteresse);
-            System.out.println("Il punto di interesse è stato approvato");
-        } else {
+        } else
             listaPendingPDI.remove(pdi);
-            System.out.println("Il punto di interesse non è stato approvato quindi è stato eliminato");
-        }
     }
 
     public void approvazioneStatoPendingItinerario(String itinerarioScelto, String scelta) {
@@ -293,11 +297,8 @@ public class Comune {
             listaPendingItinerari.remove(it);
             Itinerario itinerario = new Itinerario(it.getNomeItinerario(), it.getListaItinerarioPDI(), it.getListaFoto());
             listaItinerari.add(itinerario);
-            System.out.println("L'itinerario è stato approvato");
-        } else {
+        } else
             listaPendingItinerari.remove(it);
-            System.out.println("L'itinerario non è stato approvato quindi è stato eliminato");
-        }
     }
 
     public void creaItinerario(ItinerarioDtos it1, String ruolo) {
@@ -340,37 +341,33 @@ public class Comune {
         itinerario.getListaItinerarioPDI().remove(puntoInteresse);
     }
 
-    public void creaContestDiContribuzione(ContestDiContribuzione contestDiContribuzione) {
-        if (listaContest.contains(contestDiContribuzione))
+    public void creaContestDiContribuzione(ContestDiContribuzioneDtos contestDtos) {
+        ContestDiContribuzione  contest = new ContestDiContribuzione(contestDtos.getNomeContest(), contestDtos.getObiettivo(), contestDtos.getTematica(),
+                contestDtos.getDpc(), contestDtos.isSuInvito(), contestDtos.getDataInizio(), contestDtos.getDataFine());
+        if (listaContest.contains(contest))
             throw new ContestAlreadyExistEccezione();
-        if (!(contestDiContribuzione.getDpc().isBefore(contestDiContribuzione.getDataFine()) &&
-                contestDiContribuzione.getDpc().isAfter(contestDiContribuzione.getDataInizio())))
+        if (!(contest.getDpc().isBefore(contest.getDataFine()) && contest.getDpc().isAfter(contest.getDataInizio())))
             throw new ContestOverTimeLimitEccezione();
-        if (!contestDiContribuzione.getDataInizio().isBefore(contestDiContribuzione.getDataFine()))
+        if (!contest.getDataInizio().isBefore(contest.getDataFine()))
             throw new ContestInvalidDataEccezione();
-        if(contestDiContribuzione.isSuInvito() == true)
+        if(contest.isSuInvito())
             System.out.println("Spedisci gli inviti");
 
-        listaContest.add(contestDiContribuzione);
-        System.out.println("Il contest di contribuzione è stato aggiunto");
+        listaContest.add(contest);
     }
 
     public void eliminaContestDiContribuzione(String nomeContest) {
         ContestDiContribuzione contestDiContribuzione = findContest(nomeContest);
         listaContest.remove(contestDiContribuzione);
-        System.out.println("Il contest di contribuzione è stato eliminato dalla piattaforma");
     }
 
     public void modificaContestDiContribuzione(String nomeContest, String param, String elemNuovo) {
         ContestDiContribuzione contest = findContest(nomeContest);
         if (("obiettivo").equalsIgnoreCase(param)) {
             contest.setObiettivo(elemNuovo);
-            System.out.println("La modifica dell'obiettivo del contest di contribuzione è avvenuta");
         } else if(("tematica".equalsIgnoreCase(param))){
             contest.setTematica(elemNuovo);
-            System.out.println("La modifica della tematica del contest di contribuzione è avvenuta");
-        } else System.out.println("Parametro non valido, inserire l'obiettivo o la " +
-                "tematica del contest che si vuole modificare");
+        } else throw new ContestParamInvalidEccezione();
     }
 
     public void proponiContenuti(String nomeContest, File file) {
@@ -379,7 +376,6 @@ public class Comune {
             throw new ContenutiNotFoundEccezione();
         Contenuti contenuto = new Contenuti(file.getName(), file);
         contest.getContenuti().add(contenuto);
-        System.out.println("Il contenuto è stato proposto al contest di contribuzione");
     }
 
     public void validaContenuti(String nomeContest, String nomeContenuto, String approv) {
@@ -388,21 +384,16 @@ public class Comune {
         if (approv.equalsIgnoreCase("Y")) {
             contest.getContenuti().remove(contenuto);
             contest.getContenutiApprovati().add(contenuto);
-            System.out.println("Il contenuto è stato approvato");
-        } else {
+        } else
             contest.getContenuti().remove(contenuto);
-            System.out.println("Il contenuto è stato eliminato perchè non è stato approvato");
-        }
     }
 
     public void modificaComune(String param, String elemNuovo) {
         if (("nome").equalsIgnoreCase(param)) {
             setNomeComune(elemNuovo);
-            System.out.println("La modifica del nome del comune è avvenuta");
         } else if(("cap").equalsIgnoreCase(param)){
             setCap(elemNuovo);
-            System.out.println("La modifica del CAP del comune è avvenuta");
-        } else System.out.println("Parametro invalido, inserire il nome o il cap del comune che si vuole modificare");
+        } else throw new ComuneParamInvalidEccezione();
     }
 
     public void aggiungiPreferitiItinerario(String nomeItinerario,String nomeUtente) {
@@ -468,7 +459,6 @@ public class Comune {
         inviaMessaggi(messaggio);
 
         cont.setVincitore(contenuto.getContenuto());
-        System.out.println("Il vincitore è stato scelto");
     }
 
     public void rimuoviFotoItinerario(int idFoto, String nomeItinerario) {

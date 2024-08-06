@@ -29,4 +29,11 @@ public class ContestDiContribuzioneController {
         e.getMessage();
         return new ResponseEntity<>("La data inserita non è valida", HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(value = ContestParamInvalidEccezione.class)
+    public ResponseEntity<Object> handleException(ContestParamInvalidEccezione e) {
+        e.getMessage();
+        return new ResponseEntity<>("Parametro non valido, inserire l'obiettivo " +
+                "o la tematica del contest che si vuole modificare",HttpStatus.NOT_FOUND);
+    }
 }

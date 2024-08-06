@@ -52,8 +52,8 @@ public class ContestDiContribuzione{
         this.tematica = tematica;
         this.dpc = LocalDate.parse(dpc, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.suInvito= suInvito;
-        this.dataInizio = LocalDate.parse(dataInizio, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        this.dataFine = LocalDate.parse(dataFine, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.dataInizio = LocalDate.parse(dataInizio,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        this.dataFine =LocalDate.parse(dataFine,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         this.vincitore = null;
         this.contenuti = null;
         this.contenutiApprovati = null;
