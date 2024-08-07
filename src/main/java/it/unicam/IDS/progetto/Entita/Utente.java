@@ -1,5 +1,7 @@
 package it.unicam.IDS.progetto.Entita;
 
+import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
+import it.unicam.IDS.progetto.Dtos.UtenteDtos;
 import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggiEmptyEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggioNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteAlreadyExistsEccezioni;
@@ -12,7 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -180,16 +181,15 @@ public class Utente implements UserDetails {
         this.listaPreferitiPDI = listaPreferitiPDI;
     }
 
-    public void leggiMessaggi(String titoloMessaggio, String nomeUtente) {
-        // la variabile nomeUtente verrà tolta dalla firma del metodo in springboot e sarà sostituita con il token
+    public MessaggioDtos leggiMessaggi(String titoloMessaggio, Utente utente) {
         if (listaMessaggiNonLetti == null)
             throw new MessaggiEmptyEccezione();
 
-        Utente utente = findUtente(nomeUtente);
         Messaggio messaggio = findMessaggi(titoloMessaggio, utente);
-        System.out.println(messaggio);
         listaMessaggiNonLetti.remove(messaggio);
         listaMessaggiLetti.add(messaggio);
+        return new MessaggioDtos(messaggio.getMittente(), messaggio.getDestinatario(),
+                messaggio.getTitolo(), messaggio.getIntestazione());
     }
 
     private Messaggio findMessaggi(String titoloMessaggi, Utente utente) {
@@ -209,15 +209,13 @@ public class Utente implements UserDetails {
     public void assegnamentoRuoli(String nomeUtente, String ruolo) {
         Utente utente = findUtente(nomeUtente);
         utente.setRuolo(Ruoli.valueOf(ruolo));
-        System.out.println("La modifica del ruolo dell'utente è stata effettuata");
     }
 
-    public void registrazione(Utente utente) {
-        for (Utente u : listaUtenti)
-            if (u.getUsername().equalsIgnoreCase(utente.getUsername()))
+    public void registrazione(Utente u) {
+        for (Utente ut : listaUtenti)
+            if (ut.getUsername().equalsIgnoreCase(u.getUsername()))
                 throw new UtenteAlreadyExistsEccezioni();
-        listaUtenti.add(utente);
-        System.out.println("La registrazione è avvenuta con successo");
+        listaUtenti.add(u);
     }
 
     @Override

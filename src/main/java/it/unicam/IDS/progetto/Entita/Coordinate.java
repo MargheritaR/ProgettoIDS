@@ -16,8 +16,8 @@ public class Coordinate {
     private double longitudine;
 
     // costruttore
-    public Coordinate(String idNomePDI, double latitudine, double longitudine) {
-        this.nomeCoordinate = idNomePDI;
+    public Coordinate(String nomeCoordinate, double latitudine, double longitudine) {
+        this.nomeCoordinate = nomeCoordinate;
         this.latitudine = latitudine;
         this.longitudine = longitudine;
     }

@@ -1,8 +1,8 @@
 package it.unicam.IDS.progetto.Controller;
 
-import it.unicam.IDS.progetto.Dtos.ContenutiDtos;
 import it.unicam.IDS.progetto.Dtos.ContestDiContribuzioneDtos;
 import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
+import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
 import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
 import it.unicam.IDS.progetto.Entita.*;
 import it.unicam.IDS.progetto.Repository.ComuneRepository;
@@ -61,7 +61,7 @@ public class ControllerComune {
         return new ResponseEntity<>("Il contenuto è stato eliminato dal punto di interesse", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getAllComune")
+    @RequestMapping(value = "/getComune")
     public ResponseEntity<Object> getAllComune() {
         return new ResponseEntity<>(comuneRepository.findAll(), HttpStatus.OK);
     }
@@ -163,7 +163,7 @@ public class ControllerComune {
     @DeleteMapping(value = "/rimuoviFotoItinerario/{idFoto}/{nomeItinerario}")
     public ResponseEntity<Object> rimuoviFotoItinerario(@PathVariable("idFoto") int idFoto,
                                                         @PathVariable("nomeItinerario") String nomeItinerario) {
-        getComune().rimuoviFotoItinerario(idFoto, nomeItinerario);
+        getComune().rimuoviFotoItinerario(idFoto-1, nomeItinerario);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("La foto è stata rimossa dall'itinerario", HttpStatus.OK);
     }
@@ -205,7 +205,7 @@ public class ControllerComune {
         return new ResponseEntity<>("Il contenuto è stato proposto al contest di contribuzione", HttpStatus.OK);
     }
 
-    @PutMapping(value = "validaContenuti/{nomeContest}/{nomeContenuto}/{approv}")
+    @PutMapping(value = "/validaContenuti/{nomeContest}/{nomeContenuto}/{approv}")
     public ResponseEntity<Object> validaContenuti(@PathVariable("nomeContest") String nomeContest,
                                                   @PathVariable("nomeContenuto") String nomeContenuto,
                                                   @PathVariable("approv") String approv) {
@@ -219,36 +219,59 @@ public class ControllerComune {
     @PutMapping(value = "/modificaComune/{param}/{elemNuovo}")
     public ResponseEntity<Object> modificaComune(@PathVariable("param") String param,
                                                  @PathVariable("elemNuovo") String elemNuovo) {
+        //
         getComune().modificaComune(param, elemNuovo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("La modifica del " + param + " del comune è avvenuta", HttpStatus.OK);
     }
 
-    /*
-        public void aggiungiPreferitiItinerario(String nomeItinerario, String nomeUtente) {
-            comune.aggiungiPreferitiItinerario(nomeItinerario, nomeUtente);
-        }
+    @PostMapping(value = "/aggiungiPreferitiItinerario/{nomeItinerario}")
+    public ResponseEntity<Object> aggiungiPreferitiItinerario(@PathVariable("nomeItinerario") String nomeItinerario) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //Utente utente = utenteRepository.findByUsername(authentication.getName());
+        getComune().aggiungiPreferitiItinerario(nomeItinerario, "Daniele");
+        comuneRepository.save(getComune());
+        return new ResponseEntity<>("L'itinerario è stato aggiunto ai preferiti", HttpStatus.OK);
+    }
 
-        public void aggiungiPreferitiPDI(String nomePdi, String nomeUtente) {
-            comune.aggiungiPreferitiPDI(nomePdi, nomeUtente);
-        }
+    @PostMapping(value = "/aggiungiPreferitiPDI/{nomePdi}")
+    public ResponseEntity<Object> aggiungiPreferitiPDI(@PathVariable("nomePdi") String nomePdi) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //Utente utente = utenteRepository.findByUsername(authentication.getName());
+        getComune().aggiungiPreferitiPDI(nomePdi, "Daniele");
+        comuneRepository.save(getComune());
+        return new ResponseEntity<>("Il punto di interesse è stato aggiunto ai preferiti", HttpStatus.OK);
+    }
 
-        public void rimuoviPreferitiPDI(String nomePdi, String nomeUtente) {
-            comune.rimuoviPreferitiPDI(nomePdi, nomeUtente);
-        }
+    @DeleteMapping(value = "/rimuoviPreferitiPDI/{nomePdi}")
+    public ResponseEntity<Object> rimuoviPreferitiPDI(@PathVariable("nomePdi") String nomePdi) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //Utente utente = utenteRepository.findByUsername(authentication.getName());
+        getComune().rimuoviPreferitiPDI(nomePdi, "Daniele");
+        comuneRepository.save(getComune());
+        return new ResponseEntity<>("Il punto di interesse è stato rimosso dai preferiti", HttpStatus.OK);
+    }
 
-        public void rimuoviPreferitiItinerari(String nomeItinerari, String nomeUtente) {
-            comune.rimuoviPreferitiItinerari(nomeItinerari, nomeUtente);
-        }
+    @DeleteMapping(value = "/rimuoviPreferitiItinerari/{nomeItinerari}")
+    public ResponseEntity<Object> rimuoviPreferitiItinerari(String nomeItinerari) {
+        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //Utente utente = utenteRepository.findByUsername(authentication.getName());
+        getComune().rimuoviPreferitiItinerari(nomeItinerari, "Daniele");
+        comuneRepository.save(getComune());
+        return new ResponseEntity<>("L'itinerario è stato rimosso dai preferiti", HttpStatus.OK);
+    }
 
-        public void inviaMessaggi(Messaggio messaggio) {
-            comune.inviaMessaggi(messaggio);
-        }
-    */
+    @PostMapping(value = "/inviaMessaggi")
+    public ResponseEntity<Object> inviaMessaggi(@RequestBody Messaggio messaggio) {
+        getComune().inviaMessaggi(messaggio);
+        comuneRepository.save(getComune());
+        return new ResponseEntity<>("Messaggio inviato a: " + messaggio.getDestinatario(), HttpStatus.OK);
+    }
+
     @PutMapping(value = "/decidiContenuto/{nomeContest}/{nomeContenuto}")
     public ResponseEntity<Object> decidiContenutoVincitore(@PathVariable("nomeContest") String nomeContest,
                                                            @PathVariable("nomeContenuto") String nomeContenuto,
-                                                           @RequestBody Messaggio messaggio) {
+                                                           @RequestBody MessaggioDtos messaggio) {
         getComune().decidiContenutoVincitore(nomeContenuto, nomeContest, messaggio);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il vincitore è stato scelto", HttpStatus.OK);

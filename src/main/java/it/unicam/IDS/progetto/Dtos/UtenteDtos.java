@@ -10,6 +10,10 @@ public class UtenteDtos {
     @NotNull
     private String username;
 
+    private String nome;
+
+    private String cognome;
+
     public UtenteDtos() {}
 
     public String getPassword() {
@@ -20,5 +24,11 @@ public class UtenteDtos {
         return username;
     }
 
+    public String getNome() {
+        return nome;
+    }
 
+    public String getCognome() {
+        return cognome;
+    }
 }

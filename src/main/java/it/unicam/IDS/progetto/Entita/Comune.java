@@ -1,8 +1,8 @@
 package it.unicam.IDS.progetto.Entita;
 
-import it.unicam.IDS.progetto.Dtos.ContenutiDtos;
 import it.unicam.IDS.progetto.Dtos.ContestDiContribuzioneDtos;
 import it.unicam.IDS.progetto.Dtos.ItinerarioDtos;
+import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
 import it.unicam.IDS.progetto.Dtos.PuntoInteresseDtos;
 import it.unicam.IDS.progetto.Eccezioni.Comune.ComuneParamInvalidEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContentAlreadyExistEccezione;
@@ -28,14 +28,10 @@ import java.util.List;
 public class Comune {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @NotNull
     private String nomeComune;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id", referencedColumnName = "coordinate_id")
+    @JoinColumn(name = "nomeComune", referencedColumnName = "coordinate_id")
     private Coordinate coordinate;
 
     @NotNull
@@ -73,10 +69,6 @@ public class Comune {
 
     public Comune(ArrayList<Utente> listaUtenti) {
         this.listaUtenti = listaUtenti;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getNomeComune() {
@@ -151,7 +143,7 @@ public class Comune {
         this.listaUtenti = listaUtenti;
     }
 
-    public void aggiungiContenuti(String nomePDI,File file, String ruolo) {
+    public void aggiungiContenuti(String nomePDI, File file, String ruolo) {
         PuntoInteresse puntoInteresse = findPDI(nomePDI);
         Contenuti contenuto = new Contenuti(file.getName(),file);
         if (puntoInteresse.getListaContenuti().contains(contenuto.getNomeContenuto()))
@@ -389,9 +381,15 @@ public class Comune {
     }
 
     public void modificaComune(String param, String elemNuovo) {
-        if (("nome").equalsIgnoreCase(param)) {
+        /*La modifica sul nome del comune non è stato possibile implementarla essendo che il nome del comune è una
+        chiave primaria.
+        L'unica possibilità di implementare questa funzione è di dare una chiave primaria al comune e modificare
+        la clase Coordinate essendo che se si aggiunge solo la chiave primaria al comune non vengono
+        lette le coordinate del comune
+         */
+        /*if (("nome").equalsIgnoreCase(param)) {
             setNomeComune(elemNuovo);
-        } else if(("cap").equalsIgnoreCase(param)){
+        } else */if(("cap").equalsIgnoreCase(param)){
             setCap(elemNuovo);
         } else throw new ComuneParamInvalidEccezione();
     }
@@ -403,7 +401,6 @@ public class Comune {
             throw new PreferitiAlreadyExist();
 
         utente.getListaPreferitiItinerario().add(it);
-        System.out.println("L'itinerario è stato aggiunto ai preferiti");
     }
 
     public void aggiungiPreferitiPDI(String nomePdi,String nomeUtente) {
@@ -413,7 +410,6 @@ public class Comune {
             throw new PreferitiAlreadyExist();
 
         utente.getListaPreferitiPDI().add(pdi);
-        System.out.println("IL punto di interesse è stato aggiunto ai preferiti");
     }
 
     public void rimuoviPreferitiPDI(String nomePdi,String nomeUtente) {
@@ -421,7 +417,6 @@ public class Comune {
         PuntoInteresse pdi = findPreferitiPdi(nomePdi,utente);
 
         utente.getListaPreferitiPDI().remove(pdi);
-        System.out.println("Il punto di interesse è stato rimosso dai preferiti");
     }
 
     public void rimuoviPreferitiItinerari(String nomeItinerari,String nomeUtente) {
@@ -429,7 +424,6 @@ public class Comune {
         Itinerario it = findPreferitiItinerario(nomeItinerari,utente);
 
         utente.getListaPreferitiItinerario().remove(it);
-        System.out.println("L'itinerario è stato rimosso dai preferiti");
     }
 
     public void aggiungiFotoItinerario(Foto foto, String nomeItinerario, String ruolo) {
@@ -450,13 +444,13 @@ public class Comune {
         Utente destinatario = findUtente(messaggio.getDestinatario());
 
         destinatario.getListaMessaggiNonLetti().add(messaggio);
-        System.out.println("Messaggio inviato a: " + destinatario.getNome());
     }
 
-    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, Messaggio messaggio) {
+    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, MessaggioDtos messaggio) {
         ContestDiContribuzione cont = findContest(nomeContest);
         Contenuti contenuto = findContenutoContestApprovato(cont, nomeContenuto);
-        inviaMessaggi(messaggio);
+        inviaMessaggi(new Messaggio(messaggio.getMittente(),messaggio.getDestinatario(),
+                messaggio.getTitolo(),messaggio.getIntestazione()));
 
         cont.setVincitore(contenuto.getContenuto());
     }
