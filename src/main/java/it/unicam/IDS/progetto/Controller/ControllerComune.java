@@ -39,16 +39,15 @@ public class ControllerComune {
     @PostMapping(value = "/aggiungiContenuti/{nomePDI}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> aggiungiContenuti(@PathVariable("nomePDI") String nomePDI,
                                                     @RequestParam("file") MultipartFile file) throws IOException {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        //String ruolo = String.valueOf(utente.getRuolo());
-        //ROLE_CONTRIBUTORI   ROLE_CONTRIBUTORIAUTORIZZATI
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
         File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
         fileOut.close();
-        getComune().aggiungiContenuti(nomePDI, file1, "ROLE_CONTRIBUTORIAUTORIZZATI");
+        getComune().aggiungiContenuti(nomePDI, file1, ruolo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il contenuto è stato aggiunto al punto di interesse", HttpStatus.OK);
     }
@@ -68,11 +67,10 @@ public class ControllerComune {
 
     @PostMapping(value = "/inserimentoPDI")
     public ResponseEntity<Object> inserimentoPDI(@RequestBody PuntoInteresseDtos pdi) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        //String ruolo = String.valueOf(utente.getRuolo());
-        //ROLE_CONTRIBUTORI   ROLE_CONTRIBUTORIAUTORIZZATI
-        getComune().inserimentoPDI(pdi, "ROLE_CONTRIBUTORI");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
+        getComune().inserimentoPDI(pdi, ruolo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il punto di interesse è stato aggiunto alla piattaforma", HttpStatus.OK);
     }
@@ -81,7 +79,7 @@ public class ControllerComune {
     public ResponseEntity<Object> eliminaPDI(@PathVariable("nomePDI") String nomePDI) {
         getComune().eliminaPDI(nomePDI);
         comuneRepository.save(getComune());
-        return new ResponseEntity<>("Il contenuto è stato eliminato dal punto di interesse", HttpStatus.OK);
+        return new ResponseEntity<>("Il punto di interesse è stato eliminato", HttpStatus.OK);
     }
 
     @PutMapping(value = "/approvStatoPendingPDI/{pdiScelto}/{scelta}")
@@ -106,11 +104,10 @@ public class ControllerComune {
 
     @PostMapping(value = "/creaItinerario")
     public ResponseEntity<Object> creaItinerario(@RequestBody ItinerarioDtos itinerario) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        //String ruolo = String.valueOf(utente.getRuolo());
-        //ROLE_CONTRIBUTORI   ROLE_CONTRIBUTORIAUTORIZZATI
-        getComune().creaItinerario(itinerario, "ROLE_CONTRIBUTORI");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
+        getComune().creaItinerario(itinerario, ruolo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("L'itinerario è stato aggiunto alla piattaforma", HttpStatus.OK);
     }
@@ -125,11 +122,10 @@ public class ControllerComune {
     @PostMapping(value = "/aggiungiPdiItinerario/{nomePuntoInteresse}/{nomeItinerario}")
     public ResponseEntity<Object> aggiuntaPdiItinerario(@PathVariable("nomePuntoInteresse") String nomePuntoInteresse,
                                                         @PathVariable("nomeItinerario") String nomeItinerario) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        //String ruolo = String.valueOf(utente.getRuolo());
-        //ROLE_CONTRIBUTORI   ROLE_CONTRIBUTORIAUTORIZZATI
-        getComune().aggiuntaPdiItinerario(nomePuntoInteresse, nomeItinerario, "ROLE_CONTRIBUTORIAUTORIZZATI");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
+        getComune().aggiuntaPdiItinerario(nomePuntoInteresse, nomeItinerario, ruolo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il punto di interesse è stato aggiunto all'itinerario", HttpStatus.OK);
     }
@@ -145,17 +141,16 @@ public class ControllerComune {
     @PostMapping(value = "/aggiungiFotoItinerario/{nomeItinerario}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> aggiungiFotoItinerario(@RequestParam("file") MultipartFile file,
                                                          @PathVariable("nomeItinerario") String nomeItinerario) throws IOException {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        //String ruolo = String.valueOf(utente.getRuolo());
-        //ROLE_CONTRIBUTORI   ROLE_CONTRIBUTORIAUTORIZZATI
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        String ruolo = String.valueOf(utente.getRuolo());
         File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
         fileOut.close();
         Foto foto = new Foto(file1);
-        getComune().aggiungiFotoItinerario(foto, nomeItinerario, "ROLE_CONTRIBUTORIAUTORIZZATI");
+        getComune().aggiungiFotoItinerario(foto, nomeItinerario, ruolo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("La foto è stata aggiunta all'itinerario", HttpStatus.OK);
     }
@@ -163,17 +158,19 @@ public class ControllerComune {
     @DeleteMapping(value = "/rimuoviFotoItinerario/{idFoto}/{nomeItinerario}")
     public ResponseEntity<Object> rimuoviFotoItinerario(@PathVariable("idFoto") int idFoto,
                                                         @PathVariable("nomeItinerario") String nomeItinerario) {
-        getComune().rimuoviFotoItinerario(idFoto-1, nomeItinerario);
+        getComune().rimuoviFotoItinerario(idFoto - 1, nomeItinerario);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("La foto è stata rimossa dall'itinerario", HttpStatus.OK);
     }
-
 
     @PostMapping(value = "/creaContest")
     public ResponseEntity<Object> creaContestDiContribuzione(@RequestBody ContestDiContribuzioneDtos contestDiContribuzioneDtos) {
         getComune().creaContestDiContribuzione(contestDiContribuzioneDtos);
         comuneRepository.save(getComune());
-        return new ResponseEntity<>("Il contest di contribuzione è stato aggiunto alla piattaforma", HttpStatus.OK);
+        if (contestDiContribuzioneDtos.isSuInvito())
+            return new ResponseEntity<>("Il contest di contribuzione è stato aggiunto alla piattaforma, " +
+                    "Spedire gli inviti", HttpStatus.OK);
+        else return new ResponseEntity<>("Il contest di contribuzione è stato aggiunto alla piattaforma", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/eliminaContest/{nomeContest}")
@@ -195,7 +192,7 @@ public class ControllerComune {
     @PostMapping(value = "/proponiContest/{nomeContest}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> proponiContenuti(@PathVariable("nomeContest") String nomeContest,
                                                    @RequestParam("file") MultipartFile file) throws IOException {
-        File file1 = new File("/home/daniele-rossi/Scrivania/provaFile" + file.getOriginalFilename());
+        File file1 = new File("/home/margherita/Desktop/ProvaFile/" + file.getOriginalFilename());
         file1.createNewFile();
         FileOutputStream fileOut = new FileOutputStream(file1);
         fileOut.write(file.getBytes());
@@ -219,7 +216,12 @@ public class ControllerComune {
     @PutMapping(value = "/modificaComune/{param}/{elemNuovo}")
     public ResponseEntity<Object> modificaComune(@PathVariable("param") String param,
                                                  @PathVariable("elemNuovo") String elemNuovo) {
-        //
+        /*La modifica sul nome del comune non è stato possibile implementarla essendo che il nome del comune è una
+        chiave primaria.
+        L'unica possibilità di implementare questa funzione è di dare una chiave primaria al comune e modificare
+        la clase Coordinate essendo che se si aggiunge solo la chiave primaria al comune non vengono
+        lette le coordinate del comune
+         */
         getComune().modificaComune(param, elemNuovo);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("La modifica del " + param + " del comune è avvenuta", HttpStatus.OK);
@@ -227,43 +229,44 @@ public class ControllerComune {
 
     @PostMapping(value = "/aggiungiPreferitiItinerario/{nomeItinerario}")
     public ResponseEntity<Object> aggiungiPreferitiItinerario(@PathVariable("nomeItinerario") String nomeItinerario) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        getComune().aggiungiPreferitiItinerario(nomeItinerario, "Daniele");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        getComune().aggiungiPreferitiItinerario(nomeItinerario, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("L'itinerario è stato aggiunto ai preferiti", HttpStatus.OK);
     }
 
     @PostMapping(value = "/aggiungiPreferitiPDI/{nomePdi}")
     public ResponseEntity<Object> aggiungiPreferitiPDI(@PathVariable("nomePdi") String nomePdi) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        getComune().aggiungiPreferitiPDI(nomePdi, "Daniele");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        getComune().aggiungiPreferitiPDI(nomePdi, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il punto di interesse è stato aggiunto ai preferiti", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/rimuoviPreferitiPDI/{nomePdi}")
     public ResponseEntity<Object> rimuoviPreferitiPDI(@PathVariable("nomePdi") String nomePdi) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        getComune().rimuoviPreferitiPDI(nomePdi, "Daniele");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        getComune().rimuoviPreferitiPDI(nomePdi, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il punto di interesse è stato rimosso dai preferiti", HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/rimuoviPreferitiItinerari/{nomeItinerari}")
-    public ResponseEntity<Object> rimuoviPreferitiItinerari(String nomeItinerari) {
-        //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //Utente utente = utenteRepository.findByUsername(authentication.getName());
-        getComune().rimuoviPreferitiItinerari(nomeItinerari, "Daniele");
+    public ResponseEntity<Object> rimuoviPreferitiItinerari(@PathVariable("nomeItinerari") String nomeItinerari) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Utente utente = utenteRepository.findByEmail(authentication.getName());
+        getComune().rimuoviPreferitiItinerari(nomeItinerari, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("L'itinerario è stato rimosso dai preferiti", HttpStatus.OK);
     }
 
     @PostMapping(value = "/inviaMessaggi")
     public ResponseEntity<Object> inviaMessaggi(@RequestBody Messaggio messaggio) {
-        getComune().inviaMessaggi(messaggio);
+        Utente utente = utenteRepository.findByNome(messaggio.getDestinatario());
+        getComune().inviaMessaggi(messaggio, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Messaggio inviato a: " + messaggio.getDestinatario(), HttpStatus.OK);
     }
@@ -272,7 +275,8 @@ public class ControllerComune {
     public ResponseEntity<Object> decidiContenutoVincitore(@PathVariable("nomeContest") String nomeContest,
                                                            @PathVariable("nomeContenuto") String nomeContenuto,
                                                            @RequestBody MessaggioDtos messaggio) {
-        getComune().decidiContenutoVincitore(nomeContenuto, nomeContest, messaggio);
+        Utente utente = utenteRepository.findByEmail(messaggio.getDestinatario());
+        getComune().decidiContenutoVincitore(nomeContest, nomeContenuto, messaggio, utente);
         comuneRepository.save(getComune());
         return new ResponseEntity<>("Il vincitore è stato scelto", HttpStatus.OK);
     }

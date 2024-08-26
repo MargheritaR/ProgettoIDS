@@ -33,11 +33,45 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions().disable())
+                .authorizeHttpRequests( request -> request
+                        .requestMatchers("/h2-console/**","/utente/registrazione", "/utente/login/{email}/{password}",
+                                "/utente/getUtente","/comune/getComune").permitAll()
+                        .requestMatchers("/comune/modificaComune/{param}/{elemNuovo}",
+                                "/utente/assegnamentoRuoli/{nomeUtente}/{ruolo}")
+                        .hasRole("GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/aggiungiPreferitiItinerario/{nomeItinerario}",
+                                "/comune/aggiungiPreferitiPDI/{nomePdi}","/comune/rimuoviPreferitiPDI/{nomePdi}",
+                                "/comune/rimuoviPreferitiItinerari/{nomeItinerari}")
+                        .hasAnyRole("TURISTAUTORIZZATI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/creaContest","/comune/eliminaContest/{nomeContest},",
+                                "/comune/modificaContest/{nomeContest}/{param}/{elemNuovo}",
+                                "/comune/validaContenuti/{nomeContest}/{nomeContenuto}/{approv}",
+                                "/comune/decidiContenuto/{nomeContest}/{nomeContenuto}")
+                        .hasAnyRole("ANIMATORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/approvStatoPendingPDI/{pdiScelto}/{scelta}",
+                                "/comune/approvStatoPendingItinerario/{itinerarioScelto}/{scelta}")
+                        .hasAnyRole("CURATORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/rimuoviContenuti/{nomePDI}/{nomeContenuto}","/comune/elimaPDI/{nomePDI}",
+                                "/comune/eliminaItinerario/{nomeItinerario}",
+                                "/comune/rimuoviPdiItinerario/{nomePuntoInteresse}/{nomeItinerario}",
+                                "/comune/rimuoviFotoItinerario/{idFoto}/{nomeItinerario}")
+                        .hasAnyRole("CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/inserimentoPDI","/comune/aggiungiContenuti/{nomePDI}",
+                                "/comune/creaItinerario","/comune/aggiungiPdiItinerario/{nomePuntoInteresse}/{nomeItinerario}",
+                                "/comune/aggiungiFotoItinerario/{nomeItinerario}")
+                        .hasAnyRole("CONTRIBUTORI","CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/proponiContest/{nomeContest}")
+                        .hasAnyRole("CONTRIBUTORI","GESTOREPIATTAFORMA")
+                        .requestMatchers("/comune/inviaMessaggi","/utente/leggiMessaggi/{titoloMessaggio}")
+                        .hasAnyRole("CONTRIBUTORI","CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA",
+                                "ANIMATORI","TURISTAUTORIZZATI")
+                        .anyRequest().authenticated()
+                )
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
     /*
@@ -51,8 +85,7 @@ public class SecurityConfig {
                         .requestMatchers("/comune/addComune","comune/editComune/{nomeComune}",
                                 "/comune/deleteComune/{nomeComune}",
                                 "utente/assegnamentoRuoli/{id}/{newRuolo}").hasRole("GESTOREPIATTAFORMA")
-                        .requestMatchers("/preferiti/**")
-                        .hasAnyRole("TURISTAUTORIZZATI","GESTOREPIATTAFORMA")
+
                         .requestMatchers("/contestDiContribuzione/addContest","/contestDiContribuzione/inviaMessaggio",
                                 "/contestDiContribuzione/deleteContest/{nomeContest}",
                                 "/contestDiContribuzione/editContest/{nomeContest}",
@@ -72,8 +105,7 @@ public class SecurityConfig {
                                 "/itinerari/aggiungiPdi/{nomeItinerario}/{nomePDI}","puntoInteresse/newPuntoInteresse",
                                 "/puntoInteresse/fileUpload/{nomePDI}")
                         .hasAnyRole("CONTRIBUTORI","CURATORI","CONTRIBUTORIAUTORIZZATI","GESTOREPIATTAFORMA")
-                        .requestMatchers("/contestDiContribuzione/proponiContest/{nomeContest}")
-                        .hasAnyRole("CONTRIBUTORI","GESTOREPIATTAFORMA")
+
                         .requestMatchers("/itinerari/aggiungiFoto/{nomeItinerario}")
                         .hasAnyRole("CONTRIBUTORI","GESTOREPIATTAFORMA","TURISTAUTORIZZATI")
                         .anyRequest().authenticated()

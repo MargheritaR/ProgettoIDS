@@ -2,6 +2,7 @@ package it.unicam.IDS.progetto.Controller;
 
 import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
 import it.unicam.IDS.progetto.Dtos.UtenteDtos;
+import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteAlreadyExistsEccezioni;
 import it.unicam.IDS.progetto.Entita.Ruoli;
 import it.unicam.IDS.progetto.Entita.Utente;
 import it.unicam.IDS.progetto.Repository.UtenteRepository;
@@ -51,6 +52,7 @@ public class ControllerUtenti {
         Utente utente5 = new Utente("rosa@gmail.com", passwordEncoder.encode("Dotttore1@"),
                 "Rosa","Moreo");
         utente5.setRuolo(Ruoli.ROLE_TURISTAUTORIZZATI);
+        utenteRepository.save(admin);
         utenteRepository.save(utente1);
         utenteRepository.save(utente2);
         utenteRepository.save(utente3);
@@ -59,16 +61,18 @@ public class ControllerUtenti {
     }
 
     @PutMapping(value = "/assegnamentoRuoli/{nomeUtente}/{ruolo}")
-    public ResponseEntity<Object> assegnamentoRuoli(@PathVariable("nomeUtente") String nomeUtente, @PathVariable("ruolo") String ruolo){
+    public ResponseEntity<Object> assegnamentoRuoli(@PathVariable("nomeUtente") String nomeUtente,
+                                                    @PathVariable("ruolo") String ruolo){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Utente utente = utenteRepository.findByEmail(authentication.getName());
-        utente.assegnamentoRuoli(nomeUtente,ruolo);
+        Utente ut2 = utenteRepository.findByNome(nomeUtente);
+        utente.assegnamentoRuoli(ruolo,ut2);
         utenteRepository.save(utente);
         return new ResponseEntity<>("La modifica del ruolo dell'utente è stata effettuata", HttpStatus.OK);
     }
 
     @PostMapping("/leggiMessaggi/{titoloMessaggio}")
-    public ResponseEntity<Object> leggiMessaggi(String titoloMessaggio){
+    public ResponseEntity<Object> leggiMessaggi(@PathVariable("titoloMessaggio") String titoloMessaggio){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Utente utente = utenteRepository.findByEmail(authentication.getName());
         MessaggioDtos messsaggio = utente.leggiMessaggi(titoloMessaggio, utente);
@@ -80,7 +84,8 @@ public class ControllerUtenti {
     public ResponseEntity<Object> registrazione(@RequestBody UtenteDtos u){
         Utente utente = new Utente(u.getUsername(), passwordEncoder.encode(u.getPassword()), u.getNome(), u.getCognome());
         String token = jwtService.generateToken(utente);
-        utente.registrazione(utente);
+        if (utenteRepository.findByEmail(utente.getUsername()) != null)
+            throw new UtenteAlreadyExistsEccezioni();
         utenteRepository.save(utente);
         return new ResponseEntity<>("La registrazione è avvenuta con successo, ecco il token: "+ token, HttpStatus.OK);
     }
@@ -93,5 +98,10 @@ public class ControllerUtenti {
             throw new UsernameNotFoundException("User not found with username");
         String token = jwtService.generateToken(utente);
         return new ResponseEntity<>("Utente loggato correttamente, token: " + token, HttpStatus.OK );
+    }
+
+    @RequestMapping(value = "/getUtente")
+    public ResponseEntity<Object> getUtente() {
+        return new ResponseEntity<>(utenteRepository.findAll(), HttpStatus.OK);
     }
 }

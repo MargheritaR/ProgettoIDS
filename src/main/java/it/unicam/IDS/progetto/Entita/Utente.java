@@ -52,9 +52,6 @@ public class Utente implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PuntoInteresse> listaPreferitiPDI;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Utente> listaUtenti;
-
     public Utente(String email, String password, String nome, String cognome) {
         this.password = password;
         this.email = email;
@@ -65,7 +62,6 @@ public class Utente implements UserDetails {
         this.listaMessaggiLetti = null;
         this.listaPreferitiItinerario = null;
         this.listaPreferitiPDI = null;
-        this.listaUtenti = null;
     }
 
     public int getId() {
@@ -157,14 +153,6 @@ public class Utente implements UserDetails {
         this.cognome = cognome;
     }
 
-    public List<Utente> getListaUtenti() {
-        return listaUtenti;
-    }
-
-    public void setListaUtenti(List<Utente> listaUtenti) {
-        this.listaUtenti = listaUtenti;
-    }
-
     public List<Itinerario> getListaPreferitiItinerario() {
         return listaPreferitiItinerario;
     }
@@ -199,23 +187,8 @@ public class Utente implements UserDetails {
         throw new MessaggioNotFoundEccezione();
     }
 
-    private Utente findUtente(String nomeUtente) {
-        for (Utente u : listaUtenti)
-            if (u.getUsername().equals(nomeUtente))
-                return u;
-        throw new UtenteNotFoundEccezione();
-    }
-
-    public void assegnamentoRuoli(String nomeUtente, String ruolo) {
-        Utente utente = findUtente(nomeUtente);
+    public void assegnamentoRuoli(String ruolo, Utente utente) {
         utente.setRuolo(Ruoli.valueOf(ruolo));
-    }
-
-    public void registrazione(Utente u) {
-        for (Utente ut : listaUtenti)
-            if (ut.getUsername().equalsIgnoreCase(u.getUsername()))
-                throw new UtenteAlreadyExistsEccezioni();
-        listaUtenti.add(u);
     }
 
     @Override

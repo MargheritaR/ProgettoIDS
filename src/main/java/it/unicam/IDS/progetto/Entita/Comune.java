@@ -52,9 +52,6 @@ public class Comune {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ContestDiContribuzione> listaContest;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Utente> listaUtenti;
-
     public Comune(String nomeComune, double latitudine, double longitudine, String cap) {
         this.nomeComune = nomeComune;
         this.coordinate = new Coordinate(nomeComune, latitudine, longitudine);
@@ -64,11 +61,6 @@ public class Comune {
         listaItinerari = null;
         listaPendingItinerari = null;
         listaContest = null;
-        listaUtenti = null;
-    }
-
-    public Comune(ArrayList<Utente> listaUtenti) {
-        this.listaUtenti = listaUtenti;
     }
 
     public String getNomeComune() {
@@ -133,14 +125,6 @@ public class Comune {
 
     public void setListaContest(List<ContestDiContribuzione> listaContest) {
         this.listaContest = listaContest;
-    }
-
-    public List<Utente> getListaUtenti() {
-        return listaUtenti;
-    }
-
-    public void setListaUtenti(List<Utente> listaUtenti) {
-        this.listaUtenti = listaUtenti;
     }
 
     public void aggiungiContenuti(String nomePDI, File file, String ruolo) {
@@ -242,13 +226,6 @@ public class Comune {
         throw new PreferitiNotFoundEccezione();
     }
 
-    private Utente findUtente(String nomeUtente) {
-        for (Utente utente : listaUtenti)
-            if (utente.getNome().equalsIgnoreCase(nomeUtente))
-                return utente;
-        throw new UtenteNotFoundEccezione();
-    }
-
     public void inserimentoPDI(PuntoInteresseDtos pdi, String ruolo) {
         if (listaPDI.contains(pdi))
             throw new PuntoInteresseAlreadyExitsEccezione();
@@ -276,10 +253,10 @@ public class Comune {
 
         if (scelta.equalsIgnoreCase("Y")) {
             listaPendingPDI.remove(pdi);
-            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getLatitudine(), pdi.getLongitudine(), pdi.getListaContenuti());
+            PuntoInteresse puntoInteresse = new PuntoInteresse(pdi.getNomePDI(), pdi.getLatitudine(),
+                    pdi.getLongitudine(), pdi.getListaContenuti());
             listaPDI.add(puntoInteresse);
-        } else
-            listaPendingPDI.remove(pdi);
+        } else listaPendingPDI.remove(pdi);
     }
 
     public void approvazioneStatoPendingItinerario(String itinerarioScelto, String scelta) {
@@ -289,8 +266,7 @@ public class Comune {
             listaPendingItinerari.remove(it);
             Itinerario itinerario = new Itinerario(it.getNomeItinerario(), it.getListaItinerarioPDI(), it.getListaFoto());
             listaItinerari.add(itinerario);
-        } else
-            listaPendingItinerari.remove(it);
+        } else listaPendingItinerari.remove(it);
     }
 
     public void creaItinerario(ItinerarioDtos it1, String ruolo) {
@@ -314,8 +290,8 @@ public class Comune {
     public void aggiuntaPdiItinerario(String nomePuntoInteresse, String nomeItinerario, String ruolo) {
         Itinerario itinerario = findItinerario(nomeItinerario);
         PuntoInteresse puntoInteresse = findPDI(nomePuntoInteresse);
-
         itinerario.getListaItinerarioPDI().add(puntoInteresse);
+
         IStatoPendingFactory factory = new StatoPendingPIFactory();
         IStatoPending appoggio = factory.newStatoPending(ruolo);
         if (appoggio instanceof StatoPendingItinerario) {
@@ -342,8 +318,6 @@ public class Comune {
             throw new ContestOverTimeLimitEccezione();
         if (!contest.getDataInizio().isBefore(contest.getDataFine()))
             throw new ContestInvalidDataEccezione();
-        if(contest.isSuInvito())
-            System.out.println("Spedisci gli inviti");
 
         listaContest.add(contest);
     }
@@ -376,8 +350,7 @@ public class Comune {
         if (approv.equalsIgnoreCase("Y")) {
             contest.getContenuti().remove(contenuto);
             contest.getContenutiApprovati().add(contenuto);
-        } else
-            contest.getContenuti().remove(contenuto);
+        } else contest.getContenuti().remove(contenuto);
     }
 
     public void modificaComune(String param, String elemNuovo) {
@@ -394,8 +367,7 @@ public class Comune {
         } else throw new ComuneParamInvalidEccezione();
     }
 
-    public void aggiungiPreferitiItinerario(String nomeItinerario,String nomeUtente) {
-        Utente utente = findUtente(nomeUtente);
+    public void aggiungiPreferitiItinerario(String nomeItinerario,Utente utente) {
         Itinerario it = findItinerario(nomeItinerario);
         if (utente.getListaPreferitiItinerario().contains(it))
             throw new PreferitiAlreadyExist();
@@ -403,8 +375,7 @@ public class Comune {
         utente.getListaPreferitiItinerario().add(it);
     }
 
-    public void aggiungiPreferitiPDI(String nomePdi,String nomeUtente) {
-        Utente utente = findUtente(nomeUtente);
+    public void aggiungiPreferitiPDI(String nomePdi,Utente utente) {
         PuntoInteresse pdi = findPDI(nomePdi);
         if (utente.getListaPreferitiPDI().contains(pdi))
             throw new PreferitiAlreadyExist();
@@ -412,17 +383,13 @@ public class Comune {
         utente.getListaPreferitiPDI().add(pdi);
     }
 
-    public void rimuoviPreferitiPDI(String nomePdi,String nomeUtente) {
-        Utente utente = findUtente(nomeUtente);
+    public void rimuoviPreferitiPDI(String nomePdi,Utente utente) {
         PuntoInteresse pdi = findPreferitiPdi(nomePdi,utente);
-
         utente.getListaPreferitiPDI().remove(pdi);
     }
 
-    public void rimuoviPreferitiItinerari(String nomeItinerari,String nomeUtente) {
-        Utente utente = findUtente(nomeUtente);
+    public void rimuoviPreferitiItinerari(String nomeItinerari,Utente utente) {
         Itinerario it = findPreferitiItinerario(nomeItinerari,utente);
-
         utente.getListaPreferitiItinerario().remove(it);
     }
 
@@ -440,17 +407,15 @@ public class Comune {
         }
     }
 
-    public void inviaMessaggi(Messaggio messaggio) {
-        Utente destinatario = findUtente(messaggio.getDestinatario());
-
+    public void inviaMessaggi(Messaggio messaggio,Utente destinatario) {
         destinatario.getListaMessaggiNonLetti().add(messaggio);
     }
 
-    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, MessaggioDtos messaggio) {
+    public void decidiContenutoVincitore(String nomeContest, String nomeContenuto, MessaggioDtos messaggio,Utente utente) {
         ContestDiContribuzione cont = findContest(nomeContest);
         Contenuti contenuto = findContenutoContestApprovato(cont, nomeContenuto);
         inviaMessaggi(new Messaggio(messaggio.getMittente(),messaggio.getDestinatario(),
-                messaggio.getTitolo(),messaggio.getIntestazione()));
+                messaggio.getTitolo(),messaggio.getIntestazione()),utente);
 
         cont.setVincitore(contenuto.getContenuto());
     }
@@ -472,7 +437,6 @@ public class Comune {
                 "listaItinerari=" + listaItinerari + '\n' +
                 "listaPendingItinerari=" + listaPendingItinerari + '\n' +
                 "listaContest=" + listaContest + '\n' +
-                "listaUtenti=" + listaUtenti +
                 '}';
     }
 

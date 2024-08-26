@@ -1,10 +1,11 @@
 package it.unicam.IDS.progetto.Eccezioni.Comune;
 
-import it.unicam.IDS.progetto.Eccezioni.Contenuti.ContenutiNotFoundEccezione;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+@ControllerAdvice
 public class ComuneEccezioniController {
     @ExceptionHandler(value = ComuneNotFountEccezione.class)
     public ResponseEntity<Object> handleException(ComuneNotFountEccezione e) {
