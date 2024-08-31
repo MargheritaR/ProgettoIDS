@@ -3,8 +3,6 @@ package it.unicam.IDS.progetto.Entita;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,7 +29,6 @@ public class Itinerario extends StatoPending {
         this.listaItinerarioPDI = listaItinerarioPDI;
         this.listaFoto = listaFoto;
     }
-
 
     public String getNomeItinerario() {
         return nomeItinerario;

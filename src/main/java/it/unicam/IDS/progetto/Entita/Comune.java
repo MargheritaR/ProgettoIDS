@@ -14,13 +14,11 @@ import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseAlreadyExitsEccezione;
 import it.unicam.IDS.progetto.Eccezioni.PDI.PuntoInteresseNotFoundEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiAlreadyExist;
 import it.unicam.IDS.progetto.Eccezioni.Preferiti.PreferitiNotFoundEccezione;
-import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

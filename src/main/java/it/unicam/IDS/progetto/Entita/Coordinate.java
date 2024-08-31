@@ -15,7 +15,6 @@ public class Coordinate {
     @NotEmpty
     private double longitudine;
 
-    // costruttore
     public Coordinate(String nomeCoordinate, double latitudine, double longitudine) {
         this.nomeCoordinate = nomeCoordinate;
         this.latitudine = latitudine;

@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -82,8 +81,8 @@ public class StatoPendingPuntoInteresse  extends StatoPending{
         return "StatoPendingPuntoInteresse{" +
                 "idNome=" + idNome +
                 ", nomePDI='" + nomePDI + '\'' +
-                ", asseX=" + latitudine +
-                ", asseY=" + longitudine +
+                ", latitudine=" + latitudine +
+                ", longitudine=" + longitudine +
                 ", listaContenuti=" + listaContenuti +
                 '}';
     }

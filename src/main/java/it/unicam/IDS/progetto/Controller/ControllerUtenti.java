@@ -49,7 +49,7 @@ public class ControllerUtenti {
         Utente utente4 = new Utente("giulio@gmail.com", passwordEncoder.encode("Ragazzotti1@"),
                 "Giulio","Ragazzotti");
         utente4.setRuolo(Ruoli.ROLE_CONTRIBUTORI);
-        Utente utente5 = new Utente("rosa@gmail.com", passwordEncoder.encode("Dotttore1@"),
+        Utente utente5 = new Utente("rosa@gmail.com", passwordEncoder.encode("Dottore1@"),
                 "Rosa","Moreo");
         utente5.setRuolo(Ruoli.ROLE_TURISTAUTORIZZATI);
         utenteRepository.save(admin);
@@ -75,9 +75,9 @@ public class ControllerUtenti {
     public ResponseEntity<Object> leggiMessaggi(@PathVariable("titoloMessaggio") String titoloMessaggio){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Utente utente = utenteRepository.findByEmail(authentication.getName());
-        MessaggioDtos messsaggio = utente.leggiMessaggi(titoloMessaggio, utente);
+        MessaggioDtos messaggio = utente.leggiMessaggi(titoloMessaggio, utente);
         utenteRepository.save(utente);
-        return new ResponseEntity<>(messsaggio,HttpStatus.OK);
+        return new ResponseEntity<>(messaggio,HttpStatus.OK);
     }
 
     @PostMapping("/registrazione")

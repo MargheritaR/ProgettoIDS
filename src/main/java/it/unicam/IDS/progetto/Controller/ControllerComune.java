@@ -186,7 +186,7 @@ public class ControllerComune {
                                                                  @PathVariable("elemNuovo") String elemNuovo) {
         getComune().modificaContestDiContribuzione(nomeContest, param, elemNuovo);
         comuneRepository.save(getComune());
-        return new ResponseEntity<>("La modifica dell'/della " + param + " del contesti di contribuzione è avvenuta", HttpStatus.OK);
+        return new ResponseEntity<>("La modifica dell'/della " + param + " del contest di contribuzione è avvenuta", HttpStatus.OK);
     }
 
     @PostMapping(value = "/proponiContest/{nomeContest}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -219,7 +219,7 @@ public class ControllerComune {
         /*La modifica sul nome del comune non è stato possibile implementarla essendo che il nome del comune è una
         chiave primaria.
         L'unica possibilità di implementare questa funzione è di dare una chiave primaria al comune e modificare
-        la clase Coordinate essendo che se si aggiunge solo la chiave primaria al comune non vengono
+        la classe Coordinate essendo che se si aggiunge solo la chiave primaria al comune non vengono
         lette le coordinate del comune
          */
         getComune().modificaComune(param, elemNuovo);

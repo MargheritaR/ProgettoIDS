@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class Messaggio {
 
     @Id
-    @NotNull
     private String titolo;
 
     @NotNull

@@ -1,11 +1,8 @@
 package it.unicam.IDS.progetto.Entita;
 
 import it.unicam.IDS.progetto.Dtos.MessaggioDtos;
-import it.unicam.IDS.progetto.Dtos.UtenteDtos;
 import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggiEmptyEccezione;
 import it.unicam.IDS.progetto.Eccezioni.Messaggio.MessaggioNotFoundEccezione;
-import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteAlreadyExistsEccezioni;
-import it.unicam.IDS.progetto.Eccezioni.Utente.UtenteNotFoundEccezione;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
