@@ -1,0 +1,1286 @@
+{
+	"info": {
+		"_postman_id": "bad9a1b6-eeab-4bb7-b3ce-e93d5c994829",
+		"name": "ProgettoIDS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36277067"
+	},
+	"item": [
+		{
+			"name": "PuntoInteresse",
+			"item": [
+				{
+					"name": "inserimentoPDI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyNTA5NTIyNywiZXhwIjoxNzI1MTgxNjI3fQ.0KomZlsdoocuqBmU7FiHPQh9gajwqMqajso7Brvn3QpNbeBX_T-X647niueoNY6V",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nomePDI\":\"Prova\",\n    \"latitudine\":\"15.0\",\n    \"longitudine\":\"25.6\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/comune/inserimentoPDI",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"inserimentoPDI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "elimaPDI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyNTA5NTIyNywiZXhwIjoxNzI1MTgxNjI3fQ.0KomZlsdoocuqBmU7FiHPQh9gajwqMqajso7Brvn3QpNbeBX_T-X647niueoNY6V",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/elimaPDI/:nomePDI",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"elimaPDI",
+								":nomePDI"
+							],
+							"variable": [
+								{
+									"key": "nomePDI",
+									"value": "Affianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approvStatoPendingPDI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyNTA5NTIyNywiZXhwIjoxNzI1MTgxNjI3fQ.0KomZlsdoocuqBmU7FiHPQh9gajwqMqajso7Brvn3QpNbeBX_T-X647niueoNY6V",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/approvStatoPendingPDI/:pdiScelto/:scelta",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"approvStatoPendingPDI",
+								":pdiScelto",
+								":scelta"
+							],
+							"variable": [
+								{
+									"key": "pdiScelto",
+									"value": "Affianco"
+								},
+								{
+									"key": "scelta",
+									"value": "Y"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aggiungiContenuti",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyNTA5NTIyNywiZXhwIjoxNzI1MTgxNjI3fQ.0KomZlsdoocuqBmU7FiHPQh9gajwqMqajso7Brvn3QpNbeBX_T-X647niueoNY6V",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/margherita/Desktop/ProvaFile/contenuto2"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9090/comune/aggiungiContenuti/:nomePDI",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"aggiungiContenuti",
+								":nomePDI"
+							],
+							"variable": [
+								{
+									"key": "nomePDI",
+									"value": "Affianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rimuoviContenuti",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA0NTQ2MCwiZXhwIjoxNzIzMTMxODYwfQ.NDsfEU9zWyTCNNBbgMycqWYjYSwLIMYaxDOXHmV9gd2zNk6DBTJ9SuJLJJ1LJFrQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/rimuoviContenuti/:nomePDI/:nomeContenuto",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"rimuoviContenuti",
+								":nomePDI",
+								":nomeContenuto"
+							],
+							"variable": [
+								{
+									"key": "nomePDI",
+									"value": "Prova"
+								},
+								{
+									"key": "nomeContenuto",
+									"value": "contenuto2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Itinerario",
+			"item": [
+				{
+					"name": "creaItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MjE1OSwiZXhwIjoxNzIzMTM4NTU5fQ.gDKoGCYxLOtttU5wPBVUWXDHvC5TWeaCHvc1j-P5pPiC9GO32MX8jyJBxc6R5jMJ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nomeItinerario\":\"Fianco\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/comune/creaItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"creaItinerario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminaItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA0NTQ2MCwiZXhwIjoxNzIzMTMxODYwfQ.NDsfEU9zWyTCNNBbgMycqWYjYSwLIMYaxDOXHmV9gd2zNk6DBTJ9SuJLJJ1LJFrQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/eliminaItinerario/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"eliminaItinerario",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "nomeItinerario",
+									"value": "Nuovo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aggiungiPdiItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MjE1OSwiZXhwIjoxNzIzMTM4NTU5fQ.gDKoGCYxLOtttU5wPBVUWXDHvC5TWeaCHvc1j-P5pPiC9GO32MX8jyJBxc6R5jMJ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/aggiungiPdiItinerario/:nomePuntoInteresse/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"aggiungiPdiItinerario",
+								":nomePuntoInteresse",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "nomePuntoInteresse",
+									"value": "Affianco"
+								},
+								{
+									"key": "nomeItinerario",
+									"value": "Fianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rimuoviPdiItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA0NTQ2MCwiZXhwIjoxNzIzMTMxODYwfQ.NDsfEU9zWyTCNNBbgMycqWYjYSwLIMYaxDOXHmV9gd2zNk6DBTJ9SuJLJJ1LJFrQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/rimuoviPdiItinerario/:nomePuntoInteresse/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"rimuoviPdiItinerario",
+								":nomePuntoInteresse",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "nomePuntoInteresse",
+									"value": "Prova"
+								},
+								{
+									"key": "nomeItinerario",
+									"value": "Nuovo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aggiungiFotoItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnaXVsaW9AZ21haWwuY29tIiwiaWF0IjoxNzIzMDUyMTgyLCJleHAiOjE3MjMxMzg1ODJ9.OOCueQ8uWe0BCnMOeW8u5A07VFGvd_DiGBY-hb4U7gvziNSbNFPFatjOLmlBZkyj",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/margherita/Desktop/ProvaFile/2480X1000_camerino_destination.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9090/comune/aggiungiFotoItinerario/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"aggiungiFotoItinerario",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "nomeItinerario",
+									"value": "Fianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rimuoviFotoItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MTYzNywiZXhwIjoxNzIzMTM4MDM3fQ.3CQcDteE7nXxX6IzsFTtsyUzJ46T-rDns-mziB516juPVLVkR9uv4saIRgHQIult",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/rimuoviFotoItinerario/:idFoto/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"rimuoviFotoItinerario",
+								":idFoto",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "idFoto",
+									"value": "1"
+								},
+								{
+									"key": "nomeItinerario",
+									"value": "Fianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "approvStatoPendingItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJtYXJnaGVyaXRhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MTYzNywiZXhwIjoxNzIzMTM4MDM3fQ.3CQcDteE7nXxX6IzsFTtsyUzJ46T-rDns-mziB516juPVLVkR9uv4saIRgHQIult",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/approvStatoPendingItinerario/:itinerarioScelto/:scelta",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"approvStatoPendingItinerario",
+								":itinerarioScelto",
+								":scelta"
+							],
+							"variable": [
+								{
+									"key": "itinerarioScelto",
+									"value": "Fianco"
+								},
+								{
+									"key": "scelta",
+									"value": "Y"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contest di Contribuzione",
+			"item": [
+				{
+					"name": "creaContest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDcyNDcsImV4cCI6MTcyMzEzMzY0N30.-KwY7UEmfs3OWXGDlDgtcXNrRuJuPm35I4AeNh1DF9j8pTu1Ledmio5h06MKmZ8d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nomeContest\":\"Prova\",\n    \"obiettivo\":\"prova\",\n    \"tematica\":\"prova\",\n    \"dpc\":\"20/06/2024\",\n    \"suInvito\":\"false\",\n    \"dataInizio\":\"10/06/2024\",\n    \"dataFine\":\"30/06/2024\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/comune/creaContest",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"creaContest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "decidiContenuto",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDcyNDcsImV4cCI6MTcyMzEzMzY0N30.-KwY7UEmfs3OWXGDlDgtcXNrRuJuPm35I4AeNh1DF9j8pTu1Ledmio5h06MKmZ8d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mittente\":\"Daniele\",\n    \"destinatario\":\"Margherita\",\n    \"titolo\":\"Vincitore Contest\",\n    \"intestazione\":\"Hai vinto il contest! Congratulazioni\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9090/comune/decidiContenuto/:nomeContest/:nomeContenuto",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"decidiContenuto",
+								":nomeContest",
+								":nomeContenuto"
+							],
+							"variable": [
+								{
+									"key": "nomeContest",
+									"value": "Prova"
+								},
+								{
+									"key": "nomeContenuto",
+									"value": "contenuto1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validaContenuti",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDcyNDcsImV4cCI6MTcyMzEzMzY0N30.-KwY7UEmfs3OWXGDlDgtcXNrRuJuPm35I4AeNh1DF9j8pTu1Ledmio5h06MKmZ8d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/validaContenuti/:nomeContest/:nomeContenuto/:approv",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"validaContenuti",
+								":nomeContest",
+								":nomeContenuto",
+								":approv"
+							],
+							"variable": [
+								{
+									"key": "nomeContest",
+									"value": "Prova"
+								},
+								{
+									"key": "nomeContenuto",
+									"value": "contenuto3"
+								},
+								{
+									"key": "approv",
+									"value": "N"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proponiContest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJnaXVsaW9AZ21haWwuY29tIiwiaWF0IjoxNzIzMDQ3NDIxLCJleHAiOjE3MjMxMzM4MjF9.HspweqMGjMgDw0FpVL_jA9ASoZd-4QW71U3vdqVUrAJxxxZk3vRdSnrNVEM2uS0q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/home/margherita/Desktop/ProvaFile/contenuto3"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9090/comune/proponiContest/:nomeContest",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"proponiContest",
+								":nomeContest"
+							],
+							"variable": [
+								{
+									"key": "nomeContest",
+									"value": "Prova"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modificaContest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNTI3NTQsImV4cCI6MTcyMzEzOTE1NH0.qaeZkzKxWf9hm1p2M3DV4u2IBK8vkokr7JVoVIqwEg9y81CKJpvYtss2gji8x_4Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/modificaContest/:nomeContest/:param/:elemNuovo",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"modificaContest",
+								":nomeContest",
+								":param",
+								":elemNuovo"
+							],
+							"variable": [
+								{
+									"key": "nomeContest",
+									"value": "Prova"
+								},
+								{
+									"key": "param",
+									"value": "tematica"
+								},
+								{
+									"key": "elemNuovo",
+									"value": "tem"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminaContest",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDcyNDcsImV4cCI6MTcyMzEzMzY0N30.-KwY7UEmfs3OWXGDlDgtcXNrRuJuPm35I4AeNh1DF9j8pTu1Ledmio5h06MKmZ8d",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/eliminaContest/:nomeContest",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"eliminaContest",
+								":nomeContest"
+							],
+							"variable": [
+								{
+									"key": "nomeContest",
+									"value": "Prova"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "loginAttori",
+			"item": [
+				{
+					"name": "loginCuratore",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/utente/login/:email/:password",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"utente",
+								"login",
+								":email",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "margherita@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "Valida1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginAnimatore",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/utente/login/:email/:password",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"utente",
+								"login",
+								":email",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "bruno@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "Mars1@"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginContributore",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/utente/login/:email/:password",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"utente",
+								"login",
+								":email",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "giulio@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "Ragazzotti1@"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginGestorePiattaforma",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/utente/login/:email/:password",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"utente",
+								"login",
+								":email",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "admin@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "admin1@"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "loginTuristaAutenticato",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/utente/login/:email/:password",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"utente",
+								"login",
+								":email",
+								":password"
+							],
+							"variable": [
+								{
+									"key": "email",
+									"value": "rosa@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "Dotttore1@"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Preferiti",
+			"item": [
+				{
+					"name": "aggiungiPreferitiItinerario",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyb3NhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MDAxNiwiZXhwIjoxNzIzMTM2NDE2fQ.qMoCjI6JkJmG8RMqQ0N7Q017ILlUO4HcV16AO8Rw8Gx6826PSTUJ2ojJNwR3w6m4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/aggiungiPreferitiItinerario/:nomeItinerario",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"aggiungiPreferitiItinerario",
+								":nomeItinerario"
+							],
+							"variable": [
+								{
+									"key": "nomeItinerario",
+									"value": "Fianco"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "aggiungiPreferitiPDI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyb3NhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA0OTM1MCwiZXhwIjoxNzIzMTM1NzUwfQ.MYTfQqq8za485rxwn1bOo2X9ADVzf1Ve_yJhWRKqhFqdJOyOXPn1hEYFIiKTSgia",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/aggiungiPreferitiPDI/:nomePdi",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"aggiungiPreferitiPDI",
+								":nomePdi"
+							],
+							"variable": [
+								{
+									"key": "nomePdi",
+									"value": "Nuovo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rimuoviPreferitiPDI",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyb3NhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA0OTM5OSwiZXhwIjoxNzIzMTM1Nzk5fQ.fe_SbZI4vJmaNAX8LuCQur-f9T9OoOXsh_qG34a7At-KXGqCKyoBzIWUYjL_Eaar",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/rimuoviPreferitiPDI/:nomePdi",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"rimuoviPreferitiPDI",
+								":nomePdi"
+							],
+							"variable": [
+								{
+									"key": "nomePdi",
+									"value": "Nuovo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "rimuoviPreferitiItinerari",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyb3NhQGdtYWlsLmNvbSIsImlhdCI6MTcyMzA1MDAxNiwiZXhwIjoxNzIzMTM2NDE2fQ.qMoCjI6JkJmG8RMqQ0N7Q017ILlUO4HcV16AO8Rw8Gx6826PSTUJ2ojJNwR3w6m4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:9090/comune/rimuoviPreferitiItinerari/:nomeItinerari",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"comune",
+								"rimuoviPreferitiItinerari",
+								":nomeItinerari"
+							],
+							"variable": [
+								{
+									"key": "nomeItinerari",
+									"value": "Fianco"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getAllComune",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/comune/getComune",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"comune",
+						"getComune"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getUtente",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjQ2NjMxNTUsImV4cCI6MTcyNDc0OTU1NX0.tJho5gouwqB8_GLhrGX__avImwyx-au0RHUeK0fRDvtTiVFw1ysYzeecGmc4Ay_g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/utente/getUtente",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"utente",
+						"getUtente"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modificaComune",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDgyNDUsImV4cCI6MTcyMzEzNDY0NX0.U7NPFR-zygVq9xF3HHTktwfCzTQkP-aZDQ2JSM_0aiSO6hhXI30irSliUoCeOx2k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/comune/modificaComune/:param/:elemNuovo",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"comune",
+						"modificaComune",
+						":param",
+						":elemNuovo"
+					],
+					"variable": [
+						{
+							"key": "param",
+							"value": "cap"
+						},
+						{
+							"key": "elemNuovo",
+							"value": "60019"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "leggiMessaggi",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJicnVub0BnbWFpbC5jb20iLCJpYXQiOjE3MjMwNTI1NjIsImV4cCI6MTcyMzEzODk2Mn0.BQ5JlBYmRnHakPAhZYdg_CpfcZcur5I7mE-KRe3mlLmGh94nxwesWY38MhtjGIM8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/utente/leggiMessaggi/:titoloMessaggio",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"utente",
+						"leggiMessaggi",
+						":titoloMessaggio"
+					],
+					"variable": [
+						{
+							"key": "titoloMessaggio",
+							"value": "Vincitore Contest"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "assegnamentoRuoli",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjMwNDgyNDUsImV4cCI6MTcyMzEzNDY0NX0.U7NPFR-zygVq9xF3HHTktwfCzTQkP-aZDQ2JSM_0aiSO6hhXI30irSliUoCeOx2k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/utente/assegnamentoRuoli/:nomeUtente/:ruolo",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"utente",
+						"assegnamentoRuoli",
+						":nomeUtente",
+						":ruolo"
+					],
+					"variable": [
+						{
+							"key": "nomeUtente",
+							"value": "Daniele"
+						},
+						{
+							"key": "ruolo",
+							"value": "ROLE_CONTRIBUTORI"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "inviaMessaggi",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE3MjMwNTE0MTIsImV4cCI6MTcyMzEzNzgxMn0.LnVkmUCSlgK1l7418LRHcl2OadpE-60SEvp6g4rbR5KlLq5cAQBRm5NRWyyiQ7Fz",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mittente\":\"Daniele\",\n    \"destinatario\":\"Margherita\",\n    \"titolo\":\"Vincitore Contest\",\n    \"intestazione\":\"Hai vinto il contest! Congratulazioni\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9090/comune/inviaMessaggi",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"comune",
+						"inviaMessaggi"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
